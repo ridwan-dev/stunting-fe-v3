@@ -22,12 +22,13 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
-  deploy:
-    environment:
+  #deploy:
+  phpcs:
+    #environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    #steps:
+      #url: ${{ steps.deployment.outputs.page_url }}
+      runs-on: ubuntu-latest
+      steps:
       #- name: Checkout
       #  uses: actions/checkout@v3
       #- name: Setup Pages
@@ -40,6 +41,6 @@ jobs:
       #- name: Deploy to GitHub Pages
       #  id: deployment
       #  uses: actions/deploy-pages@v1
-      #- name : Check Code Standart
-      #  run : |
-     #     git pull
+      - name : Check Code Standart
+        run : |
+          git pull
