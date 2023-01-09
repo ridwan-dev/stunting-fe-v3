@@ -1,0 +1,130 @@
+.tabulator-menu.tabulator-popup-container {
+   top: 0px !important;
+   right: 0px !important;
+   height: 36em !important;
+   width: 30%;
+   left: inherit !important;
+}
+
+.bhomeleaftlet {
+   background-image: url('../../css/map/home.png') !important;
+}
+
+/* point map */
+
+/* td .progress-bar {
+   float: left;
+   padding: 0 3px;
+   border-radius: 5px;
+   margin: 0px 1px;
+} */
+
+.fourpointround {
+   width: 28px !important;
+   height: 28px !important;
+   width: 28px !important;
+   height: 28px !important;
+}
+
+.fourpointpos {
+   position: relative;
+   top: -4px;
+   left: -8px;
+   float: left;
+}
+
+.threepointround {
+   width: 23px !important;
+   height: 23px !important;
+}
+
+.threepointroundpos {
+   position: relative;
+   top: -6px;
+   left: -8px;
+   float: left;
+}
+
+.twopointround {
+   width: 20px !important;
+   height: 20px !important;
+}
+
+.twopointroundpos {
+   position: relative;
+   top: -6px;
+   left: -6px;
+   float: left;
+}
+
+.onepointround {
+   width: 20px !important;
+   height: 20px !important;
+}
+
+.onepointroundpos {
+   position: relative;
+   top: -7px;
+   left: -3px;
+   float: left;
+}
+
+.icon-map {
+   padding: 11px;
+   border-radius: 100px !important;
+}
+
+/* Belanja KL */
+#peta-sebaran-kegiatan .leaflet-popup-content-wrapper,
+#peta-sebaran-kegiatan .leaflet-popup-tip {
+   background: #0b3d68b8 !important;
+   box-shadow: 0 3px 14px rgb(0 0 0 / 40%);
+}
+
+#peta-sebaran-kegiatan .leaflet-popup-content {
+   width: inherit !important;
+}
+
+#peta-sebaran-kegiatan .leaflet-sidebar.right {
+   padding-left: 4.5em;
+}
+
+/*DAK*/
+#provkab .bootstrap-select>.dropdown-toggle {
+   font-size: 12px;
+   margin-bottom: 1em;
+   padding: 0.25em 2em;
+   min-width: 17em;
+}
+
+/* Kinerja Anggaran */
+button.btn.dropdown-toggle.btn-light {
+   font-size: 12px;
+}
+
+.tabulator-menu.tabulator-popup-container {
+   top: 0px !important;
+   right: 0px !important;
+   height: 36em !important;
+}
+
+#elemenOpenCloseFst .groupItem button:hover,
+#elemenOpenClose .groupItem button:hover {
+   opacity: 0.7;
+}
+
+#elemenOpenCloseFst .groupItem button.active,
+#elemenOpenClose .groupItem button.active {
+   border-color: #4285f4;
+   border-width: 2px;
+}
+
+.loading {
+   min-height: 40em;
+}
+
+.admin-cover {
+   background: url(../../../img/cover-scrum-board.png) no-repeat fixed;
+   background-size: 360px;
+   background-position: right bottom 15%;
+}

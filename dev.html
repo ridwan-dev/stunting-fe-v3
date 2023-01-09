@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta http-equiv='cache-control' content='no-cache'>
+  <meta http-equiv='expires' content='0'>
+  <meta http-equiv='pragma' content='no-cache'>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta name="theme-color" content="white">
+  <title>i-Monev Stunting</title>
+  <link rel="shortcut icon" type="image/svg" href="img/logo-cegah-stunting.svg" />
+  <!-- ================== BEGIN core-css ================== -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="plugins/core/css/ionicons.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/app.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/vendor.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/bootstrap-select.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/loadspiner.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/bootstrap-datepicker.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/bootstrap-datepicker3.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/core/css/add.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/jstree/dist/themes/default/style.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/add.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/Control.FullScreen.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/Control.Loading.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/geosearch.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/L.Control.Sidebar.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/leaflet.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/leaflet/css/leaflet-gesture-handling.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/tabulator/css/tabulator_bulma.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/tabulator/css/tabulator.min.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/vanilla-notify/vanilla-notify.css" type="text/css" />
+  <link rel="stylesheet" href="plugins/dataTables/jquery.dataTables.min.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css"
+    type="text/css" />
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+
+<body>
+  <div id="loader" class="app-loader">
+    <span class="spinner"></span>
+  </div>
+  <div id="app" class="app">
+    <div id="header" class="app-header"></div>
+    <div id="sidebar" class="app-sidebar"></div>
+    <div class="app-sidebar-bg"></div>
+    <div class="app-sidebar-mobile-backdrop">
+      <a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a>
+    </div>
+    <div id="content" class="app-content d-flex flex-column p-0 app-content-full-height"></div>
+  </div>
+  <!-- ================== BEGIN core-js ================== -->
+  <script type="module" src="dev.js"></script>
+
+  <script type="text/javascript" src="plugins/core/js/google.min.js"></script>
+  <script type="text/javascript" src="plugins/core/js/vendor.min.js"></script>
+  <script type="text/javascript" src="plugins/core/js/app.min.js"></script>
+  <script type="text/javascript" src="plugins/core/js/bootstrap-select.min.js"></script>
+  <script type="text/javascript" src="plugins/core/js/bootstrap-datepicker.js"></script>
+  <script type="text/javascript" src="plugins/core/js/sweetalert.min.js"></script>
+  <script type="text/javascript" src="plugins/core/js/fuse.js"></script>
+  <script type="text/javascript" src="plugins/core/js/numeral.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/tabulator.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/tabulator531.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/jspdf141.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/jspdf235.plugin.autotable.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/jspdf240.umd.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/jspdf352.plugin.autotable.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/xlsx.full531.min.js"></script>
+  <script type="text/javascript" src="plugins/tabulator/js/tableHTMLExport.js"></script>
+  <script type="text/javascript" src="plugins/localforage/localforage.min.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/iso8601.min.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/Leaflet.Coordinates-0.1.3.min.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet-plugins.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet-search.src.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet-sidebar.min.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet-spin.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/Control.FullScreen.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/Control.Loading.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/geosearch.umd.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/L.Control.Sidebar.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet.markercluster.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet-gesture-handling.min.js"></script>
+  <script type="text/javascript" src="plugins/leaflet/js/leaflet-heat.js"></script>
+  <script type="text/javascript" src="plugins/apexcharts/dist/apexcharts.min.js"></script>
+  <script type="text/javascript" src="plugins/jstree/dist/jstree.min.js"></script>
+  <script type="text/javascript" src="plugins/vanilla-notify/vanilla-notify.js"></script>
+  <script type="text/javascript" src="plugins/amcharts5/index.js"></script>
+  <script type="text/javascript" src="plugins/amcharts5/xy.js"></script>
+  <script type="text/javascript" src="plugins/amcharts5/Animated.js"></script>
+  <script type="text/javascript" src="plugins/amcharts5/percent.js"></script>
+  <script type="text/javascript" src="plugins/amcharts5/exporting.js"></script>
+  <script type="text/javascript" src="plugins/amcharts4/core.js"></script>
+  <script type="text/javascript" src="plugins/amcharts4/charts.js"></script>
+  <script type="text/javascript" src="plugins/amcharts4/venn.js"></script>
+  <script type="text/javascript" src="plugins/amcharts4/animated.js"></script>
+  <script type="text/javascript" src="plugins/amcharts4/forceDirected.js"></script>
+  <script type="text/javascript" src="plugins/parsley/parsley.min.js"></script>
+  <script type="text/javascript" src="plugins/dataTables/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+  <script src="js/utility/core.js"></script>
+  <script src="js/utility/capaian-indikator/stunting.js"></script>
+  <script src="js/utility/kinerja-anggaran/kinerja.js"></script>
+  <script src="js/utility/dak/db_dak.js"></script>
+  <script src="js/utility/monitoring/intervensi.js"></script>
+  <!-- ================== END plugins-js ================== -->
+  <div class="modal show" id="alertModal" aria-modal="true" role="dialog">
+    <div class="modal-dialog h-100 d-flex align-items-center">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="modal-body h5" id="alertMsg"></div>
+        <div class="modal-footer">
+          <a href="javascript:;" class="btn btn-white" data-bs-dismiss="modal">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

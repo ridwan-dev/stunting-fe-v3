@@ -1,0 +1,1 @@
+function levelFrame(e){let l=window.location.pathname,t=l.split("/"),d;return d="dashboard-dev"===t[1]?"dev.html"===t[2]?"develop":"":"dev.html"===t[1]?"develop":""}export{levelFrame};
