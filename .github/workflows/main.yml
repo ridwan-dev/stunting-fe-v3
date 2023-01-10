@@ -15,7 +15,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server:  ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USER }}
+        server:  103.97.102.37
+        username: monev-stunting
         protocol: ftps
-        password: ${{ secrets.DEPLOY_PASSWORD }}
+        password: w5KDLPafChH746r
