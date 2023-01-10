@@ -17,4 +17,5 @@ jobs:
       with:
         server:  ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USER }}
+        protocol: ftps
         password: ${{ secrets.DEPLOY_PASSWORD }}
