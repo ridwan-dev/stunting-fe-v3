@@ -18,4 +18,5 @@ jobs:
         server:  103.97.102.37
         username: monev-stunting
         protocol: ftps
+        port: 22
         password: w5KDLPafChH746r
