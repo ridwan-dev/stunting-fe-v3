@@ -17,4 +17,41 @@ jobs:
         remote_path: /var/www/html/xxx/test
         remote_host: 103.97.102.37
         remote_user: monev-stunting
-        remote_key: ${{ secrets.DEPLOY_KEY }}
+        remote_key: -----BEGIN OPENSSH PRIVATE KEY-----
+                    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
+                    NhAAAAAwEAAQAAAYEAuFf1YyXnx1MgaHQvAP4llvYxcIdO79hITHP0pPhTq/hoFjzUhifu
+                    jTEytSWKaSw9WyTjt6TOoWerAcrvncJIue4s3/RiEKiZbCI77mJKrMyoY/75kOwlpPlkKu
+                    FHnT0rfFEGkQw2lsgb0UWpB+qvnRBaGBCwbbngk6voobWUjNStSXpLGH3u4sgkzKixQf7Q
+                    ZC7JmFjFsrsFjsXKAlqNtYERhWR4HU7vOBpzVzyRv4POYfIiKHxKrGXxUPTuWxmlmOCvvE
+                    EzUItsJ8p+3+rlDMuEyuxCk0XFNfiDqx6eOi3prPGTwINk0/olPIp5IVZ0dT9wMnL6qnpW
+                    2xGhe4OJGv2BmVI3/5DUHDUNeGOL4xzp4keTIjImbag/4FewQzZKhgAfcJ01JE3BQxTsPq
+                    QeBzcvfA55ZdDdvWFAcwQfHuHj72Ix9z/ds8jilRiK+tF6N9CM8SGJTZte0IRn2qwb/Tqj
+                    15mvVf0v5Fvu8q7TpQb5IYKdTAcVCYL4fVihxqwBAAAFmHFcIZFxXCGRAAAAB3NzaC1yc2
+                    EAAAGBALhX9WMl58dTIGh0LwD+JZb2MXCHTu/YSExz9KT4U6v4aBY81IYn7o0xMrUlimks
+                    PVsk47ekzqFnqwHK753CSLnuLN/0YhComWwiO+5iSqzMqGP++ZDsJaT5ZCrhR509K3xRBp
+                    EMNpbIG9FFqQfqr50QWhgQsG254JOr6KG1lIzUrUl6Sxh97uLIJMyosUH+0GQuyZhYxbK7
+                    BY7FygJajbWBEYVkeB1O7zgac1c8kb+DzmHyIih8Sqxl8VD07lsZpZjgr7xBM1CLbCfKft
+                    /q5QzLhMrsQpNFxTX4g6senjot6azxk8CDZNP6JTyKeSFWdHU/cDJy+qp6VtsRoXuDiRr9
+                    gZlSN/+Q1Bw1DXhji+Mc6eJHkyIyJm2oP+BXsEM2SoYAH3CdNSRNwUMU7D6kHgc3L3wOeW
+                    XQ3b1hQHMEHx7h4+9iMfc/3bPI4pUYivrRejfQjPEhiU2bXtCEZ9qsG/06o9eZr1X9L+Rb
+                    7vKu06UG+SGCnUwHFQmC+H1YocasAQAAAAMBAAEAAAGAEEgwk9fKv4e/kopEho1sC4fmOP
+                    6ygau0QxBw2MtYNJXFt8UarljDkLP6Oxa8QWrXZn/9HwDPAWGTMJ7YiDIbU1TOoN9IdBk4
+                    J91kNrt2xglzjBV+vIanEom2h7ULKr+24g2UC2atQaceEd9ZvSnE5hYGJx7+PkrPI6vo6b
+                    OMkd3NCnLjRCAHY/9yhKMXuPEFPfwF8U9R8uXi6Ufd/lQ6NQBX6FTF6SzKI0XuzxM5+lTt
+                    eyg0TSghPlXouRJRJTnACL0BDDjth5FyQH1yqtC1jUxqxTAvvRdpMr5QPV64KXS/p9hQ05
+                    AEk0FtHRc1npQcG+kmhlENGD6MCZjc6WaD21HIMOl4j/17IJ9SKh2ZJJBvLF2SY9BAHktR
+                    UAjGo21FbxoFWeRBdVk5gZ6WEQhWy0+/Yi/4ulwOa0hhEcQpC51tqoRVMRMkisRew7du0U
+                    2c+K32JzhEbO4L61pSHNR61uMcF5mnD+y/bDmw0nbnYwnYHNMEgtEzr4hd/3YfB4XbAAAA
+                    wEgTza3Rhc5KfNWBFgP1VCq+fKLhFv/NnsFetCT95jQ12o6uwKaUHP4orJrbz+gAV9u02W
+                    JCJxUhut2v23t2Q8QdeoQY27l5PLnbnBPv7kTg+2Y0mQ61mMrQLfDMtrYi06c/Fe19KYub
+                    1oOWQorFB20OnBz3cykjafgbS3IFwF9M6jY6AQo+2K+U5u5wc9Upgc/NdS7XyP4ZKie057
+                    KiP0sfA94zWOY2WT5y9YaSwXvKsuetMp5oyUjP8hZvg/jN7AAAAMEA1LKpLZt/fxtaIltM
+                    uWiXXtobTNTcPOUpBSXMmboBmYxiGvryNHJECFV8M/ZPnLQqvI48N5/TIMJHjqEOTErZND
+                    Oam3nVk7xNkOSBtgxCIVZwOWx5nfcDTA+70IyV49OWR6OCSNS+CWwkpkCm6YcNtv3y4xvL
+                    zi84w4+0F6wn4DlV+J8mRWtmFQNFQ96fD1AcxVxJBMEnp1x+42iOxqC4wahfd2pxmXUGXl
+                    qomoqu6qeI39IJxIenrNM8c3v82ogDAAAAwQDd34jbpSkayXr+WXO5soPmVQFQfygC32+3
+                    DB7mzjigJgCiN7OTD7qZn7wjYyahdXqn/E0OonGf+vXtx3pXEmurMEMVNhmEWfL1b7Cwuk
+                    DtPuQemIG3l8VTo8+PtkmHvtUK4pj1NNMcnr/BuzsccUyQakvhWgmAKDuX48xBo2xMPKGw
+                    4q4NDXgLWYaU3FEICK7rewRingDgAWhjiMyfQzyyKiOHZt6riRkBofdqtLk9fdZBayvk05
+                    ai5G2RV4DfRqsAAAAdbW9uZXYtc3R1bnRpbmdAbW9uZXYtc3R1bnRpbmcBAgMEBQY=
+                    -----END OPENSSH PRIVATE KEY-----
