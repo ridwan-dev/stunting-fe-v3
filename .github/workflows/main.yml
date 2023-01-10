@@ -8,6 +8,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: |
-          git pull
+    - uses: actions/checkout@v2
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@4.1
+      with:
+        switches: -avzr --delete --exclude=".git" --exclude=".github"
+        path: /
+        remote_path: /var/www/html/xxx/test
+        remote_host: monev-stunting.bappenas.go.id
+        remote_user: monev-stunting
+        remote_key: ${{ secrets.DEPLOY_KEY }}
