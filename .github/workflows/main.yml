@@ -5,16 +5,16 @@ on:
     - main
 
 jobs:
-  deploy:
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: rsync deployments
-      uses: burnett01/rsync-deployments@5.2.1
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        switches: -avzr --delete --exclude=".git" --exclude=".github"
-        path: /
-        remote_path: /var/www/html/xxx/test
-        remote_host: 103.97.102.37
-        remote_user: monev-stunting
-        remote_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC89DtpUXtUrthe0re2Q5XOh6uxyRU0clnENEf63s5nMHqRyamElW9Ans37bFrLy79QYFwJrkLMr+xrUJ/6S4tXCY3QXSLF9gdAhUK5x7GWORcF9fLq8aD48vQzhRGL2xeNQ39+CCUFejBCAdNrc7yoKf8A3lNq3601WnjCsUH0U0fQRpJM15AsrJs+xv+AWKnZLQGEAVLsMwJmA+886ZkygZw6O0+/5fAWCLnH/5p9UUejIVPSZnHzSUvD9h+p4LzTwQzXnDFJDvbLiDA/p7F/OVzx2bvdVic3GMjeGuEHa067QFAqIdqYCyYAXH9J8n3VGV0To1/CmbXfWwNful5Dh06g7bs1LBAaXyWnYT3YHBi6TXpQ+opo1DuTuBybOPyo4O8XLaVVYa1sSYDB894GuhqzEKPwjajmX5ky2HUy9+qxWSYUdXEJfMrkk2qPTJzh334P9JNsLF2H+HABHMz/34TPQ7Hsb6EiqzquUWw5yg/Gb07HAqxzl1Mt2RlDZ5s=
+        server:  ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
