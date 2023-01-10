@@ -17,6 +17,6 @@ jobs:
         remote_path: /var/www/html/xxx/test
         remote_host: 103.97.102.37
         remote_user: monev-stunting
-        #remote_password: ${{ secrets.DEPLOY_PASSWORD }}
+        remote_password: w5KDLPafChH746r
         remote_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4V/VjJefHUyBodC8A/iWW9jFwh07v2EhMc/Sk+FOr+GgWPNSGJ+6NMTK1JYppLD1bJOO3pM6hZ6sByu+dwki57izf9GIQqJlsIjvuYkqszKhj/vmQ7CWk+WQq4UedPSt8UQaRDDaWyBvRRakH6q+dEFoYELBtueCTq+ihtZSM1K1JeksYfe7iyCTMqLFB/tBkLsmYWMWyuwWOxcoCWo21gRGFZHgdTu84GnNXPJG/g85h8iIofEqsZfFQ9O5bGaWY4K+8QTNQi2wnyn7f6uUMy4TK7EKTRcU1+IOrHp46Lems8ZPAg2TT+iU8inkhVnR1P3AycvqqelbbEaF7g4ka/YGZUjf/kNQcNQ14Y4vjHOniR5MiMiZtqD/gV7BDNkqGAB9wnTUkTcFDFOw+pB4HNy98Dnll0N29YUBzBB8e4ePvYjH3P92zyOKVGIr60Xo30IzxIYlNm17QhGfarBv9OqPXma9V/S/kW+7yrtOlBvkhgp1MBxUJgvh9WKHGrAE= monev-stunting@monev-stunting
 
