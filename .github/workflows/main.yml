@@ -20,4 +20,4 @@ jobs:
         protocol: ftps
         port: 22
         password: w5KDLPafChH746r
-        server-dir: /var/www/html/xxx/stunting-fe-v3
+        server-dir: /var/www/html/xxx/stunting-fe-v3/
