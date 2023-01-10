@@ -10,11 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: rsync deployments
-      uses: burnett01/rsync-deployments@4.1
+      uses: burnett01/rsync-deployments@5.2.1
       with:
         switches: -avzr --delete --exclude=".git" --exclude=".github"
         path: /
         remote_path: /var/www/html/xxx/test
-        remote_host: monev-stunting.bappenas.go.id
+        remote_host: 103.97.102.37
         remote_user: monev-stunting
         remote_key: ${{ secrets.DEPLOY_KEY }}
