@@ -61,7 +61,7 @@ jobs:
           Khjlf8I9joKnyCcXnl7+lswB2SoMKPHPjGZ4wPGov/hf5YcnlqADBATi9Q5VN9Yl
           hiDcj42Gtbj526qJ2jTtjCIS7x+d+IVjcmForyzCpdmAwitp1TAcjGoRp2CAHny5
           61QpoX/aBL93VkUmO4Q2ta9P/RZEWI3JzMq2yeDdMOO/eCckbvwOjA==
-            -----END RSA PRIVATE KEY-----
+          -----END RSA PRIVATE KEY-----
         # will put all file under this path
         local_path: './i-monev-stunting/stunting-fe/test/*'
         # files will copy to under remote_path
