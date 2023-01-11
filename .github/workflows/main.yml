@@ -23,7 +23,7 @@ jobs:
         # your sftp server port, default to 22
         port: 22
         # you can copy private_key from your *.pem file, keep format
-        ssh_private_key: -----BEGIN OPENSSH PRIVATE KEY-----
+        ssh_private_key: -----BEGIN RSA PRIVATE KEY-----
                         b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
                         NhAAAAAwEAAQAAAYEAuFf1YyXnx1MgaHQvAP4llvYxcIdO79hITHP0pPhTq/hoFjzUhifu
                         jTEytSWKaSw9WyTjt6TOoWerAcrvncJIue4s3/RiEKiZbCI77mJKrMyoY/75kOwlpPlkKu
@@ -60,7 +60,7 @@ jobs:
                         DtPuQemIG3l8VTo8+PtkmHvtUK4pj1NNMcnr/BuzsccUyQakvhWgmAKDuX48xBo2xMPKGw
                         4q4NDXgLWYaU3FEICK7rewRingDgAWhjiMyfQzyyKiOHZt6riRkBofdqtLk9fdZBayvk05
                         ai5G2RV4DfRqsAAAAdbW9uZXYtc3R1bnRpbmdAbW9uZXYtc3R1bnRpbmcBAgMEBQY=
-                        -----END OPENSSH PRIVATE KEY-----
+                        -----END RSA PRIVATE KEY-----
         # will put all file under this path
         local_path: './i-monev-stunting/stunting-fe/test/*'
         # files will copy to under remote_path
