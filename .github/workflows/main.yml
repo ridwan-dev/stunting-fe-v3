@@ -11,60 +11,11 @@ jobs:
       
     
     
-    - name: SFTP Deploy No SSH
-      # You may pin to the exact commit or the version.
-      # uses: ChenjxJames/SFTP-Deploy-Action@7dde96b18c46f0d28dc5c1751738fb2d730c4ec0
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        # username
-        username: monev-stunting
-        # your sftp server
         server: 103.97.102.37
-        # your sftp server port, default to 22
+        username: monev-stunting
+        password: w5KDLPafChH746r
+        protocol: ftps
         port: 22
-        # you can copy private_key from your *.pem file, keep format
-        ssh_private_key: -----BEGIN RSA PRIVATE KEY-----
-          MIIG5AIBAAKCAYEA0B2ZSQe+bcZdL0gUJMU7JVxCsr9vRmtXk84SOyK1zwbyjpHV
-          chm5lEkvlxD0rKa/HMCpIibCCfFujkZ9BLq4rBaRvJldPcVndMT/IW/bwJIy3ujY
-          722MSYNturgDMlki49gm9rLDUqGKZ9vMvCU7z+saGl9pCak22bKj3m+PNc3K+2z0
-          DhKmRalFsnYGy7aCXcEuBY/HfwyUoPY+HVpoVLv2tzquqj6JXHX7gIBErvnisq9H
-          sxn6I4lEAva7eN6kvroeedvehUBId9nuyQrl5rxTnN0ze5is2I9Kj1yek1QcPpy0
-          /UiYEvqOLnr4bK+ZnzC+gda9T6TKl3d6CcPPzB7UTFY40TKr2qnqTcmwURT9BhTg
-          XFYjaJbPiBFyxNPsTE3Ro52vhl59zEojEqRsNuTch+FAoRwoZIPD7NqwRTnndsQL
-          eQEg2xdRDi+Uz+DBUgzcwo61HIFbRkxG77Q0rYfrXTTrZKo6D6E+8JZO6LEgs0eL
-          ZK3OVBQtw8rDSEhrAgMBAAECggGAGpA8mXq4jrBsAnXzxEG8a+dbyA7xOA7Jbd82
-          qn+irxsW6KWqlda8vjWdMm4CnOrnp9bbf7VsvPIpB1Xt7SWcHrL+xRDaOuEwdFIU
-          soLhjLHcdmFIFz9nUZbJ8bQ9DDceYfCcAI8OqURfMyR1/GnQOZiri0Q0VvxXOPA5
-          RFH++IIc73yXphgxSuDxOXchJO1VtHvM0P7qGshTTDxB72Mzv+UB958w3h//TmLs
-          yBkXKzJQAjinMTAWomSJ3sr5YNMh/tTXPfjurNWVtgvqhvKcGVovzUrY7+sWerfi
-          fIxr6jIntAAxa+Q93zYB7rTo8VcK/2c6qewz+wIqFPoNkVJxb7Swt0TV7z5dzeU4
-          RnNXZ6Zw2r3OJ1bCRqL4AdCeM7sFw8fTuGK5Xl0gSRxhiHeT81PzIS27DIcIEbSc
-          MRJN//abWNMn37CYIE/pTkTl/E2/64A9OKYU0GaulTMzO3ZRfNxoF+sIPxxGIrDK
-          nsUyqNILlTESeE5pTms5SKHtfGwhAoHBAP6oHCssHblJkQxsh5PH4nn7AdiTavgM
-          AE1n03Csw94LTAGrIOiJPXmmQedzi5D9AutkmSYewiuJFnbK9RHbEOXm7Y87sfmq
-          RknhJSE7L2AbplPXo1im/x101WdT/vm3egmrfQwePIs43Mf+x+EUg3UPXhfD6opx
-          d4wJeiHSjSCBf32Y0q+ILyrnuJATlsjjVBIqZfs2/ACuwfXuVNJ5Fb51OqC+xwgt
-          4L6tACXvVIRy7b0sVUdDQ0WJCH601ZqvOwKBwQDRNqOvub2e/7pWmP7yBW/yXLhl
-          nG/U3N/HtS9PcQK/3wT+fBPw1DudODrfaODO2DC3ldpYDODwE9Xwvo8WNN1Ql8zp
-          EHOue+ixxjmR7YhZAC2uhBbRCaYSWvjZYjje384jffU5YLsE/HpLu84de5NYWJYP
-          YWwtMEnPnMgiiw7IpVSeWi1Yj6CHsjGBcFvh97Jv1fSf4p5/0gSVYo2+joxOWHfd
-          U3aHIaHJcW9+2jnkyZ4BgF3zCJ+JL90kLiHgmJECgcEA03KhGRPjhmNYZhmDpaiW
-          G7TY/ozBiD7mzV8FiQxbAncc4FHI3GyAOA9dr6IYZAZBs1TveWCW13FXzsGNJgth
-          B5Rs8r6dc/H3tQaWPvaWytWKkRl/T3AyarIFNGvhTlYTpg3XogVFPlCzufiK3RCc
-          asmc1lzd1aCLpCKGX6kld7UvOAl5/zgz+gs4C6HIVPu1ZfQAg8xPCP4SnXMMyUqz
-          TFaonKpsNxVpBMo/UkBcTDHlx2sVUDvAku9Kt3LN3kfbAoHASmmSwtffuAPhNRfp
-          5g9FCAEunQWNSTreZVvuXeUmQzSBxDpBpXD3Wy460metPiTq/wFPze2WvA1yFNTS
-          c+WNqjKz8Vmmq7LqywBkTaEc0/saRG4651L1PKYayMcEz1DvMvSEGkprepSKsxEz
-          eI0RlWS8yu+t2EzKlAuBq7emJHuZo1ETu+IqCNm6ff2G0NKXJuwEvDGQiooakz+g
-          htyQzvTsfU5IZDv0HYA5VfcsjFGh34rW37B7fgIGN+4ooofhAoHBAN/NgF12BpOo
-          UA6rSryvJPJW9NgcOAcPx52Q+3t2vAivr9f/tusvm/9+DDAqR5+eag9wc6M6vYkR
-          Khjlf8I9joKnyCcXnl7+lswB2SoMKPHPjGZ4wPGov/hf5YcnlqADBATi9Q5VN9Yl
-          hiDcj42Gtbj526qJ2jTtjCIS7x+d+IVjcmForyzCpdmAwitp1TAcjGoRp2CAHny5
-          61QpoX/aBL93VkUmO4Q2ta9P/RZEWI3JzMq2yeDdMOO/eCckbvwOjA==
-          -----END RSA PRIVATE KEY-----
-        # will put all file under this path
-        local_path: './i-monev-stunting/stunting-fe/test/*'
-        # files will copy to under remote_path
-        remote_path: '/var/www/html/xxx/stunting-fe-v3/'
-        # sftp args
-        sftpArgs: '-o ConnectTimeout=5'
