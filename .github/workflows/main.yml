@@ -12,7 +12,7 @@ jobs:
     
     
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: 103.97.102.37
         username: monev-stunting
