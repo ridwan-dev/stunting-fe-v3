@@ -1,3 +1,5 @@
+import { base_url } from './../js/utility/api.js';
+
 export const validateAuth = (resource) => {
     const oauth = getWithExpiry("userLogIn");
     if (oauth == null) {
@@ -61,7 +63,7 @@ export const validateonSubmit = (form, fields, gCapcha) => {
                         setWithExpiry("userLogIn", json.data.token, 1000 * 60 * 60);
                         setWithExpiry("userProfile", json.data, 1000 * 60 * 60);
 
-                        window.location.replace("/");
+                        window.location.replace("/" + base_url);
 
                     } else {
                         console.log("Login failed");
