@@ -2,6 +2,7 @@
 
 import { setWithExpiry, getWithExpiry, parseRequestUrl } from './services/utils.js';
 import { validateAuth } from './services/auth.js';
+import { api_url } from './js/utility/api.js';
 
 import Home from './views/pages-dev/Home.js';
 import KinerjaAnggaran from './views/pages-dev/KinerjaAnggaran.js';
@@ -26,7 +27,8 @@ import Footer from './views/components-dev/Footer.js';
 
 window.config = {
   //api_url: 'https://api-uat.stunting.id/api/v1',
-  api_url: 'https://monev-stunting.bappenas.go.id/api-dev/api/v1',
+  //api_url: 'https://monev-stunting.bappenas.go.id/api-dev/api/v1',
+  api_url: api_url(),
   //api_url: 'https://monev-stunting.bappenas.go.id/api-uat/api/v1',
   fetchHeaders: {
     "Accept": "application/json",
