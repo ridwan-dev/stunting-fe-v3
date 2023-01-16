@@ -98,6 +98,7 @@ gulp.task('vendor-js', () => {
         "js/utility/core.js",
         "js/utility/capaian-indikator/stunting.js",
         "js/utility/kinerja-anggaran/kinerja.js",
+        "js/utility/kinerja-pembangunan/rolokasi.js",
         "js/utility/dak/db_dak.js",
         "js/utility/monitoring/intervensi.js",
     ])
