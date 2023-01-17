@@ -57,6 +57,12 @@ const KinerjaAnggaran = {
                 </select>
               </div>
             </div>
+            <div class="col-xl-6 hide">
+              <div class="form-group sel_ro">
+                <select id="sel_ro" name="sel_ro" class="form-control selectpicker" data-toggle="dropdown" data-title="Pilih Rincian Output" data-actions-box="true" multiple="" data-selected-text-format="count > 2" data-select-all-text="Pilih Semua" data-deselect-all-text="Reset" data-count-selected-text="{0} RO dipilih">
+                </select>
+              </div>
+            </div>
             <div class="col-xl-3 ">
               <div class="form-group pull-right width-full">
                 <input id="kinerjaAnggaranSrc" type="text" class="form-control" placeholder="Search" aria-label="Search" >
@@ -2047,48 +2053,86 @@ const KinerjaAnggaran = {
     }
 
     /*----------Versi 3-------------*/
-    $("#sel_ta").on('change', async () => {
+    $("#sel_ta,#sel_ro").on('change', async () => {
       $("#peta-ro-lokus").addClass("loading");
-      let periode_data = $("#sel_ta").val();
+      let
+        periode_data = $("#sel_ta").val(),
+        ro_select = $("#sel_ro").val();
 
       if (periode_data === "2022-1") {
         $("#ro-lokus-detail").removeClass("hide");
-        $("#sel_kl").parent().addClass("hide");
+        $(".sel_kl").parent().addClass("hide");
         $(".sel_ig").parent().addClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().addClass("hide");
-        await getLokusRo(periode_data).then(function (data) {
+        await getLokusRo(periode_data, ro_select).then(function (data) {
           $("#peta-ro-lokus").removeClass("loading");
           viewMapKinerjaPembangunan(data);
         });
+
+        $(".sel_ro").parent().removeClass("hide");
       } else {
         $("#ro-lokus-detail").addClass("hide");
-        $("#sel_kl").parent().removeClass("hide");
+        $(".sel_ro").parent().addClass("hide");
+        $(".sel_kl").parent().removeClass("hide");
         $(".sel_ig").parent().removeClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().removeClass("hide");
       }
 
     });
 
-    async function getLokusRo(periode_data) {
-      let perData = periode_data.split("-");
-      var dataPeta;
+    async function getLokusRo(periode_data, ro) {
+      console.log(ro);
+      let
+        perData = periode_data.split("-"),
+        paramData;
+      if (ro.length < 1) {
+        paramData = {
+          "tahun": perData[0],
+          "semester": perData[1]
+        };
+      } else {
+        paramData = {
+          "tahun": perData[0],
+          "semester": perData[1],
+          "ro": ro
+        }
+
+      }
+      console.log(paramData);
       try {
         let res = await fetch(config.api_url_v3 + '/ka/lokus-ro', {
           method: 'POST',
-          body: JSON.stringify({
-            "tahun": perData[0],
-            "semester": perData[1]
-          }),
+          body: JSON.stringify(paramData),
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-        dataPeta = _res;
-        console.log(dataPeta);
+
+        console.log(mData.dataRoLokus);
+        console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;
       }
     };
+
+    await getLokusRo('2022-1', []).then(function (data) {
+      mData.dataRoLokus = data.field;
+    });
+
+    if (typeof mData.dataRoLokus != "undefined") {
+      let option_ro = [];
+
+      mData.dataRoLokus.forEach((row) => {
+        option_ro.push(
+          `<option value="${row.ro_field}" >${row.ro_name}</option>`
+        );
+      });
+      $("#sel_ro").html(option_ro);
+      $('#sel_ro').selectpicker('destroy');
+      $('#sel_ro').selectpicker();
+
+    }
+
 
     /*----------END Versi 3---------*/
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))

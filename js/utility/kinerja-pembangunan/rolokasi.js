@@ -1,20 +1,19 @@
 function viewMapKinerjaPembangunan(datax) {
+   $("#ro-lokus-detail").html(`<div id="peta-ro-lokus" style="height: 36em;"></div>`);
+
    var
       info_gradien = ["sangat tinggi", "tinggi", "sedang", "rendah", "sangat rendah"],
       num_gradien = [40, 30, 20, 10, 0],
       color_gradien = ["#1a237e", "#303f9f", "#3f51b5", "#7986cb", "#c5cae9"];
 
-   let option_ro = [];
-   datax.field.forEach((row) => {
-      option_ro.push(
-         `<option value="${row.ro_field}" selected="selected">${row.ro_name}</option>`
-      );
-   });
+
+
 
    let mapId = "peta-ro-lokus";
    $("#data_" + mapId).addClass('loading');
    /*action*/
-   loadMap("#data_" + mapId, mapId);
+
+   //loadMap("#data_" + mapId, mapId);
    var
       closeTooltip,
       openStreetMap = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
