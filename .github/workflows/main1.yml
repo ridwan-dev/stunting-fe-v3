@@ -24,7 +24,6 @@ jobs:
             script: |      
                 cd /var/www/html/develop-v3
                 git pull
-                rm /var/www/html/develop-v3/js/utility/api.js
-                mv /var/www/html/develop-v3/js/utility/api.js_devel /var/www/html/develop-v3/js/utility/api.js
+                
                 gulp
                 exit
