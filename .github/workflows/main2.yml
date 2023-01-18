@@ -24,6 +24,5 @@ jobs:
             script: |      
                 cd /var/www/html/testing-v3
                 git pull
-                rm js/utility/api.js
-                mv js/utility/api.js_staging js/utility/api.js
+                mv /var/www/html/testing-v3/js/utility/api.js_staging js/utility/api.js
                 exit
