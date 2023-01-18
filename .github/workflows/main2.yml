@@ -23,7 +23,7 @@ jobs:
             connect_timeout: 10s
             script: |      
                 cd /var/www/html/testing-v3
-                rm /var/www/html/testing-v3/js/utility/api
+                rm /var/www/html/testing-v3/js/utility/api.js
                 git pull                
                 mv /var/www/html/testing-v3/js/utility/api.js_staging js/utility/api.js
                 exit
