@@ -8,7 +8,7 @@ import WidgetCard from"../components/WidgetCard.js";import{apiKementerian,apiTah
     </style>
       <div class="app-content-padding flex-grow-1 overflow-auto" data-scrollbar="true" data-height="100%">				
         <!-- BEGIN page-header -->
-				<h2 class="page-header text-blue"><i class="material-icons text-blue-600 align-middle me-1 mb-1">corporate_fare</i>Kinerja Pembangunan</h2>
+				<h2 class="page-header text-blue"><i class="material-icons text-blue-600 align-middle me-1 mb-1">corporate_fare</i>Kinerja Pembangunanx</h2>
 				<!-- END page-header -->
         <div id="main-tiles" class="border rounded">
           <div class="row pt-3 py-3  mx-0 bg-gray-300" id="drp_option">
