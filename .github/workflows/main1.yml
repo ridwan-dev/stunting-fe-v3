@@ -16,6 +16,6 @@ jobs:
         switches: -avzr --delete --exclude=".git" --exclude=".github"
         path: /
         remote_path: /var/www/html/develop-v3
-        remote_host: https://monev-stunting.bappenas.go.id/
+        remote_host: monev-stunting.bappenas.go.id
         remote_user: monev-stunting
         remote_key: ${{ secrets.DEPLOY_KEY }}
