@@ -23,7 +23,7 @@ jobs:
             connect_timeout: 10s
             script: |      
                 cd /var/www/html/dashboard
-                rm js/utility/api.js
                 git pull
+                rm js/utility/api.js
                 mv js/utility/api.js_main js/utility/api.js
                 exit
