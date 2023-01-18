@@ -19,3 +19,5 @@ jobs:
         remote_host: monev-stunting.bappenas.go.id
         remote_user: monev-stunting
         remote_key: ${{ secrets.DEPLOY_KEY }}
+        remote_port: 22
+        remote_key_pass: ${{ secrets.DEPLOY_PASSWORD }}
