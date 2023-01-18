@@ -13,7 +13,7 @@ jobs:
       uses: burnett01/rsync-deployments@5.2.1
       with:
         switches: -avzr --delete --exclude=".git" --exclude=".github"
-        path: src/
+        path: /
         remote_path: /var/www/html/develop-v3
         remote_host: 103.97.102.37
         remote_user: monev-stunting
