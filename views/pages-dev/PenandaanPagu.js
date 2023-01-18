@@ -272,7 +272,6 @@ const PenandaanPagu = {
         perData = multi_tahun.split("-");
 
       /*krisna*/
-      //if (['2022', '2023'].includes(perData[0])) {
       if (perData[0] > 2021) {
         $("#top-tiles,#table1,#chartData").addClass("hide");
         $("#container_renjakl").addClass("loading");
@@ -448,8 +447,10 @@ const PenandaanPagu = {
                     `;
               }
               else {
+                console.log("komponen", cell._cell.row.data.komponen_kode);
                 ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">Komponen</span>';
-                hasil = `
+                if (cell._cell.row.data.komponen_kode != null) {
+                  hasil = /*html*/`
                     <div class="container">
                       <div class="row">
                         <div class="col d-flex flex-row bd-highlight">
@@ -465,6 +466,9 @@ const PenandaanPagu = {
                       </div>
                     </div> 
                     `;
+                } else {
+                  hasil = "";
+                }
               }
               return hasil;
             }
