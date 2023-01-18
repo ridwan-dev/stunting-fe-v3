@@ -1,15 +1,15 @@
-name: DEPLOY
 on:
   push:
-    branches:
-    - develop
-    
-
+    branches: [ develop ]
+name: 🚀 Deploy website on push
 jobs:
   deploy:
+    name: 🎉 Auto Deploy
     runs-on: ubuntu-latest
     steps:
+    - name: 🚚 Get latest code
     - uses: actions/checkout@v2
+    
     - name: rsync deployments
       uses: burnett01/rsync-deployments@5.2.1
       with:
