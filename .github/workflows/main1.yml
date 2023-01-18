@@ -13,7 +13,7 @@ jobs:
         - name: deploy file to server
           uses: wlixcc/SFTP-Deploy-Action@v1.2.4
           with:
-            username: 'root'
+            username: 'monev-stunting'
             server: '103.97.102.37'
             ssh_private_key: '${{ secrets.DEPLOY_KEY }}'
             local_path: './*'
