@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 'develop'
+      - 'main'
 
 jobs:
     deploy_job:
@@ -22,8 +22,8 @@ jobs:
             port: ${{ secrets.DEPLOY_PATH }}
             connect_timeout: 10s
             script: |      
-                cd /var/www/html/develop-v3
+                cd /var/www/html/dashboard
                 git pull
-                
-                gulp
+                rm js/utility/api.js
+                mv js/utility/api.js_main js/utility/api.js
                 exit
