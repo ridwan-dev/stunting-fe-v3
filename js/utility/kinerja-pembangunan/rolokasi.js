@@ -3,7 +3,7 @@ function viewMapKinerjaPembangunan(datax) {
 
    var
       info_gradien = ["sangat tinggi", "tinggi", "sedang", "rendah", "sangat rendah"],
-      num_gradien = [40, 30, 20, 10, 0],
+      num_gradien = [50, 45, 40, 35, 30],
       color_gradien = ["#1a237e", "#303f9f", "#3f51b5", "#7986cb", "#c5cae9"];
 
 
