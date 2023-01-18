@@ -318,4 +318,4 @@ gulp.task("build", function () {
     connect.server();
 }); */
 
-gulp.task('default', gulp.series('bundle-css', 'vendor-js', 'index-html', 'navbar-js', 'navbar-js', 'footer-js', 'api-js', 'auth-js', 'core-js', 'utils-js', 'home-js', 'belanjakl-js', 'capaian-js', 'dak-js', 'e404-js', 'kinerjaA-js', 'kinerjaP-js', 'login-js', 'penandaan-js', 'adm-penandaan-js', 'adm-master-int-js', 'adm-penandaan-ro-js', 'adm-penandaan-intervensi-js', 'adm-master-ro-keyword-js', 'connect'));
+gulp.task('default', gulp.series('bundle-css', 'vendor-js', 'index-html', 'navbar-js', 'navbar-js', 'footer-js', 'api-js', 'auth-js', 'core-js', 'utils-js', 'home-js', 'belanjakl-js', 'capaian-js', 'dak-js', 'e404-js', 'kinerjaA-js', 'kinerjaP-js', 'login-js', 'penandaan-js', 'adm-penandaan-js', 'adm-master-int-js', 'adm-penandaan-ro-js', 'adm-penandaan-intervensi-js', 'adm-master-ro-keyword-js'/* , 'connect' */));
