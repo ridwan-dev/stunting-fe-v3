@@ -1,15 +1,21 @@
-on:
-  push:
-    branches: [ main ]
-name: 🚀 Deploy website on push
+on: [push]
 
-  workflow "All pushes" {
-    on = "push"
-    resolves = ["Deploy to Staging"]
-  }
+jobs:
+    deploy_job:
+      runs-on: ubuntu-latest
+      name: build&deploy
+      steps:
+        # To use this repository's private action, you must check out the repository
+        - name: Checkout
+          uses: actions/checkout@v2
 
-  action "Deploy to Staging" {
-    uses = "contention/action-rsync-deploy@master"
-    secrets = ["DEPLOY_KEY"]
-    args = ["-avzr --delete", "--exclude .htaccess --exclude .git", "monev-stunting@103.97.102.37:/var/www/html/develop-v3/"]
-  } 
+
+        - name: deploy file to server
+          uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+          with:
+            username: 'root'
+            server: '103.97.102.37'
+            ssh_private_key: '${{ secrets.DEPLOY_KEY }}'
+            local_path: './*'
+            remote_path: '/var/www/html/develop-v3'
+            sftpArgs: '-o ConnectTimeout=5'
