@@ -23,5 +23,8 @@ jobs:
             connect_timeout: 10s
             script: |      
                 cd /var/www/html/develop-v3
+                rm js/utility/api.js
                 git pull
+                mv js/utility/api.js_dev js/utility/api.js
+                gulp
                 exit
