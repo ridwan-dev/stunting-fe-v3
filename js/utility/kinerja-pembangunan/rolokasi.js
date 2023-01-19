@@ -79,7 +79,8 @@ function viewMapKinerjaPembangunan(datax) {
        logicArea = L.control({ position: 'bottomleft' }),
        logicAge = L.control({ position: 'bottomleft' }),
        logicSurvey = L.control({ position: 'bottomleft' }), */
-      legend = L.control({ position: 'bottomright' })
+      legend = L.control({ position: 'bottomright' }),
+      btnPrint = L.control({ position: 'topright' })
       ;
 
    legend.onAdd = function (map) {
@@ -180,6 +181,20 @@ function viewMapKinerjaPembangunan(datax) {
       return div;
    };
    infoData.addTo(map);
+
+   L.easyPrint({
+      title: "Cetak Peta",
+      position: "topright",
+      customSpinnerClass: "loading",
+      spinnerBgColor: "blue",
+      tileLayer: openStreetMap,
+      sizeModes: ['A4Landscape'],
+      filename: 'PetaLokus',
+      exportOnly: true,
+      tileWait: 500,
+      hideControlContainer: false
+   }).addTo(map);
+
 
 
 

@@ -24,6 +24,4 @@ jobs:
             script: |      
                 cd /var/www/html/dashboard
                 git pull
-                rm js/utility/api.js
-                mv js/utility/api.js_main js/utility/api.js
                 exit

@@ -80,6 +80,7 @@ gulp.task('vendor-js', () => {
         "plugins/leaflet/js/leaflet.markercluster.js",
         "plugins/leaflet/js/leaflet-gesture-handling.min.js",
         "plugins/leaflet/js/leaflet-heat.js",
+        "plugins/leaflet/js/print/bundle.js",
         "plugins/apexcharts/dist/apexcharts.min.js",
         "plugins/jstree/dist/jstree.min.js",
         "plugins/vanilla-notify/vanilla-notify.js",
