@@ -186,7 +186,7 @@ function viewMapKinerjaPembangunan(datax) {
       title: "Cetak Peta",
       position: "topright",
       customSpinnerClass: "loading",
-      spinnerBgColor: "red",
+      spinnerBgColor: "blue",
       tileLayer: openStreetMap,
       sizeModes: ['A4Landscape'],
       filename: 'PetaLokus',
