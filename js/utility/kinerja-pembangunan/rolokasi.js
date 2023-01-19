@@ -93,19 +93,14 @@ function viewMapKinerjaPembangunan(datax) {
          from = grades[i];
          to = parseInt(grades[i - 1]);
          if (i == 0) {
-            //grange = "<span class='num_persen'>&#8805; " + from + "</span>";
             grange = "<span class='num_persen'>&#8805; " + from + " RO</span>";
          } else if (i == (grades.length - 1)) {
-            //grange = "<span class='num_persen'>&#8805; </span><span class=''>" + grades[i - 1] + "%</span>";
-            grange = "<span class='num_persen'>&#8805; </span><span class=''>" + grades[i - 1] + " RO</span>";
-            // grange = "<span class='num_persen'>&#8805; </span>";
+            grange = "<span class='num_persen'>&#60; </span><span class=''>" + grades[i - 1] + " RO</span>";
          } else {
-            //grange = "<span class='num_persen'>" + from + "</span> " + (to ? "<span class=''>&ndash;</span> <span class='num_persen'>&#60;</span><span class=''>" + to + "</span>" : '+') + "<span>%</span>";
             grange = "<span class='num_persen'>" + from + "</span> " + (to ? "<span class=''>&ndash;</span> <span class='num_persen'>&#60;</span><span class=''>" + to + "</span>" : '+') + " RO";
          }
          labels.push(
             '<i class="color_info" style="background:' + getColor(from + 1) + '"></i> ' +
-            //grange + " <span class='level_info' >(" + ginfo[i] + ")</span>"
             grange
          );
       }
