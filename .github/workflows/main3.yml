@@ -23,5 +23,6 @@ jobs:
             connect_timeout: 10s
             script: |      
                 cd /var/www/html/dashboard
-                git pull
+                git pull                
+                gulp
                 exit
