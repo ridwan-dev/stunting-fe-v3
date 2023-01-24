@@ -365,6 +365,7 @@ const PenandaanPagu = {
         thn_1 = thn_ini + 1,
         thn_2 = thn_ini + 2,
         thn_3 = thn_ini + 3;
+      console.log("result1", result);
 
       const table = new Tabulator("#table2", {
         height: "515px",
@@ -449,8 +450,8 @@ const PenandaanPagu = {
               else {
                 console.log("komponen", cell._cell.row.data.komponen_kode);
                 ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">Komponen</span>';
-                if (cell._cell.row.data.komponen_kode != null) {
-                  hasil = /*html*/`
+                //if (cell._cell.row.data.komponen_kode != null) {
+                hasil = /*html*/`
                     <div class="container">
                       <div class="row">
                         <div class="col d-flex flex-row bd-highlight">
@@ -466,9 +467,9 @@ const PenandaanPagu = {
                       </div>
                     </div> 
                     `;
-                } else {
-                  hasil = "";
-                }
+                //} else {
+                //  hasil = "";
+                //}
               }
               return hasil;
             }
@@ -704,7 +705,8 @@ const PenandaanPagu = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = "<span class='text-wrap text-black fw-500'>" + capitalize(value) + "</span>";
+                //numbx = "<span class='text-wrap text-black fw-500'>" + capitalize(value) + "</span>";
+                numbx = "<span class='text-wrap text-black fw-500'>" + value + "</span>";
               }
               return numbx;
             },
