@@ -18,6 +18,8 @@ const Header = {
               </button>
               <a href="#/" class="navbar-brand">
                 <b class="me-1">i-Monev</b> Stunting
+                <div class="widget-img widget-img-xl rounded float-start" style="background-image: url(img/logo-bappenas.png);width: 2.7em;position: relative;left: 1em;background-size: contain;">
+                </div>                
               </a>
               <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
                 <span class="icon-bar"></span>

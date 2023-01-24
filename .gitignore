@@ -1,7 +1,7 @@
 js/utility/api.js
+
 # Node artifact files
 node_modules/
-
 
 .vscode/
 
@@ -13,13 +13,20 @@ Thumbs.db
 
 # Applications
 *.app
+
 *.exe
+
 *.war
 
 # Large media files
 *.mp4
+
 *.tiff
+
 *.avi
+
 *.flv
+
 *.mov
+
 *.wmv

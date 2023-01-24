@@ -11,12 +11,12 @@ const Navbar={render:async()=>{var a;let e="";return"admin"===user.role&&(a=[{na
                   <a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile"
                       data-target="#appSidebarProfileMenu">
                       <div class="float-start">
-                        <div class="widget-img widget-img-xl rounded float-start" style="background-image: url(img/logo-bappenas.png);width: 5em;position: relative;left: 2px;background-size: contain;">
-                        </div>
-                        <div class="widget-img widget-img-xl rounded float-start" style="width: 4.5em;background: #212121;border-radius: 3em !important;height: 4.4em;position: relative;left: 4px;">
+                        <!-- <div class="widget-img widget-img-xl rounded float-start" style="background-image: url(img/logo-bappenas.png);width: 5em;position: relative;left: 2px;background-size: contain;">
+                        </div> -->
+                        <div class="widget-img widget-img-xl rounded float-start" style="width: 4.5em;background: #212121;border-radius: 3em !important;height: 4.4em;position: relative;left: 24px;">
                           <img src="img/logo-krisna.png" style="width: 100%;margin-top: -18px;margin-left: 0.3px;">
                         </div>
-                        <div class="widget-img widget-img-xl rounded float-start" style="background-image: url(img/logo-cegah-stunting.png);width: 6em;position: relative;height: 6em;background-size: contain;left: 0.7em;top: -0.5em;">
+                        <div class="widget-img widget-img-xl rounded float-start" style="background-image: url(img/logo-cegah-stunting.png);width: 6em;position: relative;height: 6em;background-size: contain;left: 4em;top: -0.5em;">
                         </div>
                       </div>
                   </a>

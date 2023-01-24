@@ -1,4 +1,7 @@
-on: [push]
+on:
+  push:
+    branches:
+      - 'develop'
 
 jobs:
     deploy_job:
@@ -8,8 +11,6 @@ jobs:
         # To use this repository's private action, you must check out the repository
         - name: Checkout
           uses: actions/checkout@v2
-
-
         - name: ssh pipelines
           uses: cross-the-world/ssh-pipeline@master
           env:
@@ -22,6 +23,5 @@ jobs:
             connect_timeout: 10s
             script: |      
                 cd /var/www/html/develop-v3
-                git pull
+                git pull                
                 exit
-      

@@ -281,7 +281,7 @@ function viewMap(statusGizi, datax, dAreaX, dAge, dTahun, dSurvey) {
           geoData.paramStuntingKab = paramData;
        } */
 
-      console.log("yyyy", datax);
+      //console.log("yyyy", datax);
       datax.features.forEach((row) => {
          let dataY = 0;
          row.properties.data.forEach((rowX) => {

@@ -80,6 +80,7 @@ gulp.task('vendor-js', () => {
         "plugins/leaflet/js/leaflet.markercluster.js",
         "plugins/leaflet/js/leaflet-gesture-handling.min.js",
         "plugins/leaflet/js/leaflet-heat.js",
+        "plugins/leaflet/js/print/bundle.js",
         "plugins/apexcharts/dist/apexcharts.min.js",
         "plugins/jstree/dist/jstree.min.js",
         "plugins/vanilla-notify/vanilla-notify.js",
@@ -98,6 +99,7 @@ gulp.task('vendor-js', () => {
         "js/utility/core.js",
         "js/utility/capaian-indikator/stunting.js",
         "js/utility/kinerja-anggaran/kinerja.js",
+        "js/utility/kinerja-pembangunan/rolokasi.js",
         "js/utility/dak/db_dak.js",
         "js/utility/monitoring/intervensi.js",
     ])
@@ -313,8 +315,8 @@ gulp.task("build", function () {
         .pipe(gulp.dest(destPath));
 });
 
-gulp.task('connect', function () {
+/* gulp.task('connect', function () {
     connect.server();
-});
+}); */
 
-gulp.task('default', gulp.series('bundle-css', 'vendor-js', 'index-html', 'navbar-js', 'navbar-js', 'footer-js', 'api-js', 'auth-js', 'core-js', 'utils-js', 'home-js', 'belanjakl-js', 'capaian-js', 'dak-js', 'e404-js', 'kinerjaA-js', 'kinerjaP-js', 'login-js', 'penandaan-js', 'adm-penandaan-js', 'adm-master-int-js', 'adm-penandaan-ro-js', 'adm-penandaan-intervensi-js', 'adm-master-ro-keyword-js', 'connect'));
+gulp.task('default', gulp.series('bundle-css', 'vendor-js', 'index-html', 'header-js', 'navbar-js', 'footer-js', 'api-js', 'auth-js', 'core-js', 'utils-js', 'home-js', 'belanjakl-js', 'capaian-js', 'dak-js', 'e404-js', 'kinerjaA-js', 'kinerjaP-js', 'login-js', 'penandaan-js', 'adm-penandaan-js', 'adm-master-int-js', 'adm-penandaan-ro-js', 'adm-penandaan-intervensi-js', 'adm-master-ro-keyword-js'/* , 'connect' */));
