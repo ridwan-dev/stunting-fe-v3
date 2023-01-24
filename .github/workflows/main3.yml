@@ -24,5 +24,4 @@ jobs:
             script: |      
                 cd /var/www/html/dashboard
                 git pull                
-                gulp
                 exit
