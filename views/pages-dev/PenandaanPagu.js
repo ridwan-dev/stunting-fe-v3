@@ -73,7 +73,48 @@ const PenandaanPagu = {
             <div class="card-body hide" >
               <div id="elemenOpenClose"></div>
               <div class="mx-n3 mb-n3" id="table2"></div>
-              <div class="sumber-data-renja pt-4 pb-2 ms-n2 fs-12px fw-500"></div> 
+              <div class="sumber-data-renja pt-4 pb-2 ms-n2 fs-12px fw-500"></div>
+              <div class="mx-n3 mb-n3 hide" id="table_excel">
+                <table class="table table-bordered">
+                  <thead class="h6">
+                    <tr>
+                      <td colspan="8">Data RO yang Mendukung Percepatan Penurunan Stunting pada Renja K/L TA &nbsp <span id="thn_data"></span> </td>
+                    </tr>
+                    <tr>
+                      <td colspan="8">Berdasarkan filter pada Tematik "Upaya Konvergensi Stunting"</td>
+                    </tr>
+                    <tr>
+                      <td colspan="8">Catatan : data ditarik dari krisna.systems pada tanggal &nbsp <span id="tgl_update"></span> </td>
+                    </tr>
+                    <tr>
+                      <td colspan="8"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="8"></td>
+                    </tr>
+                    <tr>
+                      <td>KL</td>
+                      <td>Program</td>
+                      <td>Kegiatan</td>
+                      <td>KRO</td>
+                      <td>RO/Komponen</td>
+                      <td>Target</td>
+                      <td>Satuan</td>
+                      <td>Alokasi (Ribuan Rupiah)</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>                    
+                    </tr>
+                  </thead>
+                  <tbody class="fs-12px"></tbody>
+                </table>
+              </div>
             </div>
           </div>          
         </div>
@@ -90,10 +131,15 @@ const PenandaanPagu = {
   },
 
   after_render: async () => {
-
     sumberDataRenja();
-    let xls_id = "export_xls";
-    treeOpenCloseHtml("#elemenOpenClose", { "xls_id": xls_id });
+    treeOpenCloseHtml("#elemenOpenClose", {
+      xls_html: /*html*/`
+      <button class="btn btn-white" >
+        <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-20px text-green-400" title="export xls" onclick="toXls('#table_excel','xls','Penandaan dan Pagu.xls');"></i>
+      </button>`
+    });
+
+
 
     sumberDataAnnual();
     let xlss_id = "exp_xls",
@@ -101,19 +147,11 @@ const PenandaanPagu = {
     treeOpenCloseHtml("#elemenOpenCloseFst", { "xls_id": xlss_id, "pdf_id": pdff_id });
 
     let
-      //thID = document.getElementById('sel_ta'),
       klID = document.getElementById('sel_kl'),
       intID = document.getElementById('sel_int'),
       dKementerian = [],
-      //dTahunSemester = [],
       dIntervensi = [];
 
-    /* mData.dataSemester.forEach((item) => {
-      dTahunSemester.push(
-        `<option value="${item.tahun}-${item.semester}" selected="selected">${item.tahun} - Semester ${item.semester}</option>`
-      );
-    });
-    thID.innerHTML = dTahunSemester.join(" "); */
     mData.dataKementerian.forEach((item) => {
       dKementerian.push(
         `<option value="${item.kementerian_kode}" selected="selected">${item.kementerian_nama}</option>`
@@ -366,6 +404,9 @@ const PenandaanPagu = {
         thn_2 = thn_ini + 2,
         thn_3 = thn_ini + 3;
       console.log("result1", result);
+
+
+
 
       const table = new Tabulator("#table2", {
         height: "515px",
@@ -825,9 +866,101 @@ const PenandaanPagu = {
           { column: "id", dir: "asc" }
         ]
       });
-      document.getElementById(xls_id).addEventListener("click", function () {
-        table.download("xlsx", "data.xlsx", { sheetName: "data" });
+
+      let body_kl = [];
+      result.forEach((item1) => {
+        let row_kl =/*html*/`
+          <tr class="bg-gray-300" >
+            <td colspan="5" class="fw-700">${item1.kl_id + "-" + item1.name}</td>
+            <td></td>
+            <td></td>
+            <td class="fw-700 text-end">${item1.alokasi_totaloutput}</td>                    
+          </tr>`;
+        let body_prog = [];
+        item1._children.forEach((item2) => {
+          let isi_prog =/*html*/`
+            <tr>
+              <td></td>
+              <td colspan="4">${item1.kl_id + "." + item2.program_id + "-" + item2.name}</td>
+              <td></td>
+              <td></td>
+              <td class="text-end">${item2.alokasi_totaloutput}</td>                    
+            </tr>`;
+          let body_keg = [];
+          item2._children.forEach((item3) => {
+            let isi_keg =/*html*/`
+              <tr>
+                <td></td>
+                <td></td>
+                <td colspan="3">${item3.kegiatan_id + "-" + item3.name}</td>
+                <td></td>
+                <td></td>
+                <td class="text-end">${item3.alokasi_totaloutput}</td>                    
+              </tr>`;
+            let body_kro = [];
+            item3._children.forEach((item4) => {
+              let isi_kro =/*html*/`
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td colspan="2">${item4.kro_id + "-" + item4.name}</td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-end">${item4.alokasi_totaloutput}</td>                    
+                </tr>`;
+              let body_ro = [];
+              item4._children.forEach((item5) => {
+                let isi_ro =/*html*/`
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td >${item5.ro_id + "-" + item5.name}</td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-end">${item5.alokasi_totaloutput}</td>                    
+                </tr>`;
+                if (typeof item5._children != 'undefined') {
+                  let body_comp = [];
+                  item5._children.forEach((item6) => {
+                    let isi_comp =/*html*/`
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="ps-5">${item6.komponen_kode + "-" + item6.komponen_nama}</td>
+                        <td>${item6.target_0}</td>
+                        <td>${item6.satuan}</td>
+                        <td class="text-end">${item6.alokasi_totaloutput}</td>                    
+                      </tr>`;
+                    body_comp.push(isi_comp);
+                  });
+                  body_ro.push(isi_ro + body_comp.join(" "));
+                } else {
+                  body_ro.push(isi_ro);
+                }
+              });
+              body_kro.push(isi_kro + body_ro.join(" "));
+            });
+            body_keg.push(isi_keg + body_kro.join(" "));
+          });
+          body_prog.push(isi_prog + body_keg.join(" "));
+        });
+        body_kl.push(row_kl + body_prog.join(" "));
       });
+      if (table) {
+        $("#table_excel tbody").html(body_kl);
+      }
+
+      let sumberData = $(".sumber-data-renja").html(),
+        thn_data = $("#sel_ta").val(),
+        tgl_update = sumberData.split("tanggal");
+      $("#thn_data").html(" " + thn_data);
+      $("#tgl_update").html(" " + tgl_update[1]);
+
     };
 
     async function tableData(result, opsiTabel = { expand: false }, itemShow) {
