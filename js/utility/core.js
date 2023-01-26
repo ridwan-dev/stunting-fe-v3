@@ -517,12 +517,14 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
 
    if (typeof downld.xls_id != "undefined") {
       xls_id = downld.xls_id;
-      console.log(xls_id);
       btn_xls = /*html*/`
             <button class="btn btn-white" >
                <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-20px text-green-400" title="export xls" id="${xls_id}"></i>
             </button>
                   `;
+   }
+   if (typeof downld.xls_html != "undefined") {
+      btn_xls = downld.xls_html;
    }
    if (typeof downld.pdf_id != "undefined") {
       pdf_id = downld.pdf_id;
@@ -532,6 +534,7 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
             </button>
                   `;
    }
+   console.log("btn_xls2", btn_xls);
    let
       html = /*html*/`      
       <div class="d-flex justify-content-between">
@@ -554,7 +557,7 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
          </div>
          <div class="d-flex flex-row bd-highlight">
             <div class="mt-n2  bd-highlight">
-            ${((typeof downld.xls_id == "undefined") && (typeof downld.pdf_id == "undefined")) ?
+            ${((typeof downld.xls_id == "undefined") && (typeof downld.pdf_id == "undefined") && (typeof downld.xls_html == "undefined")) ?
             "" :/*html*/`
                <div class="btn-group" id="groupExp">
                   <button class="btn btn-white active" >Export</button>
