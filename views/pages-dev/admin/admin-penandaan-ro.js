@@ -158,15 +158,15 @@ const AdminPenandaanRo = {
         dataInt = () => {
           let td = [];
           data.sort((a, b) => a.kementerian_kode > b.kementerian_kode && 1 || -1);
-
+          console.log("xxx", data);
           data.forEach((item, i) => {
             //item.idx = i + 1;
             let ncode = '<div class="badge ' + c_main + '">' +
-              '<span class="badge-left ' + c_kl + ' p-1" title="K/L : ' + item.kementerian_nama.trim() + '"  data-bs-toggle="popover" style="cursor:pointer">' + item.kementerian_kode + '</span>' +
-              '<span class="' + c_prog + ' p-1" title="Program : ' + item.program_nama.trim() + '">' + item.program_kode + '</span>' +
-              '<span class="' + c_keg + ' p-1" title="Kegiatan : ' + item.kegiatan_nama.trim() + '">' + item.kegiatan_kode + '</span>' +
-              '<span class="' + c_kro + ' p-1" title="KRO : ' + item.output_nama.trim() + '">' + item.output_kode + '</span>' +
-              '<span class="' + color_ro + ' badge-right p-1" title="RO : ' + item.suboutput_nama.trim() + '">' + item.suboutput_kode + '</span></div>';
+              '<span class="badge-left ' + c_kl + ' p-1" title="K/L : ' + item.kementerian_nama + '"  data-bs-toggle="popover" style="cursor:pointer">' + item.kementerian_kode + '</span>' +
+              '<span class="' + c_prog + ' p-1" title="Program : ' + item.program_nama + '">' + item.program_kode + '</span>' +
+              '<span class="' + c_keg + ' p-1" title="Kegiatan : ' + item.kegiatan_nama + '">' + item.kegiatan_kode + '</span>' +
+              '<span class="' + c_kro + ' p-1" title="KRO : ' + item.output_nama + '">' + item.output_kode + '</span>' +
+              '<span class="' + color_ro + ' badge-right p-1" title="RO : ' + item.suboutput_nama + '">' + item.suboutput_kode + '</span></div>';
 
             td.push(/*html*/
               `<tr>
