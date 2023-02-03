@@ -44,7 +44,7 @@ const Navbar = {
     console.log("menux", parseRequestUrl().resource);
      */// Build html with navigation links.
     return /*html*/ `
-      <div class="app-sidebar-content app-sidebar-content-full-height"  >
+      <div class="app-sidebar-content app-sidebar-content-full-height" style="overflow-y: scroll;height: 100%;">
           <!-- BEGIN menu -->
           <div class="menu bg-white-500">
               <div class="menu-profile bg-light mb-2 px-2" style="padding-top: 2.5em !important;">

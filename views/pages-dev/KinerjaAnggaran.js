@@ -2027,10 +2027,13 @@ const KinerjaAnggaran = {
         return false;
       }
     };
-
+    console.log("url", config.api_url_v3 + '/renja/renjakl-v3');
+    console.log("url", config.fetchHeaders);
     async function getDetailBelanjaKL(periode, kl, int, search) {
+      console.log("periode", periode);
+      console.log("kl", kl);
       try {
-        let res = await fetch(config.api_url + '/renja/renjakl', {
+        let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', {
           method: 'POST',
           body: JSON.stringify({
             "tahun": periode,
@@ -2039,9 +2042,13 @@ const KinerjaAnggaran = {
           }),
           headers: config.fetchHeaders
         });
+        console.log("res", res);
         let _res = await res.json();
+
+        console.log("_res", _res);
         return _res.data;
       } catch (e) {
+        console.log("e", e);
         return false;
       }
     };
@@ -2060,6 +2067,7 @@ const KinerjaAnggaran = {
         /*tabel dibawah*/
         await getDetailBelanjaKL(periode, sel_kl, sel_int, search).then(function (data) {
           mData.dataDetailBKL = data.detail;
+          console.log("data.detail", data.detail);
           let adjust = tableTreeLevel(data.detail, "all");
           tableDataKrisna(adjust);
           //treeOpenClose(data.detail);
@@ -2458,7 +2466,7 @@ const KinerjaAnggaran = {
           {
             title: "Realiasasi Tingkat Output",
             titleDownload: "Realiasasi Tingkat Output",
-            field: "",/* belum ada data */
+            field: "alokasi_realisasi",/* belum ada data */
             headerPopup: function (e, column, onRendered) {
               return popupnote("Realiasasi Tingkat Output");
             },
