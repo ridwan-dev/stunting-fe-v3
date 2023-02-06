@@ -2033,7 +2033,8 @@ const KinerjaAnggaran = {
       console.log("periode", periode);
       console.log("kl", kl);
       try {
-        let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', {
+        /* let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', { */
+        let res = await fetch(config.api_url + '/renja/renjakl', {
           method: 'POST',
           body: JSON.stringify({
             "tahun": periode,
