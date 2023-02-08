@@ -2027,14 +2027,9 @@ const KinerjaAnggaran = {
         return false;
       }
     };
-    console.log("url", config.api_url_v3 + '/renja/renjakl-v3');
-    console.log("url", config.fetchHeaders);
     async function getDetailBelanjaKL(periode, kl, int, search) {
-      console.log("periode", periode);
-      console.log("kl", kl);
       try {
-        /* let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', { */
-        let res = await fetch(config.api_url + '/renja/renjakl', {
+        let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', {
           method: 'POST',
           body: JSON.stringify({
             "tahun": periode,
@@ -2043,10 +2038,7 @@ const KinerjaAnggaran = {
           }),
           headers: config.fetchHeaders
         });
-        console.log("res", res);
         let _res = await res.json();
-
-        console.log("_res", _res);
         return _res.data;
       } catch (e) {
         console.log("e", e);
@@ -2062,14 +2054,14 @@ const KinerjaAnggaran = {
         $("#mapload,#tableload").addClass("loading");
         await getBelanjaKL(periode, sel_kl, sel_int, search).then(function (data) {
           mData.belanjaKL = data;
-          //console.log("ccccc", mData.belanjaKL);
           viewMapBelanjaKL(mData.belanjaKL);
         });
         /*tabel dibawah*/
         await getDetailBelanjaKL(periode, sel_kl, sel_int, search).then(function (data) {
-          mData.dataDetailBKL = data.detail;
-          console.log("data.detail", data.detail);
-          let adjust = tableTreeLevel(data.detail, "all");
+          mData.dataDetailBKL = data;
+          // strukturData(data);
+          // let adjust = tableTreeLevel(data.detail, "all");
+          let adjust = tableTreeLevel(strukturData(data), "all");
           tableDataKrisna(adjust);
           //treeOpenClose(data.detail);
         });
@@ -2087,14 +2079,63 @@ const KinerjaAnggaran = {
       }
     }
 
+    function strukturData(data) {
+      let dataF = data.detail;
+
+      dataF.forEach((item, i) => {  //kl
+        let child = [];
+        Object.values(item._children).forEach((aa) => {    //keg
+          let prog = [];
+          Object.values(aa._children).forEach((bb) => {   //Prog
+            let kro = [];
+            Object.values(bb._children).forEach((cc) => { //KRO
+
+              let ro = [];
+              Object.values(cc._children).forEach((dd) => {
+                dd.lokasi = "";
+                if ((typeof dd.lokasi_ro !== "undefined") || (dd.lokasi_ro != null) || (dd.lokasi_ro != "")) {
+                  let mmmm = Object.assign({}, dd.lokasi_ro),
+                    eef = [];
+                  Object.values(mmmm).forEach((ee) => {
+                    eef.push(ee.nama_lokus)
+                  });
+                  dd.lokasi = eef.join(",");
+                }
+                //ro.push(dd);
+              })
+              //kro.push(mergeArray(ro)); //RO
+
+
+            });
+            //delete bb._children;
+            //prog.push(mergeArray(kro));
+          });
+          //delete aa._children;
+          //child.push(mergeArray(prog));
+        });
+        //delete item._children;
+        //item._children = mergeArray(child);
+        item.id = i + 1;
+      });
+
+      console.log("dataF", dataF);
+      let dataA = dataF;
+      //delete dataF;
+      return dataA;
+    }
+
+
+
+
+
 
     treeOpenCloseHtml("#elemenOpenClose");
 
     $(".openclose").on("click", function () {
       let periode = document.getElementById("sel_ta").value;
       if (['2022', '2023'].includes(periode)) {
-        console.log(mData.dataDetailBKL);
-        let data = treeOpenClose(this, mData.dataDetailBKL);
+        //console.log(mData.dataDetailBKL.detail);
+        let data = treeOpenClose(this, mData.dataDetailBKL.detail);
         tableDataKrisna(data.adjust, data.opsiTabel, data.item);
       } else {
         let
@@ -2137,7 +2178,7 @@ const KinerjaAnggaran = {
       let periode = document.getElementById("sel_ta").value;
       console.log(this);
       if (['2022', '2023'].includes(periode)) {
-        let data = treeBtnGroup(this, mData.dataDetailBKL);
+        let data = treeBtnGroup(this, mData.dataDetailBKL.detail);
         tableDataKrisna(data.adjust, data.opsiTabel, data.item);
       } else {
         let
@@ -2178,7 +2219,7 @@ const KinerjaAnggaran = {
     });
 
     async function tableDataKrisna(result, opsiTabel = { expand: false }, itemShow) {
-      console.log(result);
+      //console.log(result);
       let thn_ini = parseInt($("#sel_ta").val()),
         thn_1 = thn_ini + 1,
         thn_2 = thn_ini + 2,

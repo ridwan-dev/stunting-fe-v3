@@ -91,6 +91,7 @@ const AdminPenandaanRo = {
       triggerButton = document.querySelector('#subdata'),
       pushdataButton = document.querySelector('#pushdata');
 
+    var tableDataRow;
     pushdataButton.onclick = async function () {
 
       let subdata2 = formIsi.reportValidity();
@@ -98,7 +99,28 @@ const AdminPenandaanRo = {
         let
           ditandaiAll = [],
           disepakatiAll = [],
+          ditandaiArr = [],
+          disepakatiArr = [],
+          tableQuery = $("#tableData tbody").html(),
+          aa = tableQuery.split("<tr"),
           datas = $("#input-revisi-penandaan").serializeArray();
+
+        aa.forEach((row, index) => {
+          if (index != 0) {
+            let td = row.split("<td"),
+              tdDiTandai = td[2].split("value="),
+              tdDiTandaiA = tdDiTandai[1].split(" "),
+              tdDiTandaiB = tdDiTandaiA[0].split('"'),
+              diTandai = parseInt(tdDiTandaiB[1]),
+              tdDiSepakati = td[3].split("value="),
+              tdDiSepakatiA = tdDiSepakati[1].split(" "),
+              tdDiSepakatiB = tdDiSepakatiA[0].split('"'),
+              diSepakati = parseInt(tdDiSepakatiB[1]);
+            ditandaiArr.push(diTandai);
+            disepakatiArr.push(diSepakati);
+          }
+        });
+
         datas.forEach((a) => {
           if (a.name === "ditandai") {
             ditandaiAll.push(a.value);
@@ -107,13 +129,16 @@ const AdminPenandaanRo = {
             disepakatiAll.push(a.value);
           }
         });
+
         try {
           let res = await fetch(config.api_url + '/renja/taggingpost', {
             method: 'POST',
             body: JSON.stringify({
               "tahun": $("#sel_tahun").val(),
               "ditandai": ditandaiAll,
-              "disepakati": disepakatiAll
+              "disepakati": disepakatiAll,
+              "ditandai_list": ditandaiArr,
+              "disepakati_list": disepakatiArr
             }),
             headers: config.fetchHeaders
           });
@@ -158,7 +183,7 @@ const AdminPenandaanRo = {
         dataInt = () => {
           let td = [];
           data.sort((a, b) => a.kementerian_kode > b.kementerian_kode && 1 || -1);
-          console.log("xxx", data);
+          //console.log("xxx", data);
           data.forEach((item, i) => {
             //item.idx = i + 1;
             let ncode = '<div class="badge ' + c_main + '">' +
@@ -236,7 +261,7 @@ const AdminPenandaanRo = {
         </table>        
         `);
 
-        $('#tableData').DataTable({
+        tableDataRow = $('#tableData').DataTable({
           scrollY: 300,
           scrollX: true,
           scrollCollapse: true,
