@@ -24,8 +24,34 @@ import{apopoverTrigger,apiMasterIntervensi}from"../../../services/api.js";const 
           </div>
         </div>          
       </form>
-      <div class="" id="beforeload">	
+      <div class="" id="beforeload">
         <form class="hide" id="input-revisi-penandaan">
+          <div class="col-lg-12 mt-3 mb-2">
+            <div class="card bg-white-100 h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between bd-highlight fs-13px text-black text-uppercase">
+                  <div class="bd-highlight fw-600 pe-3 text-start">Kementerian/Lembaga 
+                    <span class="text-green-600" id="kl_tag">x</span>/<span id="kl_all">x</span>
+                  </div>
+                  <div class="bd-highlight fw-600 pe-3 text-start">Total RO 
+                    <span class="text-green-600" id="ro_tag">x</span>/<span id="ro_all">x</span>                      
+                  </div>
+                  <div class="bd-highlight fw-600 pe-3 text-start">RO Tematik Stunting 
+                    <span class="text-green-600" id="ro_tag_tema">x</span>/<span id="ro_tag_tema_all">x</span>                      
+                  </div>
+                  <div class="bd-highlight fw-600 pe-3 text-start">RO Kata Kunci 
+                    <span class="text-green-600" id="ro_tag_key">x</span>/<span id="ro_tag_key_all">x</span>                      
+                  </div>
+                  <div class="bd-highlight fw-600 pe-3 text-start">RO Ditadai
+                    <span class="text-green-600" id="ro_tandai">x</span>                      
+                  </div>
+                  <div class="bd-highlight fw-600 pe-3 text-start">RO Disepakati
+                    <span class="text-green-600" id="ro_sepakati">x</span>                      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="row mt-3" >	
             <div class="col-xl-12 ">
               <div class="card">
@@ -55,7 +81,7 @@ import{apopoverTrigger,apiMasterIntervensi}from"../../../services/api.js";const 
           </div>
         </div>
       </div>
-    </div>`),after_render:async()=>{let a=document.querySelector("#formsub"),t=document.querySelector("#input-revisi-penandaan"),i=document.querySelector("#subdata"),e=document.querySelector("#pushdata");e.onclick=async function(){if(t.reportValidity()){let t=[],i=[],r=[],p=[],a=$("#tableData tbody").html(),e=a.split("<tr"),d=$("#input-revisi-penandaan").serializeArray();e.forEach((o,a)=>{if(0!=a){let a=o.split("<td"),t=a[2].split("value="),i=t[1].split(" "),e=i[0].split('"'),d=parseInt(e[1]),s=a[3].split("value="),n=s[1].split(" "),l=n[0].split('"'),c=parseInt(l[1]);r.push(d),p.push(c)}}),d.forEach(a=>{"ditandai"===a.name&&t.push(a.value),"disepakati"===a.name&&i.push(a.value)});try{let a=await fetch(config.api_url+"/renja/taggingpost",{method:"POST",body:JSON.stringify({tahun:$("#sel_tahun").val(),ditandai:t,disepakati:i,ditandai_list:r,disepakati_list:p}),headers:config.fetchHeaders});var s=await a.json();return console.log(s),s.status&&swal({title:"Data tersimpan",text:" ",icon:"success",buttons:{confirm:{text:"Tutup",value:!0,visible:!0,className:"btn btn-success",closeModal:!0}}}),s.data}catch(a){return!1}}},i.onclick=async function(){$("#beforeload").addClass("loading"),a.reportValidity()&&await async function(t){try{let a=await fetch(config.api_url+"/renja/listro-tagging",{method:"POST",body:JSON.stringify({tahun:t}),headers:config.fetchHeaders});var i=await a.json();return console.log(i.data),i.data}catch(a){return!1}}($("#sel_tahun").val()).then(function(a){$("#input-revisi-penandaan").removeClass("hide"),async function(a){const t=a.data;!function(a){$("#table-admin-penandaan-pagu").html(`
+    </div>`),after_render:async()=>{let a=document.querySelector("#formsub"),t=document.querySelector("#input-revisi-penandaan"),i=document.querySelector("#subdata"),e=document.querySelector("#pushdata");e.onclick=async function(){if(t.reportValidity()){let t=[],i=[],o=[],p=[],a=$("#tableData tbody").html(),e=a.split("<tr"),s=$("#input-revisi-penandaan").serializeArray();e.forEach((c,a)=>{if(0!=a){let a=c.split("<td"),t=a[2].split("value="),i=t[1].split(" "),e=i[0].split('"'),s=parseInt(e[1]),d=a[3].split("value="),l=d[1].split(" "),n=l[0].split('"'),r=parseInt(n[1]);o.push(s),p.push(r)}}),s.forEach(a=>{"ditandai"===a.name&&t.push(a.value),"disepakati"===a.name&&i.push(a.value)});try{let a=await fetch(config.api_url+"/renja/taggingpost",{method:"POST",body:JSON.stringify({tahun:$("#sel_tahun").val(),ditandai:t,disepakati:i,ditandai_list:o,disepakati_list:p}),headers:config.fetchHeaders});var d=await a.json();return console.log(d),d.status&&swal({title:"Data tersimpan",text:" ",icon:"success",buttons:{confirm:{text:"Tutup",value:!0,visible:!0,className:"btn btn-success",closeModal:!0}}}),d.data}catch(a){return!1}}},i.onclick=async function(){$("#beforeload").addClass("loading"),a.reportValidity()&&await async function(t){try{let a=await fetch(config.api_url+"/renja/listro-tagging",{method:"POST",body:JSON.stringify({tahun:t}),headers:config.fetchHeaders});var i=await a.json();return console.log(i.data),i.data}catch(a){return!1}}($("#sel_tahun").val()).then(function(a){$("#input-revisi-penandaan").removeClass("hide"),async function(a){const i=a.data;!function(a){$("#table-admin-penandaan-pagu").html(`
         <table class="table" id="tableData" style="width: 100% !important;">
           <thead class="w-100x" style="width: 100% !important;">
             <tr>
@@ -81,7 +107,7 @@ import{apopoverTrigger,apiMasterIntervensi}from"../../../services/api.js";const 
           ${a}
           </body>
         </table>        
-        `),$("#tableData").DataTable({scrollY:300,scrollX:!0,scrollCollapse:!0,paging:!1,fixedColumns:!0,responsive:!0,dom:"Bfrtip",buttons:["excel"]}),$("#ditandaiAll").click(function(a){var t=this.checked;$('input[check="ditandai"]').each(function(){this.checked=t})}),$("#disepakatiAll").click(function(a){var t=this.checked;$('input[check="disepakati"]').each(function(){this.checked=t})})}((()=>{let e=[];return t.sort((a,t)=>a.kementerian_kode>t.kementerian_kode?1:-1),t.forEach((a,t)=>{var i='<div class="badge '+c_main+'"><span class="badge-left '+c_kl+' p-1" title="K/L : '+a.kementerian_nama+'"  data-bs-toggle="popover" style="cursor:pointer">'+a.kementerian_kode+'</span><span class="'+c_prog+' p-1" title="Program : '+a.program_nama+'">'+a.program_kode+'</span><span class="'+c_keg+' p-1" title="Kegiatan : '+a.kegiatan_nama+'">'+a.kegiatan_kode+'</span><span class="'+c_kro+' p-1" title="KRO : '+a.output_nama+'">'+a.output_kode+'</span><span class="'+color_ro+' badge-right p-1" title="RO : '+a.suboutput_nama+'">'+a.suboutput_kode+"</span></div>";e.push(`<tr>
+        `),$("#tableData").DataTable({scrollY:300,scrollX:!0,scrollCollapse:!0,paging:!1,fixedColumns:!0,responsive:!0,dom:"Bfrtip",buttons:["excel"]}),$("#ditandaiAll").click(function(a){var t=this.checked;$('input[check="ditandai"]').each(function(){this.checked=t})}),$("#disepakatiAll").click(function(a){var t=this.checked;$('input[check="disepakati"]').each(function(){this.checked=t})})}((()=>{let e=[],s=[],d=0,l=0,n=0,r=0,c=0,o=0,p=0,t=(i.sort((a,t)=>a.kementerian_kode>t.kementerian_kode?1:-1),i.forEach((a,t)=>{1==a.ditandai&&(l+=1),1==a.disepakati&&(n+=1),-1===a.kdtema.search("008")?(p+=1,1==a.ditandai&&1==a.disepakati&&(c+=1)):(o+=1,1==a.ditandai&&1==a.disepakati&&(r+=1)),1==a.ditandai&&1==a.disepakati&&(d+=1,s.push(a.kementerian_kode));var i='<div class="badge '+c_main+'"><span class="badge-left '+c_kl+' p-1" title="K/L : '+a.kementerian_nama+'"  data-bs-toggle="popover" style="cursor:pointer">'+a.kementerian_kode+'</span><span class="'+c_prog+' p-1" title="Program : '+a.program_nama+'">'+a.program_kode+'</span><span class="'+c_keg+' p-1" title="Kegiatan : '+a.kegiatan_nama+'">'+a.kegiatan_kode+'</span><span class="'+c_kro+' p-1" title="KRO : '+a.output_nama+'">'+a.output_kode+'</span><span class="'+color_ro+' badge-right p-1" title="RO : '+a.suboutput_nama+'">'+a.suboutput_kode+"</span></div>";e.push(`<tr>
                 <td style="">
                   ${t+1}.
                 </td>
@@ -111,4 +137,4 @@ import{apopoverTrigger,apiMasterIntervensi}from"../../../services/api.js";const 
                     <div class="bd-highlight text-wrap">${a.suboutput_nama}</div>
                   </div>
                 </td>
-            </tr>`)}),e.join("")})())}(a)}),$("#beforeload").removeClass("loading")},apopoverTrigger()}};export default AdminPenandaanRo;
+            </tr>`)}),arr_groupBy(["kementerian_kode"])),a=t(i);return console.log(a),$("#ro_all").html(i.length),$("#kl_tag").html([...new Set(s)].length),$("#kl_all").html(Object.keys(a).length),$("#ro_tag").html(d),$("#ro_tag_tema").html(r),$("#ro_tag_key").html(c),$("#ro_tag_tema_all").html(o),$("#ro_tag_key_all").html(p),$("#ro_tandai").html(l),$("#ro_sepakati").html(n),e.join("")})())}(a)}),$("#beforeload").removeClass("loading")},apopoverTrigger()}};export default AdminPenandaanRo;

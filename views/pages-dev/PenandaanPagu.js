@@ -410,7 +410,7 @@ const PenandaanPagu = {
 
 
       const table = new Tabulator("#table2", {
-        height: "515px",
+        /* height: "515px", */
         data: result,
         index: "id",
         //layout: "fitDataStretch", //fitDataFill, fitData, fitDataTable, fitColumns, fitDataStretch
@@ -425,6 +425,7 @@ const PenandaanPagu = {
         //dataTreeSelectPropagate: true,
         dataLoader: false, //disable remote loader
         movableColumns: true,
+
         columns: [
           {
             title: "No",
@@ -865,7 +866,36 @@ const PenandaanPagu = {
         ],
         initialSort: [
           { column: "id", dir: "asc" }
-        ]
+        ],
+
+      });
+
+      table.on("rowMouseOver", function (e, row) {
+
+        e.preventDefault();
+        //e - the event object
+        //row - row component
+        //alert("me");
+      });
+
+      table.on("dataTreeRowCollapsed", function (row, level, e) {
+        /* $(".tabulator-data-tree-control, .tabulator-data-tree-control-collapse, .tabulator-data-tree-control-expand").on("click", function (e) {
+          e.preventDefault();
+          alert("me");
+        }); */
+
+        //$(this).preventDefault()
+        //row - the row component for the collapsed row
+        //level - the depth of the row in the tree
+      });
+      table.on("dataTreeRowExpanded", function (row, level, e) {
+        /* $(".tabulator-data-tree-control, .tabulator-data-tree-control-collapse, .tabulator-data-tree-control-expand").on("click", function (e) {
+          e.preventDefault();
+          alert("you");
+        }); */
+        //$(this).preventDefault()
+        //row - the row component for the expanded row
+        //level - the depth of the row in the tree
       });
 
       let body_kl = [];
