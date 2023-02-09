@@ -111,9 +111,6 @@ function toXls(elemn, type, fn, dl) {
 }
 
 function toPdf(elemn, type, fn) {
-   console.log("1", elemn);
-   console.log("2", type);
-   console.log("3", fn);
    $(elemn).tableHTMLExport({
       // csv, txt, json, pdf
       type: type,
@@ -395,7 +392,7 @@ function tableTreeLevel(detail, level, intervensi = false) {
                   kro.push(mergeArray(ro)); //RO
                });
                delete bb._children;
-               child.push(mergeArray(kro));
+               prog.push(mergeArray(kro));
             });
             delete aa._children;
             child.push(mergeArray(prog));
@@ -420,7 +417,7 @@ function tableTreeLevel(detail, level, intervensi = false) {
                   kro.push(mergeArray(ro)); //RO
                });
                delete bb._children;
-               child.push(mergeArray(kro));
+               prog.push(mergeArray(kro));
             });
             delete aa._children;
             child.push(mergeArray(prog));
