@@ -71,7 +71,7 @@ const KinerjaAnggaran = {
         <div class="card hide" id="container_renjakl">
           <div class="card-body" >
             <div id="elemenOpenClose"></div>
-            <div class="mx-n3 mb-n3 hide" id="tableload" style="height: 37em;"></div>            
+            <div class="mx-n3 mb-n3 hide" id="tableload" ></div>            
           </div>          
         </div>
         <div class="sumber-data-renja pb-2 ps-2 mt-3 fs-12px fw-500 hide">info</div>          
@@ -80,8 +80,6 @@ const KinerjaAnggaran = {
             <div id="elemenOpenCloseFst"></div>
             <div id="kinerja-table" class="is-bordered is-narrow rounded"></div>
             <div class="sumber-data-annual pt-1 pb-2 ps-2 fs-12px fw-500"></div>
-          
-
           </div>
         </div>
       </div>
@@ -134,19 +132,12 @@ const KinerjaAnggaran = {
     treeOpenCloseHtml("#elemenOpenCloseFst", { "xls_id": xlss_id }, true); /* true is intervensi */
 
     let
-      //thID = document.getElementById('sel_ta'),
       klID = document.getElementById('sel_kl'),
       intID = document.getElementById('sel_int'),
       dKementerian = [],
-      //dTahunSemester = [],
       dIntervensi = []
       ;
-    /* mData.dataSemester.forEach((item) => {
-      dTahunSemester.push(
-        `<option value="${item.tahun}-${item.semester}" selected="selected">${item.tahun} - Semester ${item.semester}</option>`
-      );
-    });
-    thID.innerHTML = dTahunSemester.join(" "); */
+
     mData.dataKementerian.forEach((item) => {
       dKementerian.push(
         `<option value="${item.kementerian_kode}" selected="selected">${item.kementerian_nama}</option>`
@@ -162,11 +153,8 @@ const KinerjaAnggaran = {
 
     let
       periode = document.getElementById("sel_ta").value,
-      //sel_ta = periode.split("-"),
       getSel_kl = document.getElementById("sel_kl"),
       getSel_int = document.getElementById("sel_int"),
-      //thn = sel_ta[0],
-      //smm = sel_ta[1],
       sel_kl = [],
       sel_int = []
       ;
@@ -271,8 +259,6 @@ const KinerjaAnggaran = {
       kinerjaAnggaranChart(data);
     });
 
-
-
     $("#sel_ta").on('change', async () => {
       let
         dataKl,
@@ -306,8 +292,6 @@ const KinerjaAnggaran = {
         $('#sel_kl').selectpicker('destroy');
         $('#sel_kl').selectpicker();
       }
-
-
       tableKinerjaAnggaran();
     });
 
@@ -671,15 +655,6 @@ const KinerjaAnggaran = {
       </div>      
     `;
 
-      /* const tablePenandaanData = () => {
-        let data = Object.values(result.detail);
-        data.sort((a, b) => a.kementerian_kode > b.kementerian_kode && 1 || -1)
-        data.forEach((item, i) => {
-          item.id = i + 1;
-        });
-        return data;
-      } */
-      //console.log("ccc", tablePenandaanData());
       const table = new Tabulator("#kinerja-table", {
         height: "515px",
         data: result.detail,
@@ -1283,7 +1258,6 @@ const KinerjaAnggaran = {
           chart: {
             height: heightC,
             type: 'line',
-
           },
           stroke: {
             width: [0, 0, 0, 0],
@@ -1796,7 +1770,6 @@ const KinerjaAnggaran = {
                 headers: config.fetchHeaders
               });
             res_popup1 = await res.json();
-            //console.log("cc", res_popup1);
             res_popup1.data.detail.forEach((item, index1) => {
               let gRo = [];
               item._children.sort((a, b) => b.prsn_anl_output - a.prsn_anl_output);
@@ -1810,10 +1783,7 @@ const KinerjaAnggaran = {
                   </li>
                 `);
               });
-              /* console.log(gRo.join(" "));
-              var sorted = cbSort(gRo.join(" "), function (item) {
-                return item.prsn_anl_output; // make this as complex as you like
-              }); */
+
               gKl.push(/*html*/`
                 <ul class="list-unstyled">
                   <li class="ms-4">
@@ -1853,13 +1823,6 @@ const KinerjaAnggaran = {
             res_popup1.data.detail.forEach((item, index1) => {
               let gRo = [],
                 itemW = [];
-              /* item._children.forEach((dataX, index2) => {
-                itemW.push({ "suboutput_nama": dataX.suboutput_nama, "prsn_anl_realisasi": (dataX.prsn_anl_realisasi) });
-              });
-              console.log(itemW);
-              let sorted = cbSort(itemW, function (itemx) {
-                return itemx.prsn_anl_output; // make this as complex as you like
-              }, "down"); */
               item._children.sort((a, b) => b.prsn_anl_realisasi - a.prsn_anl_realisasi);
               item._children.forEach((itemx, index2) => {
                 gRo.push(/*html*/`
@@ -1886,8 +1849,6 @@ const KinerjaAnggaran = {
                 </ul>
               `);
             });
-
-
           } catch (e) {
             return false;
           }
@@ -1897,9 +1858,7 @@ const KinerjaAnggaran = {
           titlePopup + "<br/>" +
           "<div class='h6 py-1 fw-500'>" + $(this).find(".h4").html().trim() + "   (" + $(this).find(".h5").html() + " dari total RO)</div>"
         );
-
         $("#viewData").html(gKl);
-
       });
 
       return {
@@ -2028,6 +1987,7 @@ const KinerjaAnggaran = {
       }
     };
     async function getDetailBelanjaKL(periode, kl, int, search) {
+      /* kl = ["010", "063", "047", "027"] */
       try {
         let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', {
           method: 'POST',
@@ -2061,7 +2021,7 @@ const KinerjaAnggaran = {
           mData.dataDetailBKL = data;
           // strukturData(data);
           // let adjust = tableTreeLevel(data.detail, "all");
-          let adjust = tableTreeLevel(strukturData(data), "all");
+          let adjust = tableTreeLevel(strukturKinerjaAnggaran(data), "all");
           tableDataKrisna(adjust);
           //treeOpenClose(data.detail);
         });
@@ -2069,7 +2029,6 @@ const KinerjaAnggaran = {
         $("#mapload,#tableload,.sumber-data-renja,#container_renjakl").addClass("hide");
       }
       closeButton();
-
 
       if (typeof mData.belanjaKL === "undefined") {
         $("#belanjaKL").hide();
@@ -2079,50 +2038,7 @@ const KinerjaAnggaran = {
       }
     }
 
-    function strukturData(data) {
-      let dataF = data.detail;
 
-      dataF.forEach((item, i) => {  //kl
-        let child = [];
-        Object.values(item._children).forEach((aa) => {    //keg
-          let prog = [];
-          Object.values(aa._children).forEach((bb) => {   //Prog
-            let kro = [];
-            Object.values(bb._children).forEach((cc) => { //KRO
-
-              let ro = [];
-              Object.values(cc._children).forEach((dd) => {
-                dd.lokasi = "";
-                if ((typeof dd.lokasi_ro !== "undefined") || (dd.lokasi_ro != null) || (dd.lokasi_ro != "")) {
-                  let mmmm = Object.assign({}, dd.lokasi_ro),
-                    eef = [];
-                  Object.values(mmmm).forEach((ee) => {
-                    eef.push(ee.nama_lokus)
-                  });
-                  dd.lokasi = eef.join(",");
-                }
-                //ro.push(dd);
-              })
-              //kro.push(mergeArray(ro)); //RO
-
-
-            });
-            //delete bb._children;
-            //prog.push(mergeArray(kro));
-          });
-          //delete aa._children;
-          //child.push(mergeArray(prog));
-        });
-        //delete item._children;
-        //item._children = mergeArray(child);
-        item.id = i + 1;
-      });
-
-      console.log("dataF", dataF);
-      let dataA = dataF;
-      //delete dataF;
-      return dataA;
-    }
 
 
 
@@ -2134,7 +2050,6 @@ const KinerjaAnggaran = {
     $(".openclose").on("click", function () {
       let periode = document.getElementById("sel_ta").value;
       if (['2022', '2023'].includes(periode)) {
-        //console.log(mData.dataDetailBKL.detail);
         let data = treeOpenClose(this, mData.dataDetailBKL.detail);
         tableDataKrisna(data.adjust, data.opsiTabel, data.item);
       } else {
@@ -2226,7 +2141,7 @@ const KinerjaAnggaran = {
         thn_3 = thn_ini + 3;
       //console.log(item);
       const table = new Tabulator("#tableload", {
-        height: "515px",
+        /* height: "515px", */
         data: result,
         index: "id",
         layout: "fitDataStretch", //fitDataFill, fitData, fitDataTable, fitColumns, fitDataStretch
@@ -2258,53 +2173,53 @@ const KinerjaAnggaran = {
                 value = cell.getValue(),
                 ncode = "";
               if (cell._cell.row.data.posisi === 'KL') {
-                ncode = '<span class="badge rounded-pill py-1 bg-orange-600">K/L</span>';
+                ncode = '<div class="badge py-1 ' + c_main + '" ><span class="' + c_kl + '  badge-main p-1" title="Kementerian/Lembaga">' + cell._cell.row.data.kl_id + '</span></div>';
                 hasil = /*html*/`
                       <div class="col d-flex flex-row bd-highlight">
-                          <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.kl_id}-${value}</div>
+                          <div class="bd-highlight ps-1"> ${ncode}</div>  
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                     `;
               } else if (cell._cell.row.data.posisi === 'Program') {
-                ncode = '<span class="badge rounded-pill py-1 bg-cyan-600">Program</span>';
+                ncode = '<div class="badge ' + c_main + '"><span class=" badge-left ' + c_kl + ' p-1" title="Kementerian/Lembaga">' + cell._cell.row.data.kl_id + '</span><span class="' + c_prog + ' badge-right  p-1" title="Program">' + cell._cell.row.data.program_id + '</span></div>';
                 hasil = /*html*/`
                       <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.program_id}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                     `;
               } else if (cell._cell.row.data.posisi === 'Kegiatan') {
-                ncode = '<span class="badge rounded-pill py-1 bg-green-600">Kegiatan</span>';
+                ncode = '<div class="badge  ' + c_main + '"><span class=" badge-left ' + c_kl + ' p-1" title="Kementerian/Lembaga">' + cell._cell.row.data.kl_id + '</span><span class="' + c_prog + ' p-1" title="Program">' + cell._cell.row.data.program_id + '</span><span class="' + c_keg + ' badge-right  p-1" title="Kegiatan">' + cell._cell.row.data.kegiatan_id + '</span></div>';
                 hasil = /*html*/`
                       <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.kegiatan_id}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                     `;
               } else if (cell._cell.row.data.posisi === 'KRO') {/* OUTPUT */
-                ncode = '<span class="badge rounded-pill bg-warning py-1 bg-lime-600">KRO</span>';
+                ncode = '<div class="badge ' + c_main + '" ><span class="  badge-left ' + c_kl + ' p-1" title="Kementerian/Lembaga">' + cell._cell.row.data.kl_id + '</span><span class="' + c_prog + ' p-1" title="Program">' + cell._cell.row.data.program_id + '</span><span class="' + c_keg + ' p-1" title="Kegiatan">' + cell._cell.row.data.kegiatan_id + '</span><span class="' + c_kro + '  badge-right p-1"  title="Klasifikasi Rincian Ouput">' + cell._cell.row.data.kro_id + '</span></div>';
                 hasil = /*html*/`
                       <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.kro_id}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                     `;
               } else if (cell._cell.row.data.posisi === 'RO') {
-                ncode = '<span class="badge rounded-pill py-1 bg-purple-600">RO</span>';
+                ncode = '<div class="badge ' + c_main + '"><span class="' + c_kl + '  badge-left  p-1" title="Kementerian/Lembaga">' + cell._cell.row.data.kl_id + '</span><span class="' + c_prog + ' p-1" title="Program">' + cell._cell.row.data.program_id + '</span><span class="' + c_keg + ' p-1" title="Kegiatan">' + cell._cell.row.data.kegiatan_id + '</span><span class="' + c_kro + ' p-1"  title="Klasifikasi Rincian Output">' + cell._cell.row.data.kro_id + '</span><span class="' + color_ro + '  badge-right p-1"  title="Rincian Output">' + cell._cell.row.data.ro_id + '</span></div>';
                 hasil = /*html*/`
                       <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.ro_id}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                     `;
               } else {
-                ncode = '<span class="badge rounded-pill bg-yellow-600 py-1">Komponen</span>';
+                ncode = '<span class="badge rounded-pill bg-yellow-600 py-1">' + cell._cell.row.data.komponen_id + '</span>';
                 hasil = /*html*/`
                     <div class="container">
                       <div class="row">
                         <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.komponen_kode}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                       </div>
                       <div class="row">
@@ -2374,7 +2289,7 @@ const KinerjaAnggaran = {
             headerMenuIcon:/*html*/`<i class="fas fa-lg fa-fw fa-check text-primary-700 fs-15px"></i>`,
             headerMenu: closeColumn,
             visible: ((itemShow == "semua") || (itemShow == "kro") || (typeof itemShow == "undefined")) ? true : false,
-            field: "jml_ro", formatter: "money", formatterParams: {
+            field: "jml_kro", formatter: "money", formatterParams: {
               decimal: ",",
               thousand: ".",
               symbol: "",
@@ -2386,6 +2301,12 @@ const KinerjaAnggaran = {
               symbol: "",
               symbolAfter: "",
               precision: 0,
+            }, formatter: function (cell, formatterParams) {
+              var value = cell.getValue();
+              if (value === "" || value === null) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+              }
+              return value;
             }
           },
           {
@@ -2405,6 +2326,12 @@ const KinerjaAnggaran = {
               symbol: "",
               symbolAfter: "",
               precision: 0,
+            }, formatter: function (cell, formatterParams) {
+              var value = cell.getValue();
+              if (value === "" || value === null) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+              }
+              return value;
             }
           },
           {
@@ -2740,12 +2667,6 @@ const KinerjaAnggaran = {
           { column: "id", dir: "asc" }
         ]
       });
-      //$("#tableload").tabulator("hideColumn", "jml_program")
-      //table.hideColumn("jml_program");
-      /* document.getElementById("download-xlsx").addEventListener("click", function () {
-        table.download("xlsx", "Belanja KL.xlsx", { sheetName: "data" });
-      }); */
-
     }
 
     function viewMapBelanjaKL(datax) {
@@ -2777,21 +2698,6 @@ const KinerjaAnggaran = {
                       <span class="position-absolute top-50 start-5 translate-middle-y ps-1 material-text" style="width: 5em;">Open All</span>
                     </div>
                   </div>
-                  <!--
-                  <div class="bd-highlight">
-                    <div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700 my-2 mt-3 me-2 fs-11px">
-                      <div class="bd-highlight">
-                        <i class="fas fa-lg fa-fw fa-file-pdf p-0 m-0 cursor-pointer fs-15px text-red-400" title="export pdf" id="download-pdf"></i>
-                      </div>  
-                      <div class="bd-highlight">
-                        <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-15px text-green-400" title="export xls" id="download-xlsx"></i>
-                      </div>    
-                      <div class="bd-highlight">
-                        <div class="fs-12px fw-700">Download : </div>
-                      </div>        
-                    </div>
-                  </div>
-                  -->
                 </div>
                 <div class="tab-pane fade active show" id="default-pop-1"></div>
                 <div class="tab-pane fade" id="default-pop-2">
@@ -3452,9 +3358,6 @@ const KinerjaAnggaran = {
                 { column: "id", dir: "asc" }
               ]
             });
-            /* document.getElementById("download-xlsx").addEventListener("click", function () {
-              table.download("xlsx", "Belanja KL.xlsx", { sheetName: "data" });
-            }); */
           }
 
           let nmKL = [];
@@ -3515,6 +3418,238 @@ const KinerjaAnggaran = {
         map.fitBounds(gmap_data.getBounds());
       }
     }
+
+
+
+    /* let dataX = strukturKinerjaAnggaran(dataXC.data);
+    console.log("dataX", dataX); */
+
+
+    function strukturKinerjaAnggaran(data) {
+      let
+        groupByKL = arr_groupBy(['kementerian_kode']),
+        data_perkl = groupByKL(data),
+        dataA = Object.assign({}, data_perkl),
+        kl = [];
+
+      Object.keys(dataA).forEach((aa) => {  //kl
+        let
+          dataA1 = Object.assign({}, dataA[aa]),
+          v_realisasi_ro = sumObject(Object.values(dataA1), "realisasi_ro"),
+          v_alokasi_0 = sumObject(Object.values(dataA1), "alokasi_0"),
+          jml_programA = 0,
+          jml_kegiatanA = 0,
+          jml_kroA = 0,
+          jml_roA = 0,
+          groupByProg = arr_groupBy(['program_kode']),
+          data_perprog = groupByProg(Object.values(dataA1)),
+          dataB = Object.assign({}, data_perprog),
+          prog = [];
+
+        Object.keys(dataB).forEach((bb) => {    //prog
+          jml_programA += 1;
+
+          let
+            dataB1 = Object.assign({}, dataB[bb]),
+            v_realisasi_ro = sumObject(Object.values(dataB1), "realisasi_ro"),
+            v_alokasi_0 = sumObject(Object.values(dataB1), "alokasi_0"),
+            jml_kegiatanB = 0,
+            jml_kroB = 0,
+            jml_roB = 0,
+            groupByKeg = arr_groupBy(['kegiatan_kode']),
+            data_perkeg = groupByKeg(Object.values(dataB1)),
+            dataC = Object.assign({}, data_perkeg),
+            keg = [];
+
+          /*Start kegiatan*/
+          Object.keys(dataC).forEach((cc) => {    //kegiatan
+            jml_kegiatanB += 1;
+
+            let
+              dataC1 = Object.assign({}, dataC[cc]),
+              v_realisasi_ro = sumObject(Object.values(dataC1), "realisasi_ro"),
+              v_alokasi_0 = sumObject(Object.values(dataC1), "alokasi_0"),
+              jml_kroC = 0,
+              jml_roC = 0,
+              groupByKro = arr_groupBy(['output_kode']),
+              data_perkro = groupByKro(Object.values(dataC1)),
+              dataD = Object.assign({}, data_perkro),
+              kro = [];
+
+            /*Start KRO*/
+            Object.keys(dataD).forEach((dd) => {    //KRO
+              jml_kroC += 1;
+
+              let
+                dataD1 = Object.assign({}, dataD[dd]),
+                v_realisasi_ro = sumObject(Object.values(dataD1), "realisasi_ro"),
+                v_alokasi_0 = sumObject(Object.values(dataD1), "alokasi_0"),
+                jml_roD = 0,
+                groupByRo = arr_groupBy(['suboutput_kode']),
+                data_perRo = groupByRo(Object.values(dataD1)),
+                dataE = Object.assign({}, data_perRo),
+                ro = [];
+
+              /*Start RO*/
+              Object.keys(dataE).forEach((dd) => {    //RO
+                jml_roD += 1;
+                let
+                  dataE1 = Object.assign({}, dataE[dd]),
+                  v_realisasi_ro = sumObject(Object.values(dataE1), "realisasi_ro"),
+                  v_alokasi_0 = sumObject(Object.values(dataE1), "alokasi_0"),
+                  jml_komp = 0,
+                  groupByKomp = arr_groupBy(['komponen_kode']),
+                  data_perKomp = groupByKomp(Object.values(dataE1)),
+                  dataF = Object.assign({}, data_perKomp),
+                  komponen = [];
+
+                /*Start Komponen if ready*/
+                Object.keys(dataF).forEach((dd) => {
+                  jml_komp += 1;
+
+                  let
+                    dataF1 = Object.assign({}, dataF[dd]),
+                    v_realisasi_ro = sumObject(Object.values(dataF1), "realisasi_ro"),
+                    v_alokasi_0 = sumObject(Object.values(dataF1), "alokasi_0"),
+                    jml_roE = 0
+                    ;
+
+                  komponen.push({
+                    komponen_jenis: dataF1[0].jenis_komponen,
+                    indikator_pbj: dataF1[0].indikator_pbj,
+                    target_0: dataF1[0].target_0,
+                    satuan: dataF1[0].satuan,
+                    indikator_komponen: dataF1[0].indikator_komponen,
+                    sumber_dana: dataF1[0].sumber_dana_ids,
+
+                    attrs: dataF1[0].attrs,
+                    tahun: dataF1[0].tahun,
+                    kro_id: dataF1[0].output_kode,
+                    jml_kro: null,
+                    jml_ro: null,
+                    jml_program: null,
+                    jml_kegiatan: null,
+                    kegiatan_id: dataF1[0].kegiatan_kode,
+                    program_id: dataF1[0].program_kode,
+                    komponen_id: dataF1[0].komponen_kode,
+                    name: dataF1[0].komponen_nama,
+                    tahun: dataF1[0].tahun,
+                    kl_id: dataF1[0].kementerian_kode,
+                    alokasi_totaloutput: v_alokasi_0,
+                    alokasi_realisasi: v_realisasi_ro,
+                    keterangan: "",
+                    posisi: "komponen"
+                  });
+
+                });
+                /*End Komponen*/
+
+                ro.push({
+                  tahun: dataE1[0].tahun,
+                  kl_id: dataE1[0].kementerian_kode,
+                  program_id: dataE1[0].program_kode,
+                  kro_id: dataE1[0].output_kode,
+                  kegiatan_id: dataE1[0].kegiatan_kode,
+                  ro_id: dataE1[0].suboutput_kode,
+                  name: dataE1[0].suboutput_nama,
+                  jml_program: null,
+                  jml_kegiatan: null,
+                  jml_kro: null,
+                  jml_ro: null,
+                  jml_komponen: jml_komp,
+                  alokasi_totaloutput: v_alokasi_0,
+                  alokasi_realisasi: v_realisasi_ro,
+                  lokasi_ro: null,
+                  keterangan: "",
+                  posisi: "RO",
+                  _children: komponen
+                });
+              });
+              /*End RO*/
+
+              kro.push({
+                tahun: dataD1[0].tahun,
+                name: dataD1[0].kegiatan_nama,
+                kl_id: dataD1[0].kementerian_kode,
+                program_id: dataD1[0].program_kode,
+                kegiatan_id: dataD1[0].kegiatan_kode,
+                kro_id: dataD1[0].output_kode,
+                jml_program: null,
+                jml_kegiatan: null,
+                jml_kro: null,
+                jml_ro: jml_roD,
+                alokasi_totaloutput: v_alokasi_0,
+                alokasi_realisasi: v_realisasi_ro,
+                keterangan: "",
+                posisi: "KRO",
+                _children: ro
+              });
+              jml_roC += jml_roD;
+            });
+            /*End KRO*/
+
+            keg.push({
+              tahun: dataC1[0].tahun,
+              kl_id: dataC1[0].kementerian_kode,
+              kegiatan_id: dataC1[0].kegiatan_kode,
+              program_id: dataC1[0].program_kode,
+              name: dataC1[0].kegiatan_nama,
+              jml_program: null,
+              jml_kegiatan: null,
+              jml_kro: jml_kroC,
+              jml_ro: jml_roC,
+              alokasi_totaloutput: v_alokasi_0,
+              alokasi_realisasi: v_realisasi_ro,
+              keterangan: "",
+              posisi: "Kegiatan",
+              _children: kro
+            });
+            jml_roB += jml_roC;
+            jml_kroB += jml_kroC;
+          });
+          /*End kegiatan*/
+
+          prog.push({
+            program_id: dataB1[0].program_kode,
+            name: dataB1[0].program_nama,
+            jml_program: null,
+            jml_kegiatan: jml_kegiatanB,
+            jml_kro: jml_kroB,
+            jml_ro: jml_roB,
+            tahun: dataB1[0].tahun,
+            kl_id: dataB1[0].kementerian_kode,
+            alokasi_totaloutput: v_alokasi_0,
+            alokasi_realisasi: v_realisasi_ro,
+            keterangan: "",
+            posisi: "Program",
+            _children: keg
+          });
+          jml_roA += jml_roB;
+          jml_kroA += jml_kroB;
+        });
+        /*End Program*/
+
+        kl.push({
+          tahun: dataA1[0]['tahun'],
+          kl_id: dataA1[0]['kementerian_kode'],
+          name: dataA1[0]['kementerian_nama'],
+          name_short: dataA1[0]['kementerian_nama_alias'],
+          alokasi_totaloutput: v_alokasi_0,
+          alokasi_realisasi: v_realisasi_ro,
+          keterangan: "",
+          posisi: "KL",
+          jml_program: jml_programA,
+          jml_kegiatan: jml_kegiatanA,
+          jml_kro: jml_kroA,
+          jml_ro: jml_roA,
+          _children: prog
+          /* id:i + 1, */
+        })
+
+      });
+      return kl;
+    }
+
 
     document.getElementById('popUp').innerHTML = popUp;
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))

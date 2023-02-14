@@ -49,6 +49,14 @@ function onlyUnique(value, index, self) {
    return self.indexOf(value) === index;
 }
 
+function sumObject(dataX, fieldx) {
+   let value = 0;
+   dataX.forEach((item, i) => {
+      value += isNaN(parseInt(item[fieldx])) ? 0 : parseInt(item[fieldx]);
+   });
+   return value;
+}
+
 function tabElemn(tab) {
    let
       elem = $(tab).data("active"),

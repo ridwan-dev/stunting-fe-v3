@@ -510,9 +510,7 @@ const PenandaanPagu = {
                       </div>
                     </div> 
                     `;
-                //} else {
-                //  hasil = "";
-                //}
+
               }
               return hasil;
             }
