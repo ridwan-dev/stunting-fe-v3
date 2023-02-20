@@ -49,6 +49,14 @@ function onlyUnique(value, index, self) {
    return self.indexOf(value) === index;
 }
 
+function sumObject(dataX, fieldx) {
+   let value = 0;
+   dataX.forEach((item, i) => {
+      value += isNaN(parseInt(item[fieldx])) ? 0 : parseInt(item[fieldx]);
+   });
+   return value;
+}
+
 function tabElemn(tab) {
    let
       elem = $(tab).data("active"),
@@ -313,7 +321,7 @@ var headerMenu = function () {
 function tableTreeLevel(detail, level, intervensi = false) {
    let dataY = Object.values(detail),
       dataF = JSON.parse(JSON.stringify(dataY));
-
+   console.log("dataF", dataF);
    dataF.sort((a, b) => a.kementerian_kode > b.kementerian_kode && 1 || -1);
 
    if ((intervensi == true && level == "intervensi") || (intervensi == false && level == "program")) {
@@ -498,7 +506,7 @@ function sumberDataRenja() {
       dateTm = dateT[0].split("-"),
       //dateTime = new Date(dateTm[0], dateTm[1], dateTm[2]).toLocaleDateString('id-ID');
       dateTime = dateTm[2] + "/" + dateTm[1] + "/" + dateTm[0];
-   console.log(dateTime);
+   //console.log(dateTime);
    document.querySelector(".sumber-data-renja").innerHTML = "*Data berasal dari Krisna Renja K/L tanggal " + dateTime;
 };
 
@@ -531,7 +539,7 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
             </button>
                   `;
    }
-   console.log("btn_xls2", btn_xls);
+   //console.log("btn_xls2", btn_xls);
    let
       html = /*html*/`      
       <div class="d-flex justify-content-between">
