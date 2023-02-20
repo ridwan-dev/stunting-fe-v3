@@ -640,8 +640,8 @@ const PenandaanPagu = {
             }
           },
           {
-            title: "Realisasi Anggaran (Rka)",
-            titleDownload: "Realisasi Anggaran (Rka)",
+            title: "Realisasi Anggaran",
+            titleDownload: "Realisasi Anggaran",
             field: "realisasi_total",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Realisasi Anggaran pada tahun berjalan");
