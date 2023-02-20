@@ -316,8 +316,8 @@ const PenandaanPagu = {
         $("#container_renjakl").addClass("loading");
         multi_kl = $("#sel_kl").val();
         await getTabelNew(perData[0], multi_kl, multi_int, search).then(function (data) {
-          mData.datahasil = data.detail;
-          let adjust = tableTreeLevel(data.detail, "all");
+          mData.datahasil = data;
+          let adjust = tableTreeLevel(strukturPenandaanDanPagu(data), "all");
           $("#container_renjakl .card-body").removeClass("hide");
           dataTabelNew(adjust);
         });
@@ -392,7 +392,6 @@ const PenandaanPagu = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-        console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;
@@ -400,15 +399,6 @@ const PenandaanPagu = {
     };
 
     async function dataTabelNew(result, opsiTabel = { expand: false }, itemShow) {
-      let thn_ini = parseInt($("#sel_ta").val()),
-        thn_1 = thn_ini + 1,
-        thn_2 = thn_ini + 2,
-        thn_3 = thn_ini + 3;
-      console.log("result1", result);
-
-
-
-
       const table = new Tabulator("#table2", {
         /* height: "515px", */
         data: result,
@@ -492,20 +482,28 @@ const PenandaanPagu = {
               }
               else {
                 console.log("komponen", cell._cell.row.data.komponen_kode);
-                ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">Komponen</span>';
+                ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">' + cell._cell.row.data.komponen_kode + '</span>';
                 //if (cell._cell.row.data.komponen_kode != null) {
                 hasil = /*html*/`
                     <div class="container">
                       <div class="row">
                         <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.komponen_kode}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="text-black w-50 ps-4 ms-5 my-1">
+                        <div class="text-black w-50 ps-4 my-1">
                           <span class="badge py-1 bg-indigo-600 ms-2 ">Indikator Pbj : ${cell._cell.row.data.indikator_pbj}</span>   
                           <span class="badge py-1 bg-blue-600">Jenis : ${cell._cell.row.data.komponen_jenis}</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="text-black w-50 ps-4 my-1 ms-2 w-100">
+                          <div class="badge py-1 bg-blue-800 d-flex flex-row bd-highlight">
+                          <span class='bd-highlight'>Indikator Komponen : </span>
+                          <span class='bd-highlight text-wrap text-start ps-1'> ${cell._cell.row.data.indikator_komponen}</span>
+                          </div>
                         </div>
                       </div>
                     </div> 
@@ -567,7 +565,7 @@ const PenandaanPagu = {
             headerMenuIcon:/*html*/`<i class="fas fa-lg fa-fw fa-check text-primary-700 fs-15px"></i>`,
             headerMenu: closeColumn,
             visible: ((itemShow == "semua") || (itemShow == "kro") || (typeof itemShow == "undefined")) ? true : false,
-            field: "jml_ro", formatter: "money", formatterParams: {
+            field: "jml_kro", formatter: "money", formatterParams: {
               decimal: ",",
               thousand: ".",
               symbol: "",
@@ -579,6 +577,12 @@ const PenandaanPagu = {
               symbol: "",
               symbolAfter: "",
               precision: 0,
+            }, formatter: function (cell, formatterParams) {
+              var value = cell.getValue();
+              if (value === "" || value === null) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+              }
+              return value;
             }
           },
           {
@@ -596,14 +600,20 @@ const PenandaanPagu = {
               symbol: "",
               symbolAfter: "",
               precision: 0,
+            }, formatter: function (cell, formatterParams) {
+              var value = cell.getValue();
+              if (value === "" || value === null) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+              }
+              return value;
             }
           },
           {
-            title: "Alokasi Bulan Januari",
-            titleDownload: "Alokasi Bulan Januari",
-            field: "alokasi_totaloutput",
+            title: "Alokasi Anggaran",
+            titleDownload: "Alokasi Anggaran",
+            field: "alokasi_total",
             headerPopup: function (e, column, onRendered) {
-              return popupnote("Alokasi pada bulan Januari");
+              return popupnote("Alokasi pada tahun berjalan");
             },
             headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
             /*  formatter: "money", */
@@ -614,7 +624,69 @@ const PenandaanPagu = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber(value * 1000, 2);
+                numbx = formatNumber(value, 2);
+              }
+              return numbx;
+            },
+            width: 167,
+            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            accessorDownload: numberIDRDownload,
+            bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
+              decimal: ",",
+              thousand: ".",
+              symbol: "",
+              symbolAfter: "",
+              precision: 2,
+            }
+          },
+          {
+            title: "Realisasi Anggaran (Rka)",
+            titleDownload: "Realisasi Anggaran (Rka)",
+            field: "realisasi_total",
+            headerPopup: function (e, column, onRendered) {
+              return popupnote("Realisasi Anggaran pada tahun berjalan");
+            },
+            headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
+            /*  formatter: "money", */
+            formatter: function (cell, formatterParams) {
+              var value = cell.getValue(),
+                numbx;
+              if (value === "" || (typeof value === "undefined")) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+                numbx = "";
+              } else {
+                numbx = formatNumber(value, 2);
+              }
+              return numbx;
+            },
+            width: 167,
+            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            accessorDownload: numberIDRDownload,
+            bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
+              decimal: ",",
+              thousand: ".",
+              symbol: "",
+              symbolAfter: "",
+              precision: 2,
+            }
+          },
+          {
+            title: "Capaian Realisasi Anggaran (%)",
+            titleDownload: "Capaian Realisasi Anggaran (%)",
+            field: "realisasi_total",
+            headerPopup: function (e, column, onRendered) {
+              return popupnote("Alokasi pada tahun berjalan");
+            },
+            headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
+            /*  formatter: "money", */
+            formatter: function (cell, formatterParams) {
+              var value = cell.getValue(),
+                numbx;
+              if (value === "" || (typeof value === "undefined")) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+                numbx = "";
+              } else {
+                numbx = (value === 0 || cell._cell.row.data.alokasi_total === 0 || value === null || cell._cell.row.data.alokasi_total === null) ? "-" : formatNumber((value / cell._cell.row.data.alokasi_total) * 100, 2);
               }
               return numbx;
             },
@@ -632,7 +704,7 @@ const PenandaanPagu = {
           {
             title: "Tingkat Output",
             titleDownload: "Tingkat Output",
-            field: "alokasi_totaloutput",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Alokasi ditingkat output");
             },
@@ -664,7 +736,7 @@ const PenandaanPagu = {
           {
             title: "Analisis Lanjutan",
             titleDownload: "Analisis Lanjutan",
-            field: "alokasi_totaloutput",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Alokasi ditingkat Analisis Lanjutan");
             },
@@ -698,7 +770,6 @@ const PenandaanPagu = {
             titleDownload: "Lokasi",
             field: "lokasi_ro",
             hozAlign: "left",
-            width: 500,
             headerPopup: function (e, column, onRendered) {
               return popupnote("Lokasi realisasi Anggaran");
             },
@@ -707,14 +778,14 @@ const PenandaanPagu = {
             /*  formatter: "money", */
             formatter: function (cell, formatterParams) {
               cell.getElement().style.textAlign = "left";
-              cell.getElement().style.width = 400;
+              cell.getElement().style.width = 600;
               var numbx;
-              if (cell._cell.row.data.lokasi_ro === "" || (typeof cell._cell.row.data.lokasi_ro === "undefined")) {
+              if (cell._cell.row.data.lokasi_ro === null || cell._cell.row.data.lokasi_ro === "" || (typeof cell._cell.row.data.lokasi_ro === "undefined")) {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
 
-                numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.lokasi + "</span>"
+                numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.lokasi_ro + "</span>"
               }
               return numbx;
             },
@@ -747,7 +818,7 @@ const PenandaanPagu = {
                 numbx = "";
               } else {
                 //numbx = "<span class='text-wrap text-black fw-500'>" + capitalize(value) + "</span>";
-                numbx = "<span class='text-wrap text-black fw-500'>" + value + "</span>";
+                numbx = "<span class='text-wrap text-black fw-400 align-middle text-center'>" + value + "</span>";
               }
               return numbx;
             },
@@ -765,7 +836,7 @@ const PenandaanPagu = {
           {
             title: "Target ",
             titleDownload: "Target ",
-            field: "target_0",
+            field: "target",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target");
             },
@@ -779,12 +850,12 @@ const PenandaanPagu = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = value === 0 ? 0 : formatNumber(value);
+                numbx = value === 0 ? 0 : "<span class='text-wrap text-black fw-400 align-middle text-center'>" + formatNumber(value) + "</span>";
               }
               return numbx;
             },
             width: 120,
-            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            sorter: "number", headerHozAlign: "center", hozAlign: "center",
             accessorDownload: numberIDRDownload,
             bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
               decimal: ",",
@@ -798,7 +869,7 @@ const PenandaanPagu = {
           {
             title: "Target Kesepakatan Tingkat Output",
             titleDownload: "Target Kesepakatan Tingkat Output ",
-            field: "target_0",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target pada kesepakatan tingkat output");
             },
@@ -831,7 +902,7 @@ const PenandaanPagu = {
           {
             title: "Target Kesepakatan Tingkat Analisis Lanjutan",
             titleDownload: "Target Kesepakatan Tingkat Analisis Lanjutan",
-            field: "target_0",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target Kesepakatan pada Analisis Lanjutan");
             },
@@ -1656,6 +1727,296 @@ const PenandaanPagu = {
           </div>          
         </div>
       </div>`;
+
+    function strukturPenandaanDanPagu(data) {
+      //console.log("data cc", data);
+      let
+        groupByKL = arr_groupBy(['kementerian_kode']),
+        data_perkl = groupByKL(data),
+        dataA = Object.assign({}, data_perkl),
+        kl = [];
+
+      Object.keys(dataA).forEach((aa) => {  //kl
+        let
+          dataA1 = Object.assign({}, dataA[aa]),
+          realisasi_kl = 0,
+          alokasi_kl = 0,
+          jml_programA = 0,
+          jml_kegiatanA = 0,
+          jml_kroA = 0,
+          jml_roA = 0,
+          groupByProg = arr_groupBy(['program_kode']),
+          data_perprog = groupByProg(Object.values(dataA1)),
+          dataB = Object.assign({}, data_perprog),
+          prog = [];
+
+        Object.keys(dataB).forEach((bb) => {    //prog
+          jml_programA += 1;
+
+          let
+            dataB1 = Object.assign({}, dataB[bb]),
+            realisasi_prog = 0,
+            alokasi_prog = 0,
+            jml_kegiatanB = 0,
+            jml_kroB = 0,
+            jml_roB = 0,
+            groupByKeg = arr_groupBy(['kegiatan_kode']),
+            data_perkeg = groupByKeg(Object.values(dataB1)),
+            dataC = Object.assign({}, data_perkeg),
+            keg = [];
+
+          /*Start kegiatan*/
+          Object.keys(dataC).forEach((cc) => {    //kegiatan
+            jml_kegiatanB += 1;
+
+            let
+              dataC1 = Object.assign({}, dataC[cc]),
+              realisasi_keg = 0,
+              alokasi_keg = 0,
+              jml_kroC = 0,
+              jml_roC = 0,
+              groupByKro = arr_groupBy(['output_kode']),
+              data_perkro = groupByKro(Object.values(dataC1)),
+              dataD = Object.assign({}, data_perkro),
+              kro = [];
+
+            /*Start KRO*/
+            Object.keys(dataD).forEach((dd) => {    //KRO
+              jml_kroC += 1;
+
+              let
+                dataD1 = Object.assign({}, dataD[dd]),
+                realisasi_kro = 0,
+                alokasi_kro = 0,
+                jml_roD = 0,
+                groupByRo = arr_groupBy(['suboutput_kode']),
+                data_perRo = groupByRo(Object.values(dataD1)),
+                dataE = Object.assign({}, data_perRo),
+                ro = [];
+
+              /*Start RO*/
+              Object.keys(dataE).forEach((dd) => {    //RO
+                jml_roD += 1;
+
+                let
+                  dataE1 = Object.assign({}, dataE[dd]),
+                  jml_komp = 0,
+                  komponen = [],
+                  dKomp = [];
+
+                /*Start Komponen if ready*/
+
+                /*realisasi komp*/
+                if (dataE[dd][0]["realisasi_rka_komp"] != null) {
+                  let
+                    realisasi_rka_komp = dataE[dd][0]["realisasi_rka_komp"],
+                    gKomp = [];
+
+                  realisasi_rka_komp.forEach((ff) => {
+                    let komp = [];
+                    ff.alokasis.forEach((gg) => {
+                      komp.push(gg);
+                    });
+                    gKomp.push(mergeArray(komp));
+                  });
+
+                  let groupByKompKode = arr_groupBy(['komponen_kode']),
+                    data_perkomp = groupByKompKode(mergeArray(gKomp));
+                  Object.keys(data_perkomp).forEach((hh) => {
+                    dKomp[hh] = {
+                      "realisasi": sumObject(Object.values(data_perkomp[hh]), "alokasi"),
+                    };
+                  });
+                }
+
+                if (dataE[dd][0]["komponen"] != null) {
+                  let dataF = dataE[dd][0]["komponen"];
+                  dataF.forEach((ee) => {
+                    jml_komp += 1;
+                    let jml_roE = 0;
+
+                    komponen.push({
+                      tahun: dataE[dd][0].tahun,
+                      kl_id: dataE[dd][0].kementerian_kode,
+                      program_id: dataE[dd][0].program_kode,
+                      kegiatan_id: dataE[dd][0].kegiatan_kode,
+                      kro_id: dataE[dd][0].output_kode,
+                      ro_id: dataE[dd][0].suboutput_kode,
+                      komponen_kode: ee.kdkmpnen,
+                      name: ee.nmkmpnen,
+                      jml_kro: null,
+                      jml_ro: null,
+                      jml_program: null,
+                      jml_kegiatan: null,
+                      komponen_jenis: ee.jenis_komponen,
+                      indikator_pbj: ee.indikator_pbj,
+                      indikator_komponen: ee.indikator_komponen,
+                      satuan: ee.satuan,
+                      target: ee.target,
+                      realisasi_total: (typeof dKomp[ee.kdkmpnen] !== 'undefined') ? (dKomp[ee.kdkmpnen]['realisasi']) / 1000 : 0,
+                      alokasi_total: parseInt(ee.alokasi_total),
+                      lokasi_ro: null,
+                      keterangan: "",
+                      posisi: "komponen",
+                    });
+
+                  });
+                }
+                /*End Komponen*/
+                let
+                  realisasi_ro = dataE1[0].realisasi_rka_ro === null ? 0 : parseInt(dataE1[0].realisasi_rka_ro),
+                  alokasi_ro = isNaN(dataE1[0].alokasi_total) ? 0 : parseInt(dataE1[0].alokasi_total),
+                  lokasi_alokasi_ro = null;
+
+                if (dataE1[0].lokasi_alokasi !== null) {
+                  let td = [];
+                  dataE1[0].lokasi_alokasi.forEach((kk, i) => {
+                    td.push(/*html*/
+                      `<tr>
+                        <td>${i + 1}</td>
+                        <td>${kk.kode_lokasi + "-" + kk.nama_lokasi}</td>
+                        <td class="text-end">${formatNumber(parseInt(kk.target))}</td>
+                        <td class="text-end">${formatNumber(parseInt(kk.alokasi))}</td>
+                      </tr>`
+                    );
+                  });
+                  lokasi_alokasi_ro = /*html*/
+                    `<table class="table table-striped fs-9px mx-1">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Lokasi</th>
+                          <th class="text-end">Target</th>
+                          <th class="text-end">Alokasi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${td.join("")}
+                      </tbody>
+                    </table>`
+                    ;
+                }
+                let data_ro = {
+                  tahun: dataE1[0].tahun,
+                  kl_id: dataE1[0].kementerian_kode,
+                  program_id: dataE1[0].program_kode,
+                  kegiatan_id: dataE1[0].kegiatan_kode,
+                  kro_id: dataE1[0].output_kode,
+                  ro_id: dataE1[0].suboutput_kode,
+                  name: dataE1[0].suboutput_nama,
+                  jml_program: null,
+                  jml_kegiatan: null,
+                  jml_kro: null,
+                  jml_ro: null,
+                  realisasi_total: realisasi_ro,
+                  alokasi_total: alokasi_ro,
+                  lokasi_ro: lokasi_alokasi_ro,
+                  keterangan: "",
+                  posisi: "RO",
+                  _children: komponen
+                };
+                if (dataE[dd][0]["komponen"] == null) {
+                  delete data_ro['_children'];
+                }
+                ro.push(data_ro);
+                realisasi_kro += realisasi_ro;
+                alokasi_kro += alokasi_ro;
+              });
+              /*End RO*/
+
+              kro.push({
+                tahun: dataD1[0].tahun,
+                kl_id: dataD1[0].kementerian_kode,
+                program_id: dataD1[0].program_kode,
+                kegiatan_id: dataD1[0].kegiatan_kode,
+                kro_id: dataD1[0].output_kode,
+                name: dataD1[0].kegiatan_nama,
+                jml_program: null,
+                jml_kegiatan: null,
+                jml_kro: null,
+                jml_ro: jml_roD,
+                realisasi_total: realisasi_kro,
+                alokasi_total: alokasi_kro,
+                lokasi_ro: null,
+                keterangan: "",
+                posisi: "KRO",
+                _children: ro
+              });
+              jml_roC += jml_roD;
+              realisasi_keg += realisasi_kro;
+              alokasi_keg += alokasi_kro;
+            });
+            /*End KRO*/
+
+            keg.push({
+              tahun: dataC1[0].tahun,
+              kl_id: dataC1[0].kementerian_kode,
+              program_id: dataC1[0].program_kode,
+              kegiatan_id: dataC1[0].kegiatan_kode,
+              name: dataC1[0].kegiatan_nama,
+              jml_program: null,
+              jml_kegiatan: null,
+              jml_kro: jml_kroC,
+              jml_ro: jml_roC,
+              realisasi_total: realisasi_keg,
+              alokasi_total: alokasi_keg,
+              lokasi_ro: null,
+              keterangan: "",
+              posisi: "Kegiatan",
+              _children: kro
+            });
+            jml_roB += jml_roC;
+            jml_kroB += jml_kroC;
+            realisasi_prog += realisasi_keg;
+            alokasi_prog += alokasi_keg;
+          });
+          /*End kegiatan*/
+
+          prog.push({
+            tahun: dataB1[0].tahun,
+            kl_id: dataB1[0].kementerian_kode,
+            program_id: dataB1[0].program_kode,
+            name: dataB1[0].program_nama,
+            jml_program: null,
+            jml_kegiatan: jml_kegiatanB,
+            jml_kro: jml_kroB,
+            jml_ro: jml_roB,
+            realisasi_total: realisasi_prog,
+            alokasi_total: alokasi_prog,
+            lokasi_ro: null,
+            keterangan: "",
+            posisi: "Program",
+            _children: keg
+          });
+          jml_roA += jml_roB;
+          jml_kroA += jml_kroB;
+          realisasi_kl += realisasi_prog;
+          alokasi_kl += alokasi_prog;
+        });
+        /*End Program*/
+
+        kl.push({
+          tahun: dataA1[0]['tahun'],
+          kl_id: dataA1[0]['kementerian_kode'],
+          name: dataA1[0]['kementerian_nama'],
+          name_short: dataA1[0]['kementerian_nama_alias'],
+          jml_program: jml_programA,
+          jml_kegiatan: jml_kegiatanA,
+          jml_kro: jml_kroA,
+          jml_ro: jml_roA,
+          realisasi_total: realisasi_kl,
+          alokasi_total: alokasi_kl,
+          lokasi_ro: null,
+          keterangan: "",
+          posisi: "KL",
+          _children: prog
+          /* id:i + 1, */
+        })
+
+      });
+      //console.log("kl data", kl);
+      return kl;
+    }
     document.getElementById('popUp').innerHTML = popUp;
     apopoverTrigger();
   }

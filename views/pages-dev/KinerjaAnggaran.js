@@ -1987,7 +1987,7 @@ const KinerjaAnggaran = {
       }
     };
     async function getDetailBelanjaKL(periode, kl, int, search) {
-      /* kl = ["010", "063", "047", "027"] */
+      kl = ["010", "063", "047", "027"];
       try {
         let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', {
           method: 'POST',
@@ -1999,6 +1999,7 @@ const KinerjaAnggaran = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
+        console.log(_res.data);
         return _res.data;
       } catch (e) {
         console.log("e", e);
@@ -2335,11 +2336,11 @@ const KinerjaAnggaran = {
             }
           },
           {
-            title: "Alokasi Bulan Januari",
-            titleDownload: "Alokasi Bulan Januari",
+            title: "Alokasi Anggaran",
+            titleDownload: "Alokasi Anggaran",
             field: "alokasi_totaloutput",
             headerPopup: function (e, column, onRendered) {
-              return popupnote("Alokasi pada bulan Januari");
+              return popupnote("Alokasi Anggaran");
             },
             headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
             /*  formatter: "money", */
@@ -2351,7 +2352,7 @@ const KinerjaAnggaran = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber(value * 1000, 2);
+                numbx = formatNumber(value, 2);
               }
               return numbx;
             },
@@ -2365,8 +2366,67 @@ const KinerjaAnggaran = {
               symbolAfter: "",
               precision: 2,
             }
-          }
-          ,
+          },
+          {
+            title: "Realisasi Anggaran",
+            titleDownload: "Realisasi Anggaran",
+            field: "alokasi_realisasi",
+            headerPopup: function (e, column, onRendered) {
+              return popupnote("Realisasi Anggaran");
+            },
+            headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
+            /*  formatter: "money", */
+            formatter: function (cell, formatterParams) {
+              var
+                value = cell.getValue(),
+                numbx;
+              if (value === "" || (typeof value === "undefined")) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+                numbx = "";
+              } else {
+                numbx = formatNumber(value, 2);
+              }
+              return numbx;
+            },
+            width: 167,
+            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            accessorDownload: numberIDRDownload,
+            bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
+              decimal: ",",
+              thousand: ".",
+              symbol: "",
+              symbolAfter: "",
+              precision: 2,
+            }
+          },
+          {
+            title: "% Realisasi Anggaran",
+            titleDownload: "% Realisasi Anggaran",
+            field: "alokasi_realisasi",
+            headerPopup: function (e, column, onRendered) {
+              return popupnote("% Realisasi Anggaran");
+            },
+            headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
+            /*  formatter: "money", */
+            formatter: function (cell, formatterParams) {
+              var
+                value = cell.getValue(),
+                numbx;
+              if (value === "" || (typeof value === "undefined")) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+                numbx = "";
+              } else {
+                numbx = formatNumber((cell._cell.row.data.alokasi_realisasi / cell._cell.row.data.alokasi_totaloutput) * 100, 2) + "%";
+              }
+              return numbx;
+            },
+            width: 167,
+            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            accessorDownload: numberIDRDownload,
+
+
+
+          },
           {
             title: "Tingkat Output",
             titleDownload: "Tingkat Output",
@@ -2384,7 +2444,7 @@ const KinerjaAnggaran = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber((value * 1000) + 195000, 2);
+                numbx = formatNumber((value), 2);
               }
               return numbx;
             },
@@ -2417,7 +2477,7 @@ const KinerjaAnggaran = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber((value * 1000) + 215000, 2);
+                numbx = formatNumber((value), 2);
               }
               return numbx;
             },
@@ -2449,7 +2509,7 @@ const KinerjaAnggaran = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber((value * 1000) + 195000, 2);
+                numbx = formatNumber((value), 2);
               }
               return "";
             },
@@ -2481,7 +2541,7 @@ const KinerjaAnggaran = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber((value * 1000) + 215000, 2);
+                numbx = formatNumber((value), 2);
               }
               return "";
             },
@@ -2660,8 +2720,6 @@ const KinerjaAnggaran = {
               precision: 2,
             }
           }
-
-
         ],
         initialSort: [
           { column: "id", dir: "asc" }
