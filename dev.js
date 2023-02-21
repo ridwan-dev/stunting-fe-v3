@@ -46,12 +46,31 @@ window.state = {};
 window.geoData = {};
 window.mData = {};
 window.user = {};
-
+let routesAdmin;
 if (getWithExpiry("userProfile") != null) {
   user.name = getWithExpiry("userProfile").name;
   user.email = getWithExpiry("userProfile").email;
   user.role_name = getWithExpiry("userProfile").roles[0].name;
   user.role_permissions = getWithExpiry("userProfile").roles[0].permissions;
+  user.role_permissions.forEach((row) => {
+    if (row.name == "administrator") {
+      routesAdmin = [
+        '/admin-penandaan-dan-pagu',
+        '/admin-penandaan-ro',
+        '/admin-penandaan-intervensi',
+        '/admin-master-intervensi',
+        '/admin-master-keywords'
+      ];
+      //routesAuth = routesAuth.concat(routesAdmin);
+    }
+    if (row.name == "admin_ro") {
+      routesAdmin = [
+        '/admin-penandaan-ro',
+        '/admin-master-keywords'
+      ];
+      //routesAuth = routesAuth.concat(routesAdmin);
+    }
+  });
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {
@@ -99,25 +118,7 @@ var routesAuth = [
   routesAuth = routesAuth.concat(routesAdmin);
 } */
 if (typeof user != 'undefined') {
-  user.role_permissions.forEach((row) => {
-    if (row.name == "administrator") {
-      let routesAdmin = [
-        '/admin-penandaan-dan-pagu',
-        '/admin-penandaan-ro',
-        '/admin-penandaan-intervensi',
-        '/admin-master-intervensi',
-        '/admin-master-keywords'
-      ];
-      routesAuth = routesAuth.concat(routesAdmin);
-    }
-    if (row.name == "admin_ro") {
-      let routesAdmin = [
-        '/admin-penandaan-ro',
-        '/admin-master-keywords'
-      ];
-      routesAuth = routesAuth.concat(routesAdmin);
-    }
-  });
+  routesAuth = routesAuth.concat(routesAdmin);
 }
 
 /**
