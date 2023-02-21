@@ -1,9 +1,14 @@
-const Navbar={render:async()=>{var a;let e="";return"admin"===user.role&&(a=[{name:"Admin Master Intervensi",slug:"admin-master-intervensi",icon:"account_tree"},{name:"Admin Master RO Keywords",slug:"admin-master-keywords",icon:"account_tree"}],e=`
-      <div class="menu-header">Menu Administrasi</div>
-      ${n([{name:"Admin Penandaan RO",slug:"admin-penandaan-ro",icon:"check_circle"},{name:"Admin Penandaan dan Pagu",slug:"admin-penandaan-dan-pagu",icon:"check_circle"},{name:"Admin Penandaan Intervensi",slug:"admin-penandaan-intervensi",icon:"check_circle"}])}
-      <div class="menu-header">Menu Master</div>
-      ${n(a)}
-      `),`
+const Navbar={render:async()=>{let i="";return"undefined"!=typeof user&&user.role_permissions.forEach(a=>{var e,n;"administrator"==a.name?(e=[{name:"Admin Penandaan RO",slug:"admin-penandaan-ro",icon:"check_circle"},{name:"Admin Penandaan dan Pagu",slug:"admin-penandaan-dan-pagu",icon:"check_circle"},{name:"Admin Penandaan Intervensi",slug:"admin-penandaan-intervensi",icon:"check_circle"}],n=[{name:"Admin Master Intervensi",slug:"admin-master-intervensi",icon:"account_tree"},{name:"Admin Master RO Keywords",slug:"admin-master-keywords",icon:"account_tree"}],i=`
+            <div class="menu-header">Menu Administrasi</div>
+            ${s(e)}
+            <div class="menu-header">Menu Master</div>
+            ${s(n)}
+            `):"admin_ro"==a.name&&(e=[{name:"Admin Penandaan RO",slug:"admin-penandaan-ro",icon:"check_circle"}],n=[{name:"Admin Master RO Keywords",slug:"admin-master-keywords",icon:"account_tree"}],i=`
+            <div class="menu-header">Menu Administrasi</div>
+            ${s(e)}
+            <div class="menu-header">Menu Master</div>
+            ${s(n)}
+            `)}),`
       <div class="app-sidebar-content app-sidebar-content-full-height" style="overflow-y: scroll;height: 100%;">
           <!-- BEGIN menu -->
           <div class="menu bg-white-500">
@@ -21,12 +26,12 @@ const Navbar={render:async()=>{var a;let e="";return"admin"===user.role&&(a=[{na
                       </div>
                   </a>
               </div>                    
-            ${n([{name:"Home",slug:"",icon:"home"},{name:"Penandaan dan Pagu",slug:"penandaan-dan-pagu",icon:"verified"},{name:"Kinerja Anggaran  Belanja K/L",slug:"kinerja-anggaran-belanja-kl",icon:"balance"},{name:"Dana Alokasi Khusus",slug:"dak",icon:"real_estate_agent"},{name:"Kinerja Pembangunan",slug:"kinerja-pembangunan",icon:"account_balance"},{name:"Capaian Indikator",slug:"capaian-indikator",icon:"stacked_bar_chart"}])}
-            ${e}                 
+            ${s([{name:"Home",slug:"",icon:"home"},{name:"Penandaan dan Pagu",slug:"penandaan-dan-pagu",icon:"verified"},{name:"Kinerja Anggaran  Belanja K/L",slug:"kinerja-anggaran-belanja-kl",icon:"balance"},{name:"Dana Alokasi Khusus",slug:"dak",icon:"real_estate_agent"},{name:"Kinerja Pembangunan",slug:"kinerja-pembangunan",icon:"account_balance"},{name:"Capaian Indikator",slug:"capaian-indikator",icon:"stacked_bar_chart"}])}
+            ${i}                 
           </div>
           <!-- END menu -->
       </div>            
-    `;function n(a){let e=[],n;return a.forEach(a=>{if(a.child){let e=[];a.child.forEach(a=>{e.push(`
+    `;function s(a){let e=[],n;return a.forEach(a=>{if(a.child){let e=[];a.child.forEach(a=>{e.push(`
             <div class="menu-item ${parseRequestUrl().resource==a.slug?"active":""}">
               <a href="#/${a.slug}" class="menu-link">
                 <div class="menu-icon">

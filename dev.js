@@ -50,7 +50,8 @@ window.user = {};
 if (getWithExpiry("userProfile") != null) {
   user.name = getWithExpiry("userProfile").name;
   user.email = getWithExpiry("userProfile").email;
-  user.role = getWithExpiry("userProfile").roles[0].name;
+  user.role_name = getWithExpiry("userProfile").roles[0].name;
+  user.role_permissions = getWithExpiry("userProfile").roles[0].permissions;
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {
@@ -87,7 +88,7 @@ var routesAuth = [
   '/login',
 ];
 
-if ((typeof user != 'undefined') && (user.role == "admin")) {
+/* if ((typeof user != 'undefined') && (user.role_name == "admin")) {
   let routesAdmin = [
     '/admin-penandaan-dan-pagu',
     '/admin-penandaan-ro',
@@ -96,8 +97,28 @@ if ((typeof user != 'undefined') && (user.role == "admin")) {
     '/admin-master-keywords'
   ];
   routesAuth = routesAuth.concat(routesAdmin);
+} */
+if (typeof user != 'undefined') {
+  user.role_permissions.forEach((row) => {
+    if (row.name == "administrator") {
+      let routesAdmin = [
+        '/admin-penandaan-dan-pagu',
+        '/admin-penandaan-ro',
+        '/admin-penandaan-intervensi',
+        '/admin-master-intervensi',
+        '/admin-master-keywords'
+      ];
+      routesAuth = routesAuth.concat(routesAdmin);
+    }
+    if (row.name == "admin_ro") {
+      let routesAdmin = [
+        '/admin-penandaan-ro',
+        '/admin-master-keywords'
+      ];
+      routesAuth = routesAuth.concat(routesAdmin);
+    }
+  });
 }
-
 
 /**
  * The router code. Takes a URL, checks against the list of
