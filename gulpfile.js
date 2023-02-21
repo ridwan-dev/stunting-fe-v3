@@ -8,7 +8,8 @@ const source = require("vinyl-source-stream");
 const esmify = require('esmify');
 const htmlmin = require('gulp-htmlmin');
 
-const destPath = './dist/',
+const destMain = './',
+    destPath = './dist/',
     destProd = './views/pages/',
     destAdm = './views/pages/admin/',
     destCom = './views/components/',
@@ -304,6 +305,15 @@ gulp.task('adm-master-ro-keyword-js', () => {
         .pipe(gulp.dest(destAdm));
 });
 
+gulp.task('index-main-js', () => {
+    return gulp.src([
+        "dev.js",
+    ])
+        .pipe(concat('index.js'))
+        .pipe(minifyJS())
+        .pipe(gulp.dest(destMain));
+});
+
 gulp.task("build", function () {
 
     return browserify({
@@ -319,4 +329,4 @@ gulp.task("build", function () {
     connect.server();
 }); */
 
-gulp.task('default', gulp.series('bundle-css', 'vendor-js', 'index-html', 'header-js', 'navbar-js', 'footer-js', 'api-js', 'auth-js', 'core-js', 'utils-js', 'home-js', 'belanjakl-js', 'capaian-js', 'dak-js', 'e404-js', 'kinerjaA-js', 'kinerjaP-js', 'login-js', 'penandaan-js', 'adm-penandaan-js', 'adm-master-int-js', 'adm-penandaan-ro-js', 'adm-penandaan-intervensi-js', 'adm-master-ro-keyword-js'/* , 'connect' */));
+gulp.task('default', gulp.series('bundle-css', 'vendor-js', 'index-html', 'index-main-js', 'header-js', 'navbar-js', 'footer-js', 'api-js', 'auth-js', 'core-js', 'utils-js', 'home-js', 'belanjakl-js', 'capaian-js', 'dak-js', 'e404-js', 'kinerjaA-js', 'kinerjaP-js', 'login-js', 'penandaan-js', 'adm-penandaan-js', 'adm-master-int-js', 'adm-penandaan-ro-js', 'adm-penandaan-intervensi-js', 'adm-master-ro-keyword-js'/* , 'connect' */));
