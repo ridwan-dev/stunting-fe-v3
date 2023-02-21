@@ -22,24 +22,43 @@ const Navbar = {
     ];
 
     let links_admin = "";
-    if (user.role === "admin") {
-      let mn = [
-        { name: 'Admin Penandaan RO', slug: 'admin-penandaan-ro', icon: 'check_circle' },
-        { name: 'Admin Penandaan dan Pagu', slug: 'admin-penandaan-dan-pagu', icon: 'check_circle' },
-        { name: 'Admin Penandaan Intervensi', slug: 'admin-penandaan-intervensi', icon: 'check_circle' }
-      ];
-      let mo = [
-        { name: 'Admin Master Intervensi', slug: 'admin-master-intervensi', icon: 'account_tree' },
-        { name: 'Admin Master RO Keywords', slug: 'admin-master-keywords', icon: 'account_tree' }
-      ];
-      links_admin =  /*html*/`
-      <div class="menu-header">Menu Administrasi</div>
-      ${view_menu(mn)}
-      <div class="menu-header">Menu Master</div>
-      ${view_menu(mo)}
-      `;
-      ;
+    if (typeof user != 'undefined') {
+      user.role_permissions.forEach((row) => {
+        if (row.name == "administrator") {
+          let mn = [
+            { name: 'Admin Penandaan RO', slug: 'admin-penandaan-ro', icon: 'check_circle' },
+            { name: 'Admin Penandaan dan Pagu', slug: 'admin-penandaan-dan-pagu', icon: 'check_circle' },
+            { name: 'Admin Penandaan Intervensi', slug: 'admin-penandaan-intervensi', icon: 'check_circle' }
+          ];
+          let mo = [
+            { name: 'Admin Master Intervensi', slug: 'admin-master-intervensi', icon: 'account_tree' },
+            { name: 'Admin Master RO Keywords', slug: 'admin-master-keywords', icon: 'account_tree' }
+          ];
+          links_admin =  /*html*/`
+            <div class="menu-header">Menu Administrasi</div>
+            ${view_menu(mn)}
+            <div class="menu-header">Menu Master</div>
+            ${view_menu(mo)}
+            `;
+          ;
+        } else if (row.name == "admin_ro") {
+          let mn = [
+            { name: 'Admin Penandaan RO', slug: 'admin-penandaan-ro', icon: 'check_circle' },
+          ];
+          let mo = [
+            { name: 'Admin Master RO Keywords', slug: 'admin-master-keywords', icon: 'account_tree' }
+          ];
+          links_admin =  /*html*/`
+            <div class="menu-header">Menu Administrasi</div>
+            ${view_menu(mn)}
+            <div class="menu-header">Menu Master</div>
+            ${view_menu(mo)}
+            `;
+          ;
+        }
+      });
     }
+
     /* console.log("menu", links);
     console.log("menux", parseRequestUrl().resource);
      */// Build html with navigation links.

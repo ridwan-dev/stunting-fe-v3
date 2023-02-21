@@ -1675,6 +1675,10 @@ const PenandaanPagu = {
       }
       return table;
     }
+    console.log("cccc", getWithExpiry("userProfile"));
+    console.log("cccc x", user.role_permissions);
+
+
 
     popUp = /*html*/ `
       <div class="modal-header bg-gray-300 w-100">
