@@ -16,6 +16,7 @@ const PenandaanPagu = {
     const widgetCard2 = await WidgetCard.render('tile-2', 'Pagu', 'white-100', 'lg-12 mt-3 mb-2');
 
     return /*html*/ `
+    
       <div class="app-content-padding flex-grow-1 overflow-auto" data-scrollbar="true">
 				<!-- BEGIN page-header -->
 				<h2 class="page-header text-blue"><i class="material-icons text-blue-600 align-middle me-1 mb-1">verified</i>Penandaan dan Pagu</h2>
@@ -381,6 +382,7 @@ const PenandaanPagu = {
 
     /* tahun 2022 Up */
     async function getTabelNew(periode, kl, int, search) {
+      kl = ['023', '018'];
       try {
         let res = await fetch(config.api_url + '/renja/renjakl', {
           method: 'POST',
@@ -408,6 +410,8 @@ const PenandaanPagu = {
         columnHeaderVertAlign: "middle",
         columnVertAlign: "left",
         dataTree: true,
+        /* rowHeight: 80, */
+        scrollToColumnPosition: "center",
         dataTreeStartExpanded: opsiTabel.expand,
         dataTreeFilter: true,
         dataTreeElementColumn: "name",
@@ -481,7 +485,7 @@ const PenandaanPagu = {
                     `;
               }
               else {
-                console.log("komponen", cell._cell.row.data.komponen_kode);
+                //console.log("komponen", cell._cell.row.data.komponen_kode);
                 ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">' + cell._cell.row.data.komponen_kode + '</span>';
                 //if (cell._cell.row.data.komponen_kode != null) {
                 hasil = /*html*/`
@@ -776,20 +780,20 @@ const PenandaanPagu = {
             headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
 
             /*  formatter: "money", */
+
             formatter: function (cell, formatterParams) {
               cell.getElement().style.textAlign = "left";
-              cell.getElement().style.width = 600;
               var numbx;
               if (cell._cell.row.data.lokasi_ro === null || cell._cell.row.data.lokasi_ro === "" || (typeof cell._cell.row.data.lokasi_ro === "undefined")) {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-
+                cell.getElement().classList.add("tablelist");
                 numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.lokasi_ro + "</span>"
               }
               return numbx;
             },
-            width: 167,
+            width: 300,
             sorter: "number", headerHozAlign: "center", hozAlign: "right",
             accessorDownload: numberIDRDownload,
             bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
@@ -1827,6 +1831,8 @@ const PenandaanPagu = {
                   let groupByKompKode = arr_groupBy(['komponen_kode']),
                     data_perkomp = groupByKompKode(mergeArray(gKomp));
                   Object.keys(data_perkomp).forEach((hh) => {
+
+                    //console.log("hh", data_perkomp[hh]);
                     dKomp[hh] = {
                       "realisasi": sumObject(Object.values(data_perkomp[hh]), "alokasi"),
                     };
@@ -1834,8 +1840,13 @@ const PenandaanPagu = {
                 }
 
                 if (dataE[dd][0]["komponen"] != null) {
-                  let dataF = dataE[dd][0]["komponen"];
-                  dataF.forEach((ee) => {
+                  let dataF = dataE[dd][0]["komponen"],
+                    groupByKompKodeIn = arr_groupBy(['kdkmpnen']),
+                    data_perkompIn = groupByKompKodeIn(dataF);
+                  console.log("data_perkompIn", data_perkompIn);
+                  //let data_komponen = Object.keys(data_perkompIn);
+                  /* dataF.forEach((ee) => { */
+                  Object.keys(data_perkompIn).forEach((ee) => {
                     jml_komp += 1;
                     let jml_roE = 0;
 
@@ -1846,19 +1857,19 @@ const PenandaanPagu = {
                       kegiatan_id: dataE[dd][0].kegiatan_kode,
                       kro_id: dataE[dd][0].output_kode,
                       ro_id: dataE[dd][0].suboutput_kode,
-                      komponen_kode: ee.kdkmpnen,
-                      name: ee.nmkmpnen,
+                      komponen_kode: data_perkompIn[ee][0].kdkmpnen,
+                      name: data_perkompIn[ee][0].nmkmpnen,
                       jml_kro: null,
                       jml_ro: null,
                       jml_program: null,
                       jml_kegiatan: null,
-                      komponen_jenis: ee.jenis_komponen,
-                      indikator_pbj: ee.indikator_pbj,
-                      indikator_komponen: ee.indikator_komponen,
-                      satuan: ee.satuan,
-                      target: ee.target,
-                      realisasi_total: (typeof dKomp[ee.kdkmpnen] !== 'undefined') ? (dKomp[ee.kdkmpnen]['realisasi']) / 1000 : 0,
-                      alokasi_total: parseInt(ee.alokasi_total),
+                      komponen_jenis: data_perkompIn[ee][0].jenis_komponen,
+                      indikator_pbj: data_perkompIn[ee][0].indikator_pbj,
+                      indikator_komponen: (data_perkompIn[ee][0].indikator_komponen == "null") || (data_perkompIn[ee][0].indikator_komponen == "") ? "-" : data_perkompIn[ee][0].indikator_komponen,
+                      satuan: data_perkompIn[ee][0].satuan,
+                      target: data_perkompIn[ee][0].target,
+                      realisasi_total: (typeof dKomp[data_perkompIn[ee][0].kdkmpnen] !== 'undefined') ? (dKomp[data_perkompIn[ee][0].kdkmpnen]['realisasi']) / 1000 : 0,
+                      alokasi_total: sumObject(Object.values(data_perkompIn[ee]), "alokasi_total"),
                       lokasi_ro: null,
                       keterangan: "",
                       posisi: "komponen",
@@ -1885,7 +1896,7 @@ const PenandaanPagu = {
                     );
                   });
                   lokasi_alokasi_ro = /*html*/
-                    `<table class="table table-striped fs-9px mx-1">
+                    `<table class="table table-bordered table-striped rounded bg-gray-300 fs-9px mt-1 mx-1">
                       <thead>
                         <tr>
                           <th>No.</th>
@@ -1917,7 +1928,8 @@ const PenandaanPagu = {
                   lokasi_ro: lokasi_alokasi_ro,
                   keterangan: "",
                   posisi: "RO",
-                  _children: komponen
+                  _children: komponen.sort((a, b) => a.komponen_kode - b.komponen_kode)
+
                 };
                 if (dataE[dd][0]["komponen"] == null) {
                   delete data_ro['_children'];
