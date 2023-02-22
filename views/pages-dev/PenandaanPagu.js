@@ -382,7 +382,6 @@ const PenandaanPagu = {
 
     /* tahun 2022 Up */
     async function getTabelNew(periode, kl, int, search) {
-      kl = ['023', '018'];
       try {
         let res = await fetch(config.api_url + '/renja/renjakl', {
           method: 'POST',
