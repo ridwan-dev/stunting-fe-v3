@@ -1819,9 +1819,10 @@ const PenandaanPagu = {
                     realisasi_rka_komp = dataE[dd][0]["realisasi_rka_komp"],
                     gKomp = [];
 
+                  //console.log("realisasi_rka_komp", realisasi_rka_komp);
                   realisasi_rka_komp.forEach((ff) => {
                     let komp = [];
-                    ff.alokasis.forEach((gg) => {
+                    ff.ro_komponen.alokasis.forEach((gg) => {
                       komp.push(gg);
                     });
                     gKomp.push(mergeArray(komp));
@@ -1842,7 +1843,7 @@ const PenandaanPagu = {
                   let dataF = dataE[dd][0]["komponen"],
                     groupByKompKodeIn = arr_groupBy(['kdkmpnen']),
                     data_perkompIn = groupByKompKodeIn(dataF);
-                  console.log("data_perkompIn", data_perkompIn);
+                  //console.log("data_perkompIn", data_perkompIn);
                   //let data_komponen = Object.keys(data_perkompIn);
                   /* dataF.forEach((ee) => { */
                   Object.keys(data_perkompIn).forEach((ee) => {
