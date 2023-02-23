@@ -46,7 +46,7 @@ window.state = {};
 window.geoData = {};
 window.mData = {};
 window.user = {};
-let routesAdmin;
+let routesAdmin = [];
 if (getWithExpiry("userProfile") != null) {
   user.name = getWithExpiry("userProfile").name;
   user.email = getWithExpiry("userProfile").email;

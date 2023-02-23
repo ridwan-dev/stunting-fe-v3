@@ -1989,7 +1989,8 @@ const KinerjaAnggaran = {
     async function getDetailBelanjaKL(periode, kl, int, search) {
       kl = ["010", "063", "047", "027"];
       try {
-        let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', {
+        /* let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', { */
+        let res = await fetch(config.api_url + '/renja/renjakl', {
           method: 'POST',
           body: JSON.stringify({
             "tahun": periode,
@@ -3483,7 +3484,7 @@ const KinerjaAnggaran = {
     console.log("dataX", dataX); */
 
 
-    function strukturKinerjaAnggaran(data) {
+    function strukturKinerjaAnggaranx(data) {
       let
         groupByKL = arr_groupBy(['kementerian_kode']),
         data_perkl = groupByKL(data),
@@ -3555,7 +3556,9 @@ const KinerjaAnggaran = {
                   dataE1 = Object.assign({}, dataE[dd]),
                   v_realisasi_ro = sumObject(Object.values(dataE1), "realisasi_ro"),
                   v_alokasi_0 = sumObject(Object.values(dataE1), "alokasi_0"),
-                  jml_komp = 0,
+                  jml_komp = 0;
+                console.log("dataE1", dataE1);
+                let
                   groupByKomp = arr_groupBy(['komponen_kode']),
                   data_perKomp = groupByKomp(Object.values(dataE1)),
                   dataF = Object.assign({}, data_perKomp),
@@ -3708,6 +3711,305 @@ const KinerjaAnggaran = {
       return kl;
     }
 
+    function strukturKinerjaAnggaran(data) {
+      //console.log("data cc", data);
+      let
+        groupByKL = arr_groupBy(['kementerian_kode']),
+        data_perkl = groupByKL(data),
+        dataA = Object.assign({}, data_perkl),
+        kl = [];
+
+      Object.keys(dataA).forEach((aa) => {  //kl
+        let
+          dataA1 = Object.assign({}, dataA[aa]),
+          realisasi_kl = 0,
+          alokasi_kl = 0,
+          jml_programA = 0,
+          jml_kegiatanA = 0,
+          jml_kroA = 0,
+          jml_roA = 0,
+          groupByProg = arr_groupBy(['program_kode']),
+          data_perprog = groupByProg(Object.values(dataA1)),
+          dataB = Object.assign({}, data_perprog),
+          prog = [];
+
+        Object.keys(dataB).forEach((bb) => {    //prog
+          jml_programA += 1;
+
+          let
+            dataB1 = Object.assign({}, dataB[bb]),
+            realisasi_prog = 0,
+            alokasi_prog = 0,
+            jml_kegiatanB = 0,
+            jml_kroB = 0,
+            jml_roB = 0,
+            groupByKeg = arr_groupBy(['kegiatan_kode']),
+            data_perkeg = groupByKeg(Object.values(dataB1)),
+            dataC = Object.assign({}, data_perkeg),
+            keg = [];
+
+          /*Start kegiatan*/
+          Object.keys(dataC).forEach((cc) => {    //kegiatan
+            jml_kegiatanB += 1;
+
+            let
+              dataC1 = Object.assign({}, dataC[cc]),
+              realisasi_keg = 0,
+              alokasi_keg = 0,
+              jml_kroC = 0,
+              jml_roC = 0,
+              groupByKro = arr_groupBy(['output_kode']),
+              data_perkro = groupByKro(Object.values(dataC1)),
+              dataD = Object.assign({}, data_perkro),
+              kro = [];
+
+            /*Start KRO*/
+            Object.keys(dataD).forEach((dd) => {    //KRO
+              jml_kroC += 1;
+
+              let
+                dataD1 = Object.assign({}, dataD[dd]),
+                realisasi_kro = 0,
+                alokasi_kro = 0,
+                jml_roD = 0,
+                groupByRo = arr_groupBy(['suboutput_kode']),
+                data_perRo = groupByRo(Object.values(dataD1)),
+                dataE = Object.assign({}, data_perRo),
+                ro = [];
+
+              /*Start RO*/
+              Object.keys(dataE).forEach((dd) => {    //RO
+                jml_roD += 1;
+
+                let
+                  dataE1 = Object.assign({}, dataE[dd]),
+                  jml_komp = 0,
+                  komponen = [],
+                  dKomp = [];
+
+                console.log("dataE1", dataE1);
+
+                /*Start Komponen if ready*/
+
+                /*realisasi komp*/
+                if (dataE[dd][0]["realisasi_rka_komp"] != null) {
+                  let
+                    realisasi_rka_komp = dataE[dd][0]["realisasi_rka_komp"],
+                    gKomp = [];
+
+                  realisasi_rka_komp.forEach((ff) => {
+                    let komp = [];
+                    ff.alokasis.forEach((gg) => {
+                      komp.push(gg);
+                    });
+                    gKomp.push(mergeArray(komp));
+                  });
+
+                  let groupByKompKode = arr_groupBy(['komponen_kode']),
+                    data_perkomp = groupByKompKode(mergeArray(gKomp));
+                  Object.keys(data_perkomp).forEach((hh) => {
+
+                    //console.log("hh", data_perkomp[hh]);
+                    dKomp[hh] = {
+                      "realisasi": sumObject(Object.values(data_perkomp[hh]), "alokasi"),
+                    };
+                  });
+                }
+
+                if (dataE[dd][0]["komponen"] != null) {
+                  let dataF = dataE[dd][0]["komponen"],
+                    groupByKompKodeIn = arr_groupBy(['kdkmpnen']),
+                    data_perkompIn = groupByKompKodeIn(dataF);
+                  //console.log("data_perkompIn", data_perkompIn);
+                  //let data_komponen = Object.keys(data_perkompIn);
+                  /* dataF.forEach((ee) => { */
+                  Object.keys(data_perkompIn).forEach((ee) => {
+                    jml_komp += 1;
+                    let jml_roE = 0;
+
+                    komponen.push({
+                      tahun: dataE[dd][0].tahun,
+                      kl_id: dataE[dd][0].kementerian_kode,
+                      program_id: dataE[dd][0].program_kode,
+                      kegiatan_id: dataE[dd][0].kegiatan_kode,
+                      kro_id: dataE[dd][0].output_kode,
+                      ro_id: dataE[dd][0].suboutput_kode,
+                      komponen_kode: data_perkompIn[ee][0].kdkmpnen,
+                      name: data_perkompIn[ee][0].nmkmpnen,
+                      jml_kro: null,
+                      jml_ro: null,
+                      jml_program: null,
+                      jml_kegiatan: null,
+                      komponen_jenis: data_perkompIn[ee][0].jenis_komponen,
+                      indikator_pbj: data_perkompIn[ee][0].indikator_pbj,
+                      indikator_komponen: (data_perkompIn[ee][0].indikator_komponen == "null") || (data_perkompIn[ee][0].indikator_komponen == "") ? "-" : data_perkompIn[ee][0].indikator_komponen,
+                      satuan: data_perkompIn[ee][0].satuan,
+                      target: data_perkompIn[ee][0].target,
+                      realisasi_total: (typeof dKomp[data_perkompIn[ee][0].kdkmpnen] !== 'undefined') ? (dKomp[data_perkompIn[ee][0].kdkmpnen]['realisasi']) / 1000 : 0,
+                      alokasi_total: sumObject(Object.values(data_perkompIn[ee]), "alokasi_total"),
+                      lokasi_ro: null,
+                      keterangan: "",
+                      posisi: "komponen",
+                    });
+
+                  });
+                }
+                /*End Komponen*/
+                let
+                  realisasi_ro = dataE1[0].realisasi_rka_ro === null ? 0 : parseInt(dataE1[0].realisasi_rka_ro),
+                  alokasi_ro = isNaN(dataE1[0].alokasi_total) ? 0 : parseInt(dataE1[0].alokasi_total),
+                  lokasi_alokasi_ro = null;
+
+                if (dataE1[0].lokasi_alokasi !== null) {
+                  let td = [];
+                  dataE1[0].lokasi_alokasi.forEach((kk, i) => {
+                    td.push(/*html*/
+                      `<tr>
+                        <td>${i + 1}</td>
+                        <td>${kk.kode_lokasi + "-" + kk.nama_lokasi}</td>
+                        <td class="text-end">${formatNumber(parseInt(kk.target))}</td>
+                        <td class="text-end">${formatNumber(parseInt(kk.alokasi))}</td>
+                      </tr>`
+                    );
+                  });
+                  lokasi_alokasi_ro = /*html*/
+                    `<table class="table table-bordered table-striped rounded bg-gray-300 fs-9px mt-1 mx-1">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Lokasi</th>
+                          <th class="text-end">Target</th>
+                          <th class="text-end">Alokasi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${td.join("")}
+                      </tbody>
+                    </table>`
+                    ;
+                }
+                let data_ro = {
+                  tahun: dataE1[0].tahun,
+                  kl_id: dataE1[0].kementerian_kode,
+                  program_id: dataE1[0].program_kode,
+                  kegiatan_id: dataE1[0].kegiatan_kode,
+                  kro_id: dataE1[0].output_kode,
+                  ro_id: dataE1[0].suboutput_kode,
+                  name: dataE1[0].suboutput_nama,
+                  jml_program: null,
+                  jml_kegiatan: null,
+                  jml_kro: null,
+                  jml_ro: null,
+                  realisasi_total: realisasi_ro,
+                  alokasi_total: alokasi_ro,
+                  lokasi_ro: lokasi_alokasi_ro,
+                  keterangan: "",
+                  posisi: "RO",
+                  _children: komponen.sort((a, b) => a.komponen_kode - b.komponen_kode)
+
+                };
+                if (dataE[dd][0]["komponen"] == null) {
+                  delete data_ro['_children'];
+                }
+                ro.push(data_ro);
+                realisasi_kro += realisasi_ro;
+                alokasi_kro += alokasi_ro;
+              });
+              /*End RO*/
+
+              kro.push({
+                tahun: dataD1[0].tahun,
+                kl_id: dataD1[0].kementerian_kode,
+                program_id: dataD1[0].program_kode,
+                kegiatan_id: dataD1[0].kegiatan_kode,
+                kro_id: dataD1[0].output_kode,
+                name: dataD1[0].kegiatan_nama,
+                jml_program: null,
+                jml_kegiatan: null,
+                jml_kro: null,
+                jml_ro: jml_roD,
+                realisasi_total: realisasi_kro,
+                alokasi_total: alokasi_kro,
+                lokasi_ro: null,
+                keterangan: "",
+                posisi: "KRO",
+                _children: ro
+              });
+              jml_roC += jml_roD;
+              realisasi_keg += realisasi_kro;
+              alokasi_keg += alokasi_kro;
+            });
+            /*End KRO*/
+
+            keg.push({
+              tahun: dataC1[0].tahun,
+              kl_id: dataC1[0].kementerian_kode,
+              program_id: dataC1[0].program_kode,
+              kegiatan_id: dataC1[0].kegiatan_kode,
+              name: dataC1[0].kegiatan_nama,
+              jml_program: null,
+              jml_kegiatan: null,
+              jml_kro: jml_kroC,
+              jml_ro: jml_roC,
+              realisasi_total: realisasi_keg,
+              alokasi_total: alokasi_keg,
+              lokasi_ro: null,
+              keterangan: "",
+              posisi: "Kegiatan",
+              _children: kro
+            });
+            jml_roB += jml_roC;
+            jml_kroB += jml_kroC;
+            realisasi_prog += realisasi_keg;
+            alokasi_prog += alokasi_keg;
+          });
+          /*End kegiatan*/
+
+          prog.push({
+            tahun: dataB1[0].tahun,
+            kl_id: dataB1[0].kementerian_kode,
+            program_id: dataB1[0].program_kode,
+            name: dataB1[0].program_nama,
+            jml_program: null,
+            jml_kegiatan: jml_kegiatanB,
+            jml_kro: jml_kroB,
+            jml_ro: jml_roB,
+            realisasi_total: realisasi_prog,
+            alokasi_total: alokasi_prog,
+            lokasi_ro: null,
+            keterangan: "",
+            posisi: "Program",
+            _children: keg
+          });
+          jml_roA += jml_roB;
+          jml_kroA += jml_kroB;
+          realisasi_kl += realisasi_prog;
+          alokasi_kl += alokasi_prog;
+        });
+        /*End Program*/
+
+        kl.push({
+          tahun: dataA1[0]['tahun'],
+          kl_id: dataA1[0]['kementerian_kode'],
+          name: dataA1[0]['kementerian_nama'],
+          name_short: dataA1[0]['kementerian_nama_alias'],
+          jml_program: jml_programA,
+          jml_kegiatan: jml_kegiatanA,
+          jml_kro: jml_kroA,
+          jml_ro: jml_roA,
+          realisasi_total: realisasi_kl,
+          alokasi_total: alokasi_kl,
+          lokasi_ro: null,
+          keterangan: "",
+          posisi: "KL",
+          _children: prog
+          /* id:i + 1, */
+        })
+
+      });
+      console.log("kl data", kl);
+      return kl;
+    }
 
     document.getElementById('popUp').innerHTML = popUp;
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
