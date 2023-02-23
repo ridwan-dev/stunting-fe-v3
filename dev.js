@@ -131,7 +131,7 @@ const router = async () => {
   const { resource, id, verb } = parseRequestUrl();
   let urlAllow = routesAuth.includes('/' + resource);
 
-  !urlAllow ? window.location.replace("#/login") : "";
+  //!urlAllow ? window.location.replace("#/login") : urlAllow;
   // Do Auth
   const oauth = !(validateAuth(resource)) ?
     window.location.replace("#/login") :
