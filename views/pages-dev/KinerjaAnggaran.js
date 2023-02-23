@@ -1987,7 +1987,7 @@ const KinerjaAnggaran = {
       }
     };
     async function getDetailBelanjaKL(periode, kl, int, search) {
-      kl = ["010", "063", "047", "027"];
+      //kl = ["010", "063", "047", "027"]; /* "063" */
       try {
         /* let res = await fetch(config.api_url_v3 + '/renja/renjakl-v3', { */
         let res = await fetch(config.api_url + '/renja/renjakl', {
@@ -3799,7 +3799,7 @@ const KinerjaAnggaran = {
 
                   realisasi_rka_komp.forEach((ff) => {
                     let komp = [];
-                    ff.alokasis.forEach((gg) => {
+                    ff.ro_komponen.alokasis.forEach((gg) => {
                       komp.push(gg);
                     });
                     gKomp.push(mergeArray(komp));
