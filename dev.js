@@ -132,7 +132,8 @@ const router = async () => {
   let urlAllow = routesAuth.includes('/' + resource);
   // Do Auth
   const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" :
-    (resource === 'login') ? window.location.replace("#/") : null;
+    (resource === 'login') ? window.location.href = "./#/login" : null;
+  /* (resource === 'login') ? window.location.replace("./#/") : null; */
 
   !routesAuth.includes('/' + resource) ? window.location.replace("#/") : null;
 
