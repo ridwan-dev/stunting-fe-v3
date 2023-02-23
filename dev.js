@@ -130,14 +130,9 @@ const router = async () => {
   // Destructure the parsed URl from the addressbar.
   const { resource, id, verb } = parseRequestUrl();
   let urlAllow = routesAuth.includes('/' + resource);
-
-  //!urlAllow ? window.location.replace("#/login") : urlAllow;
   // Do Auth
-  const oauth = !(validateAuth(resource)) ?
-    window.location.replace("#/login") :
-    (resource === 'login') ?
-      window.location.replace("#/") : null;
-
+  const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" :
+    (resource === 'login') ? window.location.replace("#/") : null;
 
   !routesAuth.includes('/' + resource) ? window.location.replace("#/") : null;
 
