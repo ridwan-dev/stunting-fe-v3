@@ -131,18 +131,14 @@ const router = async () => {
   const { resource, id, verb } = parseRequestUrl();
   let urlAllow = routesAuth.includes('/' + resource);
   // Do Auth
-  const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" :
-    (resource === 'login') ? window.location.href = "./#/login" : null;
-  /* (resource === 'login') ? window.location.replace("./#/") : null; */
-
-  !routesAuth.includes('/' + resource) ? window.location.replace("#/") : null;
+  const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" : (resource === 'login') ? window.location.href = "./#/login" : null;
+  !routesAuth.includes('/' + resource) && (validateAuth(resource)) ? window.location.replace("#/") : null;
 
   // Parse the URL and if it has an id part, change it with the string ":id".
   const parsedUrl =
     (resource ? '/' + resource : '/') +
     (id ? '/:id' : '') +
     (verb ? '/' + verb : '');
-
   // Lazy load view element:
   const header = null || D.getElementById('header');
   const content = null || D.getElementById('content');
@@ -179,7 +175,6 @@ const router = async () => {
     await Header.after_render();
     await Navbar.after_render();
   }
-
   await page.after_render();
   main.classList.remove("loading");
 };

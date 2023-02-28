@@ -2215,21 +2215,15 @@ const KinerjaAnggaran = {
                         </div>
                     `;
               } else {
-                ncode = '<span class="badge rounded-pill bg-yellow-600 py-1">' + cell._cell.row.data.komponen_id + '</span>';
+                ncode = '<span class="badge rounded-pill bg-yellow-600 py-1">Lokasi Alokasi Anggaran</span>';
                 hasil = /*html*/`
                     <div class="container">
                       <div class="row">
                         <div class="col d-flex flex-row bd-highlight">
-                          <div class="bd-highlight "> ${ncode}</div>  
+                          <div class="bd-highlight ">${ncode}</div>  
                           <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="text-black w-50 ps-4 ms-5 my-1">
-                          <span class="badge py-1 bg-indigo-600 ms-2 ">Indikator Pbj : ${cell._cell.row.data.indikator_pbj}</span>   
-                          <span class="badge py-1 bg-blue-600">Jenis : ${cell._cell.row.data.komponen_jenis}</span>
-                        </div>
-                      </div>
+                      </div>                      
                     </div> 
                     `;
               }
@@ -2339,7 +2333,7 @@ const KinerjaAnggaran = {
           {
             title: "Alokasi Anggaran",
             titleDownload: "Alokasi Anggaran",
-            field: "alokasi_totaloutput",
+            field: "alokasi_total",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Alokasi Anggaran");
             },
@@ -2371,7 +2365,7 @@ const KinerjaAnggaran = {
           {
             title: "Realisasi Anggaran",
             titleDownload: "Realisasi Anggaran",
-            field: "alokasi_realisasi",
+            field: "realisasi_total",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Realisasi Anggaran");
             },
@@ -2403,7 +2397,7 @@ const KinerjaAnggaran = {
           {
             title: "% Realisasi Anggaran",
             titleDownload: "% Realisasi Anggaran",
-            field: "alokasi_realisasi",
+            field: "alokasi_total",
             headerPopup: function (e, column, onRendered) {
               return popupnote("% Realisasi Anggaran");
             },
@@ -2417,7 +2411,9 @@ const KinerjaAnggaran = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber((cell._cell.row.data.alokasi_realisasi / cell._cell.row.data.alokasi_totaloutput) * 100, 2) + "%";
+                numbx = (cell._cell.row.data.realisasi_total / cell._cell.row.data.alokasi_total) * 100;
+                numbx = isNaN(numbx) ? "0,00%" : formatNumber(numbx, 2) + "%";
+                //numbx = numbx;
               }
               return numbx;
             },
@@ -2496,7 +2492,7 @@ const KinerjaAnggaran = {
           {
             title: "Realiasasi Tingkat Output",
             titleDownload: "Realiasasi Tingkat Output",
-            field: "alokasi_realisasi",/* belum ada data */
+            field: " ",/* belum ada data */
             headerPopup: function (e, column, onRendered) {
               return popupnote("Realiasasi Tingkat Output");
             },
@@ -2562,9 +2558,9 @@ const KinerjaAnggaran = {
 
 
           {
-            title: "Lokasi",
+            title: "Lokasi Realisasi Anggaran",
             titleDownload: "Lokasi",
-            field: "lokasi_ro",
+            field: "realisasi_lokasi",
             hozAlign: "left",
             width: 500,
             headerPopup: function (e, column, onRendered) {
@@ -2577,12 +2573,13 @@ const KinerjaAnggaran = {
               cell.getElement().style.textAlign = "left";
               cell.getElement().style.width = 400;
               var numbx;
-              if (cell._cell.row.data.lokasi_ro === "" || (typeof cell._cell.row.data.lokasi_ro === "undefined")) {
+              if (cell._cell.row.data.realisasi_lokasi === "" || (typeof cell._cell.row.data.realisasi_lokasi === "undefined")) {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-
-                numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.lokasi + "</span>"
+                cell.getElement().classList.add("tablelist");
+                numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.realisasi_lokasi + "</span>"
+                //numbx = value
               }
               return numbx;
             },
@@ -2627,7 +2624,7 @@ const KinerjaAnggaran = {
           {
             title: "Target ",
             titleDownload: "Target ",
-            field: "target_0",
+            field: "target",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target");
             },
@@ -3784,110 +3781,95 @@ const KinerjaAnggaran = {
                 let
                   dataE1 = Object.assign({}, dataE[dd]),
                   jml_komp = 0,
-                  komponen = [],
-                  dKomp = [];
+                  tabelhtml,
+                  dLok = [];
 
                 console.log("dataE1", dataE1);
 
-                /*Start Komponen if ready*/
+                /*Lokasi Alokasi*/
+                if (dataE1[0].lokasi_alokasi != null) {
+                  dataE1[0].lokasi_alokasi.forEach((ee) => {
+                    let realisasi,
+                      komponen = [],
+                      lokasi_realisasi = [],
+                      total_realisasi = 0;
+                    if (dataE1[0].realisasi_rka_komp != null) {
+                      //console.log("dataE1[0].realisasi_rka_komp", dataE1[0].realisasi_rka_komp);
+                      dataE1[0].realisasi_rka_komp.forEach((ff) => {
 
-                /*realisasi komp*/
-                if (dataE[dd][0]["realisasi_rka_komp"] != null) {
-                  let
-                    realisasi_rka_komp = dataE[dd][0]["realisasi_rka_komp"],
-                    gKomp = [];
+                        total_realisasi += ff.alokasi_ro_lro;
+                        lokasi_realisasi.push(
+                          /*html*/`
+                          <tr>
+                            <td>${ff.kode_ro_lro}</td><td class="text-end">${formatNumber(ff.alokasi_ro_lro)}</td>
+                          </tr>
+                          `);
 
-                  realisasi_rka_komp.forEach((ff) => {
-                    let komp = [];
-                    ff.ro_komponen.alokasis.forEach((gg) => {
-                      komp.push(gg);
-                    });
-                    gKomp.push(mergeArray(komp));
-                  });
 
-                  let groupByKompKode = arr_groupBy(['komponen_kode']),
-                    data_perkomp = groupByKompKode(mergeArray(gKomp));
-                  Object.keys(data_perkomp).forEach((hh) => {
+                        if (ff.kode_ro_lro == ee.kode_lokasi) {
+                          realisasi = ff.alokasi_ro_lro;
+                          komponen = ff.ro_komponen.alokasis;
+                        }
+                      });
+                    }
+                    tabelhtml = /*html*/`
+                    <table class="table table-bordered table-striped rounded bg-gray-300 fs-9px mt-1 mx-1">
+                    <thead>
+                      <tr>
+                        <td>Kode Lokasi</td><td>Realisasi</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Total</td><td class="text-end">${formatNumber(total_realisasi)}</td>
+                      </tr>
+                      ${lokasi_realisasi.join("")}
+                    </tbody>
+                    </table>
+                    `;
+                    //console.log("realisasi", realisasi);
+                    //console.log("komponen", komponen);
 
-                    //console.log("hh", data_perkomp[hh]);
-                    dKomp[hh] = {
-                      "realisasi": sumObject(Object.values(data_perkomp[hh]), "alokasi"),
-                    };
-                  });
-                }
-
-                if (dataE[dd][0]["komponen"] != null) {
-                  let dataF = dataE[dd][0]["komponen"],
-                    groupByKompKodeIn = arr_groupBy(['kdkmpnen']),
-                    data_perkompIn = groupByKompKodeIn(dataF);
-                  //console.log("data_perkompIn", data_perkompIn);
-                  //let data_komponen = Object.keys(data_perkompIn);
-                  /* dataF.forEach((ee) => { */
-                  Object.keys(data_perkompIn).forEach((ee) => {
-                    jml_komp += 1;
-                    let jml_roE = 0;
-
-                    komponen.push({
-                      tahun: dataE[dd][0].tahun,
-                      kl_id: dataE[dd][0].kementerian_kode,
-                      program_id: dataE[dd][0].program_kode,
-                      kegiatan_id: dataE[dd][0].kegiatan_kode,
-                      kro_id: dataE[dd][0].output_kode,
-                      ro_id: dataE[dd][0].suboutput_kode,
-                      komponen_kode: data_perkompIn[ee][0].kdkmpnen,
-                      name: data_perkompIn[ee][0].nmkmpnen,
-                      jml_kro: null,
-                      jml_ro: null,
+                    let lokasi = {
+                      tahun: dataE1[0].tahun,
+                      kl_id: dataE1[0].kementerian_kode,
+                      program_id: dataE1[0].program_kode,
+                      kegiatan_id: dataE1[0].kegiatan_kode,
+                      kro_id: dataE1[0].output_kode,
+                      ro_id: dataE1[0].suboutput_kode,
+                      name: ee.kode_lokasi + "-" + ee.nama_lokasi,
+                      kode_lokasi: ee.kode_lokasi,
                       jml_program: null,
                       jml_kegiatan: null,
-                      komponen_jenis: data_perkompIn[ee][0].jenis_komponen,
-                      indikator_pbj: data_perkompIn[ee][0].indikator_pbj,
-                      indikator_komponen: (data_perkompIn[ee][0].indikator_komponen == "null") || (data_perkompIn[ee][0].indikator_komponen == "") ? "-" : data_perkompIn[ee][0].indikator_komponen,
-                      satuan: data_perkompIn[ee][0].satuan,
-                      target: data_perkompIn[ee][0].target,
-                      realisasi_total: (typeof dKomp[data_perkompIn[ee][0].kdkmpnen] !== 'undefined') ? (dKomp[data_perkompIn[ee][0].kdkmpnen]['realisasi']) / 1000 : 0,
-                      alokasi_total: sumObject(Object.values(data_perkompIn[ee]), "alokasi_total"),
-                      lokasi_ro: null,
+                      jml_kro: null,
+                      jml_ro: null,
+                      realisasi_total: (typeof realisasi == 'undefined') ? 0 : parseInt(realisasi),
+                      komponen_alokasi: dataE1[0].komponen,
+                      alokasi_total: (typeof ee.alokasi == 'undefined') ? 0 : parseInt(ee.alokasi),
                       keterangan: "",
-                      posisi: "komponen",
-                    });
+                      posisi: "Lokasi Alokasi",
+                      target: parseInt(ee.target),
+                      _children: komponen
+                    };
+                    if (komponen.length < 1) {
+                      delete lokasi._children;
+                    }
+                    dLok.push(lokasi);
 
                   });
                 }
-                /*End Komponen*/
+
+
+
+                /*End Lokasi Alokasi*/
+
+
                 let
                   realisasi_ro = dataE1[0].realisasi_rka_ro === null ? 0 : parseInt(dataE1[0].realisasi_rka_ro),
                   alokasi_ro = isNaN(dataE1[0].alokasi_total) ? 0 : parseInt(dataE1[0].alokasi_total),
                   lokasi_alokasi_ro = null;
 
-                if (dataE1[0].lokasi_alokasi !== null) {
-                  let td = [];
-                  dataE1[0].lokasi_alokasi.forEach((kk, i) => {
-                    td.push(/*html*/
-                      `<tr>
-                        <td>${i + 1}</td>
-                        <td>${kk.kode_lokasi + "-" + kk.nama_lokasi}</td>
-                        <td class="text-end">${formatNumber(parseInt(kk.target))}</td>
-                        <td class="text-end">${formatNumber(parseInt(kk.alokasi))}</td>
-                      </tr>`
-                    );
-                  });
-                  lokasi_alokasi_ro = /*html*/
-                    `<table class="table table-bordered table-striped rounded bg-gray-300 fs-9px mt-1 mx-1">
-                      <thead>
-                        <tr>
-                          <th>No.</th>
-                          <th>Lokasi</th>
-                          <th class="text-end">Target</th>
-                          <th class="text-end">Alokasi</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${td.join("")}
-                      </tbody>
-                    </table>`
-                    ;
-                }
+
                 let data_ro = {
                   tahun: dataE1[0].tahun,
                   kl_id: dataE1[0].kementerian_kode,
@@ -3900,15 +3882,17 @@ const KinerjaAnggaran = {
                   jml_kegiatan: null,
                   jml_kro: null,
                   jml_ro: null,
+                  realisasi_lokasi: tabelhtml,
                   realisasi_total: realisasi_ro,
                   alokasi_total: alokasi_ro,
                   lokasi_ro: lokasi_alokasi_ro,
                   keterangan: "",
                   posisi: "RO",
-                  _children: komponen.sort((a, b) => a.komponen_kode - b.komponen_kode)
+                  _children: dLok.sort((a, b) => a.name - b.name)
 
                 };
-                if (dataE[dd][0]["komponen"] == null) {
+                /* if (dataE[dd][0]["lokasi_alokasi"] == null) { */
+                if (dataE1[0]["lokasi_alokasi"] == null) {
                   delete data_ro['_children'];
                 }
                 ro.push(data_ro);
