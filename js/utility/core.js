@@ -321,7 +321,7 @@ var headerMenu = function () {
 function tableTreeLevel(detail, level, intervensi = false) {
    let dataY = Object.values(detail),
       dataF = JSON.parse(JSON.stringify(dataY));
-   console.log("dataF", dataF);
+   //console.log("dataF", dataF);
    dataF.sort((a, b) => a.kementerian_kode > b.kementerian_kode && 1 || -1);
 
    if ((intervensi == true && level == "intervensi") || (intervensi == false && level == "program")) {

@@ -1678,8 +1678,8 @@ const PenandaanPagu = {
       }
       return table;
     }
-    console.log("cccc", getWithExpiry("userProfile"));
-    console.log("cccc x", user.role_permissions);
+    //console.log("cccc", getWithExpiry("userProfile"));
+    //console.log("cccc x", user.role_permissions);
 
 
 

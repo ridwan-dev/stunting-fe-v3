@@ -354,7 +354,7 @@ const KinerjaAnggaran = {
         tile1 = document.getElementById('tile-1'),
         tile2 = document.getElementById('tile-2'),
         tile3 = document.getElementById('tile-3');
-      console.log(result);
+      //console.log(result);
       let
         tot_co = result.tile.capaian_ro.capaianOutputByCapaianOutput.r1 +
           result.tile.capaian_ro.capaianOutputByCapaianOutput.r2 +
@@ -2000,7 +2000,7 @@ const KinerjaAnggaran = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-        console.log(_res.data);
+        //console.log(_res.data);
         return _res.data;
       } catch (e) {
         console.log("e", e);
@@ -3784,7 +3784,7 @@ const KinerjaAnggaran = {
                   tabelhtml,
                   dLok = [];
 
-                console.log("dataE1", dataE1);
+                //console.log("dataE1", dataE1);
 
                 /*Lokasi Alokasi*/
                 if (dataE1[0].lokasi_alokasi != null) {
@@ -3991,7 +3991,7 @@ const KinerjaAnggaran = {
         })
 
       });
-      console.log("kl data", kl);
+      //console.log("kl data", kl);
       return kl;
     }
 
