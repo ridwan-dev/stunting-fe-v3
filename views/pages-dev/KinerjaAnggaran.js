@@ -2016,6 +2016,7 @@ const KinerjaAnggaran = {
         $("#mapload,#tableload").addClass("loading");
         await getBelanjaKL(periode, sel_kl, sel_int, search).then(function (data) {
           mData.belanjaKL = data;
+          console.log("mData.belanjaKL", mData.belanjaKL);
           viewMapBelanjaKL(mData.belanjaKL);
         });
         /*tabel dibawah*/
@@ -2858,6 +2859,7 @@ const KinerjaAnggaran = {
               map.closePopup();
               layer.openPopup();
               sidebar.isVisible() ? sidebar.hide() : null;
+              console.log("dataProperties x", dataProperties);
               getDetail(e, dataProperties);
             },
           });
@@ -2983,7 +2985,7 @@ const KinerjaAnggaran = {
           thn = $("#sel_ta").val(),
           kl = $("#sel_kl").val()
           ;
-
+        console.log("kab_kode x", kab_kode);
         /*  var mmn = async () => { */
         $(".leaflet-popup-content-wrapper").addClass(['bg-black-transparent-8', 'rounded']);
 
@@ -3002,6 +3004,7 @@ const KinerjaAnggaran = {
               headers: config.fetchHeaders
             });
             let _res = await res.json();
+            console.log("_res x", _res);
             detailBL = _res.data;
           } catch (e) {
             return false;
@@ -3012,7 +3015,7 @@ const KinerjaAnggaran = {
           <p class="h3 p-0 m-0 mx-4 text-black">${kab_nama}</p>
           <p class="h5 py-1 m-0 mx-4 mb-3 text-black">Provinsi ${prov_nama}</p>
         `);
-
+          console.log("detailBL x", detailBL);
           tableDataSide(detailBL);
           $(".open_table").on("click", async function () {
             var opsiTabelx;
@@ -3031,6 +3034,8 @@ const KinerjaAnggaran = {
           async function tableDataSide(result, opsiTabel = { expand: false }) {
             const tData = () => {
               let data = Object.values(result.detail);
+              console.log("result x", result);
+              //let data = Object.values(result);
               data.sort((a, b) => a.kl_id > b.kl_id && 1 || -1)
               data.forEach((item, i) => {
                 Object.values(item._children).forEach((aa) => {
