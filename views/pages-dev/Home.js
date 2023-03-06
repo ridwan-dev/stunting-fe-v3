@@ -22,6 +22,48 @@ const Home = {
       widgetCardLink4 = await WidgetCardLink.render('tile-4', 'Kinerja Pembangunan', 'stacked_bar_chart', 'white-100', 'lg-2', 'white-100', '#/kinerja-pembangunan', des4),
       widgetCardLink5 = await WidgetCardLink.render('tile-5', 'Capaian Indikator', 'insights', 'white-100', 'lg-2', 'white-100', '#/capaian-indikator', des5)
       ;
+    let widgetCard = [];
+    let authority_access = [{ sort: 1, data: widgetCardLink1 }].concat(
+      { sort: 2, data: widgetCardLink2 },
+      { sort: 3, data: widgetCardLink3 },
+      { sort: 4, data: widgetCardLink4 },
+      { sort: 5, data: widgetCardLink5 }
+    );
+    if (typeof user == 'undefined') {
+      widgetCard = '';
+    } else {
+      user.role_permissions.forEach((row, i) => {
+        if (row.name == "administrator") {
+          widgetCard = authority_access;
+        }
+        if (row.name == "admin_ro") {
+          widgetCard = authority_access;
+        }
+        if (row.name == "dashboard") {
+          widgetCard = authority_access;
+        }
+        if (row.name == "kinerja_anggaran") {
+          widgetCard[i] = { sort: 2, data: widgetCardLink2 };
+        }
+        if (row.name == "kineja_pembangunan") {
+          widgetCard[i] = { sort: 4, data: widgetCardLink4 };
+        }
+        if (row.name == "capaian_indikator") {
+          widgetCard[i] = { sort: 5, data: widgetCardLink5 };
+        }
+        if (row.name == "dak") {
+          widgetCard[i] = { sort: 3, data: widgetCardLink3 };
+        }
+        if (row.name == "penandaan_pagu") {
+          widgetCard[i] = { sort: 1, data: widgetCardLink1 };
+        }
+      });
+
+    }
+    widgetCard.sort((a, b) => a.sort - b.sort);
+
+    let widgetCardx = [];
+    widgetCard.forEach((row) => { widgetCardx.push(row.data); });
 
     return /*html*/ `
     <div class="app-content-padding p-2 overflow-hidden" data-scrollbar="true">
@@ -35,26 +77,25 @@ const Home = {
           <li class="dropdown-item logout-button">Log Out</li>
         </ul>
       </div>
-
       <div class="p-3 text-center">                
         <p class="h2 text-green mt-5 mb-2">i-MONEV <span class="text-warning fw-bold">STUNTING</span></p>
         <p class="h3 text-gray-700 mt-3">Sistem Pemantauan & Evaluasi</p>
         <p class="h4 text-gray-700">Program Percepatan Penurunan Stunting</p>
         <p class="h5 text-gray-700">Secara Terintegrasi dan Berbasis Spasial</p>
       </div>
-
       <div class="container d-flex flex-column border-top pt-2">
-        <div class="row p-2 align-self-center">
-          ${widgetCardLink1}
-          ${widgetCardLink2}
-          ${widgetCardLink3}
-          ${widgetCardLink4}
-          ${widgetCardLink5}
+        <div class="row p-2 align-self-center" id="widgetcard">
+          ${widgetCardx.join(" ")}
         </div>
       </div>
     </div>
     `;
   },
+  /* ${widgetCardLink1}
+          ${widgetCardLink2}
+          ${widgetCardLink3}
+          ${widgetCardLink4}
+          ${widgetCardLink5} */
   /**
    * All the code related to DOM interactions and controls go in here.
    * This is a separate call as these can be registered only after the DOM has been painted.

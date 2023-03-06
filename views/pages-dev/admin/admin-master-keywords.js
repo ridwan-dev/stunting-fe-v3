@@ -52,12 +52,8 @@ const AdminKeywords = {
                 </div>
                 <div class="" id="table-admin-penandaan-pagu"></div>
                 <div class="d-flex justify-content-start bd-highlight mt-3 hide" id="elemen_update">
-                  <div class="bd-highlight menu-icon btn btn-primary" title="klik untuk perbarui filter kata kunci pada Rincian Output" id="synch_keyword">
-                    <i class="fas fa-sync fs-20px p-1"></i>
-                  </div>
-                  <div class="bd-highlight ms-2">
-                    Rincian Output Diperbarui tanggal <br><span class="h6" id="update_synch">11/12/2022</span>
-                  </div>
+
+                  
                 </div>
               </div>      
             </div>      
@@ -90,6 +86,27 @@ const AdminKeywords = {
   },
 
   after_render: async () => {
+    if (typeof user != 'undefined') {
+      user.role_permissions.forEach((row) => {
+        if (row.name == "administrator") {
+          $("#elemen_update").html(/*html*/`
+          <div class="bd-highlight menu-icon btn btn-primary" title="klik untuk perbarui filter kata kunci pada Rincian Output" id="synch_keyword">
+            <i class="fas fa-sync fs-20px p-1"></i>
+          </div>
+
+          <div class="bd-highlight ms-2">
+            Rincian Output Diperbarui tanggal <br><span class="h6" id="update_synch">11/12/2022</span>
+          </div>
+        `);
+        } else {
+          $("#elemen_update").html(/*html*/`
+          <div class="bd-highlight ms-2">
+            Rincian Output Diperbarui tanggal <br><span class="h6" id="update_synch">11/12/2022</span>
+          </div>
+          `);
+        }
+      });
+    }
     let popupTitle = "Tambah Kata Kunci",
       popupAdd = /*html*/`
                 <div action="${window.location.href}" id="formInput">

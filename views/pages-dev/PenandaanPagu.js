@@ -16,6 +16,7 @@ const PenandaanPagu = {
     const widgetCard2 = await WidgetCard.render('tile-2', 'Pagu', 'white-100', 'lg-12 mt-3 mb-2');
 
     return /*html*/ `
+    
       <div class="app-content-padding flex-grow-1 overflow-auto" data-scrollbar="true">
 				<!-- BEGIN page-header -->
 				<h2 class="page-header text-blue"><i class="material-icons text-blue-600 align-middle me-1 mb-1">verified</i>Penandaan dan Pagu</h2>
@@ -29,6 +30,7 @@ const PenandaanPagu = {
                   <option value="2021-2">2021 - Semester 2</option>
                   <option value="2022">2022</option>
                   <option value="2023">2023</option>
+                  <option value="2024">2024</option>
                 </select>
               </div>
           </div>
@@ -73,7 +75,48 @@ const PenandaanPagu = {
             <div class="card-body hide" >
               <div id="elemenOpenClose"></div>
               <div class="mx-n3 mb-n3" id="table2"></div>
-              <div class="sumber-data-renja pt-4 pb-2 ms-n2 fs-12px fw-500"></div> 
+              <div class="sumber-data-renja pt-4 pb-2 ms-n2 fs-12px fw-500"></div>
+              <div class="mx-n3 mb-n3 hide" id="table_excel">
+                <table class="table table-bordered">
+                  <thead class="h6">
+                    <tr>
+                      <td colspan="8">Data RO yang Mendukung Percepatan Penurunan Stunting pada Renja K/L TA &nbsp <span id="thn_data"></span> </td>
+                    </tr>
+                    <tr>
+                      <td colspan="8">Berdasarkan filter pada Tematik "Upaya Konvergensi Stunting"</td>
+                    </tr>
+                    <tr>
+                      <td colspan="8">Catatan : data ditarik dari krisna.systems pada tanggal &nbsp <span id="tgl_update"></span> </td>
+                    </tr>
+                    <tr>
+                      <td colspan="8"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="8"></td>
+                    </tr>
+                    <tr>
+                      <td>KL</td>
+                      <td>Program</td>
+                      <td>Kegiatan</td>
+                      <td>KRO</td>
+                      <td>RO/Komponen</td>
+                      <td>Target</td>
+                      <td>Satuan</td>
+                      <td>Alokasi (Ribuan Rupiah)</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>                    
+                    </tr>
+                  </thead>
+                  <tbody class="fs-12px"></tbody>
+                </table>
+              </div>
             </div>
           </div>          
         </div>
@@ -90,10 +133,15 @@ const PenandaanPagu = {
   },
 
   after_render: async () => {
-
     sumberDataRenja();
-    let xls_id = "export_xls";
-    treeOpenCloseHtml("#elemenOpenClose", { "xls_id": xls_id });
+    treeOpenCloseHtml("#elemenOpenClose", {
+      xls_html: /*html*/`
+      <button class="btn btn-white" >
+        <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-20px text-green-400" title="export xls" onclick="toXls('#table_excel','xls','Penandaan dan Pagu.xls');"></i>
+      </button>`
+    });
+
+
 
     sumberDataAnnual();
     let xlss_id = "exp_xls",
@@ -101,19 +149,11 @@ const PenandaanPagu = {
     treeOpenCloseHtml("#elemenOpenCloseFst", { "xls_id": xlss_id, "pdf_id": pdff_id });
 
     let
-      //thID = document.getElementById('sel_ta'),
       klID = document.getElementById('sel_kl'),
       intID = document.getElementById('sel_int'),
       dKementerian = [],
-      //dTahunSemester = [],
       dIntervensi = [];
 
-    /* mData.dataSemester.forEach((item) => {
-      dTahunSemester.push(
-        `<option value="${item.tahun}-${item.semester}" selected="selected">${item.tahun} - Semester ${item.semester}</option>`
-      );
-    });
-    thID.innerHTML = dTahunSemester.join(" "); */
     mData.dataKementerian.forEach((item) => {
       dKementerian.push(
         `<option value="${item.kementerian_kode}" selected="selected">${item.kementerian_nama}</option>`
@@ -277,8 +317,8 @@ const PenandaanPagu = {
         $("#container_renjakl").addClass("loading");
         multi_kl = $("#sel_kl").val();
         await getTabelNew(perData[0], multi_kl, multi_int, search).then(function (data) {
-          mData.datahasil = data.detail;
-          let adjust = tableTreeLevel(data.detail, "all");
+          mData.datahasil = data;
+          let adjust = tableTreeLevel(strukturPenandaanDanPagu(data), "all");
           $("#container_renjakl .card-body").removeClass("hide");
           dataTabelNew(adjust);
         });
@@ -353,7 +393,6 @@ const PenandaanPagu = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-        console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;
@@ -361,14 +400,8 @@ const PenandaanPagu = {
     };
 
     async function dataTabelNew(result, opsiTabel = { expand: false }, itemShow) {
-      let thn_ini = parseInt($("#sel_ta").val()),
-        thn_1 = thn_ini + 1,
-        thn_2 = thn_ini + 2,
-        thn_3 = thn_ini + 3;
-      console.log("result1", result);
-
       const table = new Tabulator("#table2", {
-        height: "515px",
+        /* height: "515px", */
         data: result,
         index: "id",
         //layout: "fitDataStretch", //fitDataFill, fitData, fitDataTable, fitColumns, fitDataStretch
@@ -376,6 +409,8 @@ const PenandaanPagu = {
         columnHeaderVertAlign: "middle",
         columnVertAlign: "left",
         dataTree: true,
+        /* rowHeight: 80, */
+        scrollToColumnPosition: "center",
         dataTreeStartExpanded: opsiTabel.expand,
         dataTreeFilter: true,
         dataTreeElementColumn: "name",
@@ -383,6 +418,7 @@ const PenandaanPagu = {
         //dataTreeSelectPropagate: true,
         dataLoader: false, //disable remote loader
         movableColumns: true,
+
         columns: [
           {
             title: "No",
@@ -448,28 +484,34 @@ const PenandaanPagu = {
                     `;
               }
               else {
-                console.log("komponen", cell._cell.row.data.komponen_kode);
-                ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">Komponen</span>';
+                //console.log("komponen", cell._cell.row.data.komponen_kode);
+                ncode = '<span class="badge rounded-pill bg-aqua-600 py-1">' + cell._cell.row.data.komponen_kode + '</span>';
                 //if (cell._cell.row.data.komponen_kode != null) {
                 hasil = /*html*/`
                     <div class="container">
                       <div class="row">
                         <div class="col d-flex flex-row bd-highlight">
                           <div class="bd-highlight "> ${ncode}</div>  
-                          <div class="bd-highlight text-wrap ms-1">${cell._cell.row.data.komponen_kode}-${value}</div>
+                          <div class="bd-highlight text-wrap ms-1">${value}</div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="text-black w-50 ps-4 ms-5 my-1">
+                        <div class="text-black w-50 ps-4 my-1">
                           <span class="badge py-1 bg-indigo-600 ms-2 ">Indikator Pbj : ${cell._cell.row.data.indikator_pbj}</span>   
                           <span class="badge py-1 bg-blue-600">Jenis : ${cell._cell.row.data.komponen_jenis}</span>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="text-black w-50 ps-4 my-1 ms-2 w-100">
+                          <div class="badge py-1 bg-blue-800 d-flex flex-row bd-highlight">
+                          <span class='bd-highlight'>Indikator Komponen : </span>
+                          <span class='bd-highlight text-wrap text-start ps-1'> ${cell._cell.row.data.indikator_komponen}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div> 
                     `;
-                //} else {
-                //  hasil = "";
-                //}
+
               }
               return hasil;
             }
@@ -526,7 +568,7 @@ const PenandaanPagu = {
             headerMenuIcon:/*html*/`<i class="fas fa-lg fa-fw fa-check text-primary-700 fs-15px"></i>`,
             headerMenu: closeColumn,
             visible: ((itemShow == "semua") || (itemShow == "kro") || (typeof itemShow == "undefined")) ? true : false,
-            field: "jml_ro", formatter: "money", formatterParams: {
+            field: "jml_kro", formatter: "money", formatterParams: {
               decimal: ",",
               thousand: ".",
               symbol: "",
@@ -538,6 +580,12 @@ const PenandaanPagu = {
               symbol: "",
               symbolAfter: "",
               precision: 0,
+            }, formatter: function (cell, formatterParams) {
+              var value = cell.getValue();
+              if (value === "" || value === null) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+              }
+              return value;
             }
           },
           {
@@ -555,14 +603,20 @@ const PenandaanPagu = {
               symbol: "",
               symbolAfter: "",
               precision: 0,
+            }, formatter: function (cell, formatterParams) {
+              var value = cell.getValue();
+              if (value === "" || value === null) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+              }
+              return value;
             }
           },
           {
-            title: "Alokasi Bulan Januari",
-            titleDownload: "Alokasi Bulan Januari",
-            field: "alokasi_totaloutput",
+            title: "Alokasi Anggaran",
+            titleDownload: "Alokasi Anggaran",
+            field: "alokasi_total",
             headerPopup: function (e, column, onRendered) {
-              return popupnote("Alokasi pada bulan Januari");
+              return popupnote("Alokasi pada tahun berjalan");
             },
             headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
             /*  formatter: "money", */
@@ -573,7 +627,69 @@ const PenandaanPagu = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = formatNumber(value * 1000, 2);
+                numbx = formatNumber(value, 2);
+              }
+              return numbx;
+            },
+            width: 167,
+            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            accessorDownload: numberIDRDownload,
+            bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
+              decimal: ",",
+              thousand: ".",
+              symbol: "",
+              symbolAfter: "",
+              precision: 2,
+            }
+          },
+          {
+            title: "Realisasi Anggaran",
+            titleDownload: "Realisasi Anggaran",
+            field: "realisasi_total",
+            headerPopup: function (e, column, onRendered) {
+              return popupnote("Realisasi Anggaran pada tahun berjalan");
+            },
+            headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
+            /*  formatter: "money", */
+            formatter: function (cell, formatterParams) {
+              var value = cell.getValue(),
+                numbx;
+              if (value === "" || (typeof value === "undefined")) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+                numbx = "";
+              } else {
+                numbx = formatNumber(value, 2);
+              }
+              return numbx;
+            },
+            width: 167,
+            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            accessorDownload: numberIDRDownload,
+            bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
+              decimal: ",",
+              thousand: ".",
+              symbol: "",
+              symbolAfter: "",
+              precision: 2,
+            }
+          },
+          {
+            title: "Capaian Realisasi Anggaran (%)",
+            titleDownload: "Capaian Realisasi Anggaran (%)",
+            field: "realisasi_total",
+            headerPopup: function (e, column, onRendered) {
+              return popupnote("Alokasi pada tahun berjalan");
+            },
+            headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
+            /*  formatter: "money", */
+            formatter: function (cell, formatterParams) {
+              var value = cell.getValue(),
+                numbx;
+              if (value === "" || (typeof value === "undefined")) {
+                cell.getElement().style.backgroundColor = "#E5E8E8";
+                numbx = "";
+              } else {
+                numbx = (value === 0 || cell._cell.row.data.alokasi_total === 0 || value === null || cell._cell.row.data.alokasi_total === null) ? "-" : formatNumber((value / cell._cell.row.data.alokasi_total) * 100, 2);
               }
               return numbx;
             },
@@ -591,7 +707,7 @@ const PenandaanPagu = {
           {
             title: "Tingkat Output",
             titleDownload: "Tingkat Output",
-            field: "alokasi_totaloutput",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Alokasi ditingkat output");
             },
@@ -623,7 +739,7 @@ const PenandaanPagu = {
           {
             title: "Analisis Lanjutan",
             titleDownload: "Analisis Lanjutan",
-            field: "alokasi_totaloutput",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Alokasi ditingkat Analisis Lanjutan");
             },
@@ -657,27 +773,26 @@ const PenandaanPagu = {
             titleDownload: "Lokasi",
             field: "lokasi_ro",
             hozAlign: "left",
-            width: 500,
             headerPopup: function (e, column, onRendered) {
               return popupnote("Lokasi realisasi Anggaran");
             },
             headerPopupIcon: "<i class='fas fa-exclamation-circle'></i>",
 
             /*  formatter: "money", */
+
             formatter: function (cell, formatterParams) {
               cell.getElement().style.textAlign = "left";
-              cell.getElement().style.width = 400;
               var numbx;
-              if (cell._cell.row.data.lokasi_ro === "" || (typeof cell._cell.row.data.lokasi_ro === "undefined")) {
+              if (cell._cell.row.data.lokasi_ro === null || cell._cell.row.data.lokasi_ro === "" || (typeof cell._cell.row.data.lokasi_ro === "undefined")) {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-
-                numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.lokasi + "</span>"
+                cell.getElement().classList.add("tablelist");
+                numbx = "<span class='text-wrap text-black fw-400'>" + cell._cell.row.data.lokasi_ro + "</span>"
               }
               return numbx;
             },
-            width: 167,
+            width: 300,
             sorter: "number", headerHozAlign: "center", hozAlign: "right",
             accessorDownload: numberIDRDownload,
             bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
@@ -706,7 +821,7 @@ const PenandaanPagu = {
                 numbx = "";
               } else {
                 //numbx = "<span class='text-wrap text-black fw-500'>" + capitalize(value) + "</span>";
-                numbx = "<span class='text-wrap text-black fw-500'>" + value + "</span>";
+                numbx = "<span class='text-wrap text-black fw-400 align-middle text-center'>" + value + "</span>";
               }
               return numbx;
             },
@@ -724,7 +839,7 @@ const PenandaanPagu = {
           {
             title: "Target ",
             titleDownload: "Target ",
-            field: "target_0",
+            field: "target",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target");
             },
@@ -738,12 +853,12 @@ const PenandaanPagu = {
                 cell.getElement().style.backgroundColor = "#E5E8E8";
                 numbx = "";
               } else {
-                numbx = value === 0 ? 0 : formatNumber(value);
+                numbx = value === 0 ? 0 : "<span class='text-wrap text-black fw-400 align-middle text-center'>" + formatNumber(value) + "</span>";
               }
               return numbx;
             },
             width: 120,
-            sorter: "number", headerHozAlign: "center", hozAlign: "right",
+            sorter: "number", headerHozAlign: "center", hozAlign: "center",
             accessorDownload: numberIDRDownload,
             bottomCalc: "sum", bottomCalcFormatter: "money", bottomCalcFormatterParams: {
               decimal: ",",
@@ -757,7 +872,7 @@ const PenandaanPagu = {
           {
             title: "Target Kesepakatan Tingkat Output",
             titleDownload: "Target Kesepakatan Tingkat Output ",
-            field: "target_0",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target pada kesepakatan tingkat output");
             },
@@ -790,7 +905,7 @@ const PenandaanPagu = {
           {
             title: "Target Kesepakatan Tingkat Analisis Lanjutan",
             titleDownload: "Target Kesepakatan Tingkat Analisis Lanjutan",
-            field: "target_0",
+            field: "",
             headerPopup: function (e, column, onRendered) {
               return popupnote("Target Kesepakatan pada Analisis Lanjutan");
             },
@@ -823,11 +938,132 @@ const PenandaanPagu = {
         ],
         initialSort: [
           { column: "id", dir: "asc" }
-        ]
+        ],
+
       });
-      document.getElementById(xls_id).addEventListener("click", function () {
-        table.download("xlsx", "data.xlsx", { sheetName: "data" });
+
+      table.on("rowMouseOver", function (e, row) {
+
+        e.preventDefault();
+        //e - the event object
+        //row - row component
+        //alert("me");
       });
+
+      table.on("dataTreeRowCollapsed", function (row, level, e) {
+        /* $(".tabulator-data-tree-control, .tabulator-data-tree-control-collapse, .tabulator-data-tree-control-expand").on("click", function (e) {
+          e.preventDefault();
+          alert("me");
+        }); */
+
+        //$(this).preventDefault()
+        //row - the row component for the collapsed row
+        //level - the depth of the row in the tree
+      });
+      table.on("dataTreeRowExpanded", function (row, level, e) {
+        /* $(".tabulator-data-tree-control, .tabulator-data-tree-control-collapse, .tabulator-data-tree-control-expand").on("click", function (e) {
+          e.preventDefault();
+          alert("you");
+        }); */
+        //$(this).preventDefault()
+        //row - the row component for the expanded row
+        //level - the depth of the row in the tree
+      });
+
+      let body_kl = [];
+      result.forEach((item1) => {
+        let row_kl =/*html*/`
+          <tr class="bg-gray-300" >
+            <td colspan="5" class="fw-700">${item1.kl_id + "-" + item1.name}</td>
+            <td></td>
+            <td></td>
+            <td class="fw-700 text-end">${item1.alokasi_totaloutput}</td>                    
+          </tr>`;
+        let body_prog = [];
+        item1._children.forEach((item2) => {
+          let isi_prog =/*html*/`
+            <tr>
+              <td></td>
+              <td colspan="4">${item1.kl_id + "." + item2.program_id + "-" + item2.name}</td>
+              <td></td>
+              <td></td>
+              <td class="text-end">${item2.alokasi_totaloutput}</td>                    
+            </tr>`;
+          let body_keg = [];
+          item2._children.forEach((item3) => {
+            let isi_keg =/*html*/`
+              <tr>
+                <td></td>
+                <td></td>
+                <td colspan="3">${item3.kegiatan_id + "-" + item3.name}</td>
+                <td></td>
+                <td></td>
+                <td class="text-end">${item3.alokasi_totaloutput}</td>                    
+              </tr>`;
+            let body_kro = [];
+            item3._children.forEach((item4) => {
+              let isi_kro =/*html*/`
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td colspan="2">${item4.kro_id + "-" + item4.name}</td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-end">${item4.alokasi_totaloutput}</td>                    
+                </tr>`;
+              let body_ro = [];
+              item4._children.forEach((item5) => {
+                let isi_ro =/*html*/`
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td >${item5.ro_id + "-" + item5.name}</td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-end">${item5.alokasi_totaloutput}</td>                    
+                </tr>`;
+                if (typeof item5._children != 'undefined') {
+                  let body_comp = [];
+                  item5._children.forEach((item6) => {
+                    let isi_comp =/*html*/`
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="ps-5">${item6.komponen_kode + "-" + item6.komponen_nama}</td>
+                        <td>${item6.target_0}</td>
+                        <td>${item6.satuan}</td>
+                        <td class="text-end">${item6.alokasi_totaloutput}</td>                    
+                      </tr>`;
+                    body_comp.push(isi_comp);
+                  });
+                  body_ro.push(isi_ro + body_comp.join(" "));
+                } else {
+                  body_ro.push(isi_ro);
+                }
+              });
+              body_kro.push(isi_kro + body_ro.join(" "));
+            });
+            body_keg.push(isi_keg + body_kro.join(" "));
+          });
+          body_prog.push(isi_prog + body_keg.join(" "));
+        });
+        body_kl.push(row_kl + body_prog.join(" "));
+      });
+      if (table) {
+        $("#table_excel tbody").html(body_kl);
+      }
+
+      let sumberData = $(".sumber-data-renja").html(),
+        thn_data = $("#sel_ta").val(),
+        tgl_update = sumberData.split("tanggal");
+      $("#thn_data").html(" " + thn_data);
+      $("#tgl_update").html(" " + tgl_update[1]);
+
     };
 
     async function tableData(result, opsiTabel = { expand: false }, itemShow) {
@@ -1442,6 +1678,10 @@ const PenandaanPagu = {
       }
       return table;
     }
+    //console.log("cccc", getWithExpiry("userProfile"));
+    //console.log("cccc x", user.role_permissions);
+
+
 
     popUp = /*html*/ `
       <div class="modal-header bg-gray-300 w-100">
@@ -1494,6 +1734,305 @@ const PenandaanPagu = {
           </div>          
         </div>
       </div>`;
+
+    function strukturPenandaanDanPagu(data) {
+      //console.log("data cc", data);
+      let
+        groupByKL = arr_groupBy(['kementerian_kode']),
+        data_perkl = groupByKL(data),
+        dataA = Object.assign({}, data_perkl),
+        kl = [];
+
+      Object.keys(dataA).forEach((aa) => {  //kl
+        let
+          dataA1 = Object.assign({}, dataA[aa]),
+          realisasi_kl = 0,
+          alokasi_kl = 0,
+          jml_programA = 0,
+          jml_kegiatanA = 0,
+          jml_kroA = 0,
+          jml_roA = 0,
+          groupByProg = arr_groupBy(['program_kode']),
+          data_perprog = groupByProg(Object.values(dataA1)),
+          dataB = Object.assign({}, data_perprog),
+          prog = [];
+
+        Object.keys(dataB).forEach((bb) => {    //prog
+          jml_programA += 1;
+
+          let
+            dataB1 = Object.assign({}, dataB[bb]),
+            realisasi_prog = 0,
+            alokasi_prog = 0,
+            jml_kegiatanB = 0,
+            jml_kroB = 0,
+            jml_roB = 0,
+            groupByKeg = arr_groupBy(['kegiatan_kode']),
+            data_perkeg = groupByKeg(Object.values(dataB1)),
+            dataC = Object.assign({}, data_perkeg),
+            keg = [];
+
+          /*Start kegiatan*/
+          Object.keys(dataC).forEach((cc) => {    //kegiatan
+            jml_kegiatanB += 1;
+
+            let
+              dataC1 = Object.assign({}, dataC[cc]),
+              realisasi_keg = 0,
+              alokasi_keg = 0,
+              jml_kroC = 0,
+              jml_roC = 0,
+              groupByKro = arr_groupBy(['output_kode']),
+              data_perkro = groupByKro(Object.values(dataC1)),
+              dataD = Object.assign({}, data_perkro),
+              kro = [];
+
+            /*Start KRO*/
+            Object.keys(dataD).forEach((dd) => {    //KRO
+              jml_kroC += 1;
+
+              let
+                dataD1 = Object.assign({}, dataD[dd]),
+                realisasi_kro = 0,
+                alokasi_kro = 0,
+                jml_roD = 0,
+                groupByRo = arr_groupBy(['suboutput_kode']),
+                data_perRo = groupByRo(Object.values(dataD1)),
+                dataE = Object.assign({}, data_perRo),
+                ro = [];
+
+              /*Start RO*/
+              Object.keys(dataE).forEach((dd) => {    //RO
+                jml_roD += 1;
+
+                let
+                  dataE1 = Object.assign({}, dataE[dd]),
+                  jml_komp = 0,
+                  komponen = [],
+                  dKomp = [];
+
+                /*Start Komponen if ready*/
+
+                /*realisasi komp*/
+                if (dataE[dd][0]["realisasi_rka_komp"] != null) {
+                  let
+                    realisasi_rka_komp = dataE[dd][0]["realisasi_rka_komp"],
+                    gKomp = [];
+
+                  //console.log("realisasi_rka_komp", realisasi_rka_komp);
+                  realisasi_rka_komp.forEach((ff) => {
+                    let komp = [];
+                    ff.ro_komponen.alokasis.forEach((gg) => {
+                      komp.push(gg);
+                    });
+                    gKomp.push(mergeArray(komp));
+                  });
+
+                  let groupByKompKode = arr_groupBy(['komponen_kode']),
+                    data_perkomp = groupByKompKode(mergeArray(gKomp));
+                  Object.keys(data_perkomp).forEach((hh) => {
+
+                    //console.log("hh", data_perkomp[hh]);
+                    dKomp[hh] = {
+                      "realisasi": sumObject(Object.values(data_perkomp[hh]), "alokasi"),
+                    };
+                  });
+                }
+
+                if (dataE[dd][0]["komponen"] != null) {
+                  let dataF = dataE[dd][0]["komponen"],
+                    groupByKompKodeIn = arr_groupBy(['kdkmpnen']),
+                    data_perkompIn = groupByKompKodeIn(dataF);
+                  //console.log("data_perkompIn", data_perkompIn);
+                  //let data_komponen = Object.keys(data_perkompIn);
+                  /* dataF.forEach((ee) => { */
+                  Object.keys(data_perkompIn).forEach((ee) => {
+                    jml_komp += 1;
+                    let jml_roE = 0;
+
+                    komponen.push({
+                      tahun: dataE[dd][0].tahun,
+                      kl_id: dataE[dd][0].kementerian_kode,
+                      program_id: dataE[dd][0].program_kode,
+                      kegiatan_id: dataE[dd][0].kegiatan_kode,
+                      kro_id: dataE[dd][0].output_kode,
+                      ro_id: dataE[dd][0].suboutput_kode,
+                      komponen_kode: data_perkompIn[ee][0].kdkmpnen,
+                      name: data_perkompIn[ee][0].nmkmpnen,
+                      jml_kro: null,
+                      jml_ro: null,
+                      jml_program: null,
+                      jml_kegiatan: null,
+                      komponen_jenis: data_perkompIn[ee][0].jenis_komponen,
+                      indikator_pbj: data_perkompIn[ee][0].indikator_pbj,
+                      indikator_komponen: (data_perkompIn[ee][0].indikator_komponen == "null") || (data_perkompIn[ee][0].indikator_komponen == "") ? "-" : data_perkompIn[ee][0].indikator_komponen,
+                      satuan: data_perkompIn[ee][0].satuan,
+                      target: data_perkompIn[ee][0].target,
+                      realisasi_total: (typeof dKomp[data_perkompIn[ee][0].kdkmpnen] !== 'undefined') ? (dKomp[data_perkompIn[ee][0].kdkmpnen]['realisasi']) / 1000 : 0,
+                      alokasi_total: sumObject(Object.values(data_perkompIn[ee]), "alokasi_total"),
+                      lokasi_ro: null,
+                      keterangan: "",
+                      posisi: "komponen",
+                    });
+
+                  });
+                }
+                /*End Komponen*/
+                let
+                  realisasi_ro = dataE1[0].realisasi_rka_ro === null ? 0 : parseInt(dataE1[0].realisasi_rka_ro),
+                  alokasi_ro = isNaN(dataE1[0].alokasi_total) ? 0 : parseInt(dataE1[0].alokasi_total),
+                  lokasi_alokasi_ro = null;
+
+                if (dataE1[0].lokasi_alokasi !== null) {
+                  let td = [];
+                  dataE1[0].lokasi_alokasi.forEach((kk, i) => {
+                    td.push(/*html*/
+                      `<tr>
+                        <td>${i + 1}</td>
+                        <td>${kk.kode_lokasi + "-" + kk.nama_lokasi}</td>
+                        <td class="text-end">${formatNumber(parseInt(kk.target))}</td>
+                        <td class="text-end">${formatNumber(parseInt(kk.alokasi))}</td>
+                      </tr>`
+                    );
+                  });
+                  lokasi_alokasi_ro = /*html*/
+                    `<table class="table table-bordered table-striped rounded bg-gray-300 fs-9px mt-1 mx-1">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Lokasi</th>
+                          <th class="text-end">Target</th>
+                          <th class="text-end">Alokasi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${td.join("")}
+                      </tbody>
+                    </table>`
+                    ;
+                }
+                let data_ro = {
+                  tahun: dataE1[0].tahun,
+                  kl_id: dataE1[0].kementerian_kode,
+                  program_id: dataE1[0].program_kode,
+                  kegiatan_id: dataE1[0].kegiatan_kode,
+                  kro_id: dataE1[0].output_kode,
+                  ro_id: dataE1[0].suboutput_kode,
+                  name: dataE1[0].suboutput_nama,
+                  jml_program: null,
+                  jml_kegiatan: null,
+                  jml_kro: null,
+                  jml_ro: null,
+                  realisasi_total: realisasi_ro,
+                  alokasi_total: alokasi_ro,
+                  lokasi_ro: lokasi_alokasi_ro,
+                  keterangan: "",
+                  posisi: "RO",
+                  _children: komponen.sort((a, b) => a.komponen_kode - b.komponen_kode)
+
+                };
+                if (dataE[dd][0]["komponen"] == null) {
+                  delete data_ro['_children'];
+                }
+                ro.push(data_ro);
+                realisasi_kro += realisasi_ro;
+                alokasi_kro += alokasi_ro;
+              });
+              /*End RO*/
+
+              kro.push({
+                tahun: dataD1[0].tahun,
+                kl_id: dataD1[0].kementerian_kode,
+                program_id: dataD1[0].program_kode,
+                kegiatan_id: dataD1[0].kegiatan_kode,
+                kro_id: dataD1[0].output_kode,
+                name: dataD1[0].kegiatan_nama,
+                jml_program: null,
+                jml_kegiatan: null,
+                jml_kro: null,
+                jml_ro: jml_roD,
+                realisasi_total: realisasi_kro,
+                alokasi_total: alokasi_kro,
+                lokasi_ro: null,
+                keterangan: "",
+                posisi: "KRO",
+                _children: ro
+              });
+              jml_roC += jml_roD;
+              realisasi_keg += realisasi_kro;
+              alokasi_keg += alokasi_kro;
+            });
+            /*End KRO*/
+
+            keg.push({
+              tahun: dataC1[0].tahun,
+              kl_id: dataC1[0].kementerian_kode,
+              program_id: dataC1[0].program_kode,
+              kegiatan_id: dataC1[0].kegiatan_kode,
+              name: dataC1[0].kegiatan_nama,
+              jml_program: null,
+              jml_kegiatan: null,
+              jml_kro: jml_kroC,
+              jml_ro: jml_roC,
+              realisasi_total: realisasi_keg,
+              alokasi_total: alokasi_keg,
+              lokasi_ro: null,
+              keterangan: "",
+              posisi: "Kegiatan",
+              _children: kro
+            });
+            jml_roB += jml_roC;
+            jml_kroB += jml_kroC;
+            realisasi_prog += realisasi_keg;
+            alokasi_prog += alokasi_keg;
+          });
+          /*End kegiatan*/
+
+          prog.push({
+            tahun: dataB1[0].tahun,
+            kl_id: dataB1[0].kementerian_kode,
+            program_id: dataB1[0].program_kode,
+            name: dataB1[0].program_nama,
+            jml_program: null,
+            jml_kegiatan: jml_kegiatanB,
+            jml_kro: jml_kroB,
+            jml_ro: jml_roB,
+            realisasi_total: realisasi_prog,
+            alokasi_total: alokasi_prog,
+            lokasi_ro: null,
+            keterangan: "",
+            posisi: "Program",
+            _children: keg
+          });
+          jml_roA += jml_roB;
+          jml_kroA += jml_kroB;
+          realisasi_kl += realisasi_prog;
+          alokasi_kl += alokasi_prog;
+        });
+        /*End Program*/
+
+        kl.push({
+          tahun: dataA1[0]['tahun'],
+          kl_id: dataA1[0]['kementerian_kode'],
+          name: dataA1[0]['kementerian_nama'],
+          name_short: dataA1[0]['kementerian_nama_alias'],
+          jml_program: jml_programA,
+          jml_kegiatan: jml_kegiatanA,
+          jml_kro: jml_kroA,
+          jml_ro: jml_roA,
+          realisasi_total: realisasi_kl,
+          alokasi_total: alokasi_kl,
+          lokasi_ro: null,
+          keterangan: "",
+          posisi: "KL",
+          _children: prog
+          /* id:i + 1, */
+        })
+
+      });
+      //console.log("kl data", kl);
+      return kl;
+    }
     document.getElementById('popUp').innerHTML = popUp;
     apopoverTrigger();
   }

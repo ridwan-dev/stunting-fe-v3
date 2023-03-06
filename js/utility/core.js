@@ -49,6 +49,14 @@ function onlyUnique(value, index, self) {
    return self.indexOf(value) === index;
 }
 
+function sumObject(dataX, fieldx) {
+   let value = 0;
+   dataX.forEach((item, i) => {
+      value += isNaN(parseInt(item[fieldx])) ? 0 : parseInt(item[fieldx]);
+   });
+   return value;
+}
+
 function tabElemn(tab) {
    let
       elem = $(tab).data("active"),
@@ -111,9 +119,6 @@ function toXls(elemn, type, fn, dl) {
 }
 
 function toPdf(elemn, type, fn) {
-   console.log("1", elemn);
-   console.log("2", type);
-   console.log("3", fn);
    $(elemn).tableHTMLExport({
       // csv, txt, json, pdf
       type: type,
@@ -316,7 +321,7 @@ var headerMenu = function () {
 function tableTreeLevel(detail, level, intervensi = false) {
    let dataY = Object.values(detail),
       dataF = JSON.parse(JSON.stringify(dataY));
-
+   //console.log("dataF", dataF);
    dataF.sort((a, b) => a.kementerian_kode > b.kementerian_kode && 1 || -1);
 
    if ((intervensi == true && level == "intervensi") || (intervensi == false && level == "program")) {
@@ -395,7 +400,7 @@ function tableTreeLevel(detail, level, intervensi = false) {
                   kro.push(mergeArray(ro)); //RO
                });
                delete bb._children;
-               child.push(mergeArray(kro));
+               prog.push(mergeArray(kro));
             });
             delete aa._children;
             child.push(mergeArray(prog));
@@ -420,7 +425,7 @@ function tableTreeLevel(detail, level, intervensi = false) {
                   kro.push(mergeArray(ro)); //RO
                });
                delete bb._children;
-               child.push(mergeArray(kro));
+               prog.push(mergeArray(kro));
             });
             delete aa._children;
             child.push(mergeArray(prog));
@@ -501,7 +506,7 @@ function sumberDataRenja() {
       dateTm = dateT[0].split("-"),
       //dateTime = new Date(dateTm[0], dateTm[1], dateTm[2]).toLocaleDateString('id-ID');
       dateTime = dateTm[2] + "/" + dateTm[1] + "/" + dateTm[0];
-   console.log(dateTime);
+   //console.log(dateTime);
    document.querySelector(".sumber-data-renja").innerHTML = "*Data berasal dari Krisna Renja K/L tanggal " + dateTime;
 };
 
@@ -517,12 +522,14 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
 
    if (typeof downld.xls_id != "undefined") {
       xls_id = downld.xls_id;
-      console.log(xls_id);
       btn_xls = /*html*/`
             <button class="btn btn-white" >
                <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-20px text-green-400" title="export xls" id="${xls_id}"></i>
             </button>
                   `;
+   }
+   if (typeof downld.xls_html != "undefined") {
+      btn_xls = downld.xls_html;
    }
    if (typeof downld.pdf_id != "undefined") {
       pdf_id = downld.pdf_id;
@@ -532,6 +539,7 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
             </button>
                   `;
    }
+   //console.log("btn_xls2", btn_xls);
    let
       html = /*html*/`      
       <div class="d-flex justify-content-between">
@@ -554,7 +562,7 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
          </div>
          <div class="d-flex flex-row bd-highlight">
             <div class="mt-n2  bd-highlight">
-            ${((typeof downld.xls_id == "undefined") && (typeof downld.pdf_id == "undefined")) ?
+            ${((typeof downld.xls_id == "undefined") && (typeof downld.pdf_id == "undefined") && (typeof downld.xls_html == "undefined")) ?
             "" :/*html*/`
                <div class="btn-group" id="groupExp">
                   <button class="btn btn-white active" >Export</button>

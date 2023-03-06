@@ -46,11 +46,59 @@ window.state = {};
 window.geoData = {};
 window.mData = {};
 window.user = {};
-
+let routesAdmin = [];
 if (getWithExpiry("userProfile") != null) {
   user.name = getWithExpiry("userProfile").name;
   user.email = getWithExpiry("userProfile").email;
-  user.role = getWithExpiry("userProfile").roles[0].name;
+  user.role_name = getWithExpiry("userProfile").roles[0].name;
+  user.role_permissions = getWithExpiry("userProfile").roles[0].permissions;
+
+  let public_access = [
+    '/kinerja-anggaran-belanja-kl',
+    '/belanja-kl',
+    '/kinerja-pembangunan',
+    '/penandaan-dan-pagu',
+    '/dak',
+    '/capaian-indikator'
+  ];
+
+  user.role_permissions.forEach((row, i) => {
+    if (row.name == "administrator") {
+      routesAdmin = [
+        '/admin-penandaan-dan-pagu',
+        '/admin-penandaan-ro',
+        '/admin-penandaan-intervensi',
+        '/admin-master-intervensi',
+        '/admin-master-keywords'
+      ].concat(public_access);
+    }
+    if (row.name == "admin_ro") {
+      routesAdmin = [
+        '/admin-penandaan-ro',
+        '/admin-master-keywords'
+      ].concat(public_access);
+    }
+    if (row.name == "dashboard") {
+      routesAdmin = public_access;
+    }
+    if (row.name == "dak") {
+      routesAdmin[i] = '/dak';
+    }
+    if (row.name == "penandaan_pagu") {
+      routesAdmin[i] = '/penandaan-dan-pagu';
+    }
+    if (row.name == "kinerja_anggaran") {
+      routesAdmin[i] = '/kinerja-anggaran-belanja-kl';
+    }
+    if (row.name == "kineja_pembangunan") {
+      routesAdmin[i] = '/kinerja-pembangunan';
+    }
+    if (row.name == "capaian_indikator") {
+      routesAdmin[i] = '/capaian-indikator';
+    }
+
+  });
+
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {
@@ -76,7 +124,8 @@ let routes = {
   '/admin-master-keywords': AdminMasterKeywords
 };
 
-var routesAuth = [
+
+/* var routesAuth = [
   '/',
   '/kinerja-anggaran-belanja-kl',
   '/belanja-kl',
@@ -85,9 +134,13 @@ var routesAuth = [
   '/dak',
   '/capaian-indikator',
   '/login',
+]; */
+var routesAuth = [
+  '/',
+  '/login',
 ];
 
-if ((typeof user != 'undefined') && (user.role == "admin")) {
+/* if ((typeof user != 'undefined') && (user.role_name == "admin")) {
   let routesAdmin = [
     '/admin-penandaan-dan-pagu',
     '/admin-penandaan-ro',
@@ -96,9 +149,10 @@ if ((typeof user != 'undefined') && (user.role == "admin")) {
     '/admin-master-keywords'
   ];
   routesAuth = routesAuth.concat(routesAdmin);
+} */
+if (typeof user != 'undefined') {
+  routesAuth = routesAuth.concat(routesAdmin);
 }
-
-
 /**
  * The router code. Takes a URL, checks against the list of
  * supported routes and then renders the corresponding content page.
@@ -109,19 +163,14 @@ const router = async () => {
   const { resource, id, verb } = parseRequestUrl();
   let urlAllow = routesAuth.includes('/' + resource);
   // Do Auth
-  const oauth = !(validateAuth(resource)) ?
-    window.location.replace("#/login") :
-    (resource === 'login') ?
-      window.location.replace("#/") : null;
-
-  !routesAuth.includes('/' + resource) ? window.location.replace("#/") : null;
+  const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" : (resource === 'login') ? window.location.href = "./#/login" : null;
+  !routesAuth.includes('/' + resource) && (validateAuth(resource)) ? window.location.replace("#/") : null;
 
   // Parse the URL and if it has an id part, change it with the string ":id".
   const parsedUrl =
     (resource ? '/' + resource : '/') +
     (id ? '/:id' : '') +
     (verb ? '/' + verb : '');
-
   // Lazy load view element:
   const header = null || D.getElementById('header');
   const content = null || D.getElementById('content');
@@ -158,7 +207,6 @@ const router = async () => {
     await Header.after_render();
     await Navbar.after_render();
   }
-
   await page.after_render();
   main.classList.remove("loading");
 };

@@ -6,6 +6,11 @@
    left: inherit !important;
 }
 
+.tabulator-row .tablelist {
+   max-height: 11em !important;
+   overflow-y: scroll !important;
+}
+
 .bhomeleaftlet {
    background-image: url('../../css/map/home.png') !important;
 }
