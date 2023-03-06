@@ -52,7 +52,17 @@ if (getWithExpiry("userProfile") != null) {
   user.email = getWithExpiry("userProfile").email;
   user.role_name = getWithExpiry("userProfile").roles[0].name;
   user.role_permissions = getWithExpiry("userProfile").roles[0].permissions;
-  user.role_permissions.forEach((row) => {
+
+  let public_access = [
+    '/kinerja-anggaran-belanja-kl',
+    '/belanja-kl',
+    '/kinerja-pembangunan',
+    '/penandaan-dan-pagu',
+    '/dak',
+    '/capaian-indikator'
+  ];
+
+  user.role_permissions.forEach((row, i) => {
     if (row.name == "administrator") {
       routesAdmin = [
         '/admin-penandaan-dan-pagu',
@@ -60,17 +70,35 @@ if (getWithExpiry("userProfile") != null) {
         '/admin-penandaan-intervensi',
         '/admin-master-intervensi',
         '/admin-master-keywords'
-      ];
-      //routesAuth = routesAuth.concat(routesAdmin);
+      ].concat(public_access);
     }
     if (row.name == "admin_ro") {
       routesAdmin = [
         '/admin-penandaan-ro',
         '/admin-master-keywords'
-      ];
-      //routesAuth = routesAuth.concat(routesAdmin);
+      ].concat(public_access);
     }
+    if (row.name == "dashboard") {
+      routesAdmin = public_access;
+    }
+    if (row.name == "dak") {
+      routesAdmin[i] = '/dak';
+    }
+    if (row.name == "penandaan_pagu") {
+      routesAdmin[i] = '/penandaan-dan-pagu';
+    }
+    if (row.name == "kinerja_anggaran") {
+      routesAdmin[i] = '/kinerja-anggaran-belanja-kl';
+    }
+    if (row.name == "kineja_pembangunan") {
+      routesAdmin[i] = '/kinerja-pembangunan';
+    }
+    if (row.name == "capaian_indikator") {
+      routesAdmin[i] = '/capaian-indikator';
+    }
+
   });
+
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {
@@ -96,7 +124,8 @@ let routes = {
   '/admin-master-keywords': AdminMasterKeywords
 };
 
-var routesAuth = [
+
+/* var routesAuth = [
   '/',
   '/kinerja-anggaran-belanja-kl',
   '/belanja-kl',
@@ -104,6 +133,10 @@ var routesAuth = [
   '/penandaan-dan-pagu',
   '/dak',
   '/capaian-indikator',
+  '/login',
+]; */
+var routesAuth = [
+  '/',
   '/login',
 ];
 
@@ -120,7 +153,6 @@ var routesAuth = [
 if (typeof user != 'undefined') {
   routesAuth = routesAuth.concat(routesAdmin);
 }
-
 /**
  * The router code. Takes a URL, checks against the list of
  * supported routes and then renders the corresponding content page.

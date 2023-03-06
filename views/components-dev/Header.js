@@ -6,7 +6,11 @@ const Header = {
    */
   render: async () => {
     const userProfile = (JSON.parse(localStorage.getItem("userProfile")) == null) ? "" : JSON.parse(localStorage.getItem("userProfile")).value;
-
+    console.log("userProfile", userProfile);
+    let name_user = userProfile.email.split("@"),
+      name_img = "/img/user/" + name_user[0] + ".jpg";
+    /*   var fileExt = imagesExtension.indexOf(name_img);
+      console.log("fileExt", fileExt); */
     return /*html*/ `
       		
             <!-- BEGIN navbar-header -->
@@ -42,7 +46,10 @@ const Header = {
                 <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                   <div class="image image-icon bg-gray-800 text-gray-600">
                     <!---img src="${userProfile.avatar}"/--->
-                    <img src="https://i.pravatar.cc/150?img=56"/>
+
+                    <!-- <img src="https://i.pravatar.cc/150?img=56"/> -->
+                    <img src="${name_img}" style="margin: 0% !important;width: 100% !important;height: 100% !important;"/>
+
                   </div>
                   <span class="d-none d-md-inline">${userProfile.name}</span> <b class="caret ms-lg-2"></b>
                 </a>

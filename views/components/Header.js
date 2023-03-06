@@ -1,4 +1,4 @@
-import{logOut}from"../../services/auth.js";const Header={render:async()=>{var a=null==JSON.parse(localStorage.getItem("userProfile"))?"":JSON.parse(localStorage.getItem("userProfile")).value;return`
+import{logOut}from"../../services/auth.js";const Header={render:async()=>{const a=null==JSON.parse(localStorage.getItem("userProfile"))?"":JSON.parse(localStorage.getItem("userProfile")).value;console.log("userProfile",a);var e="/img/user/"+a.email.split("@")[0]+".jpg";return`
       		
             <!-- BEGIN navbar-header -->
             <div class="navbar-header">
@@ -33,7 +33,10 @@ import{logOut}from"../../services/auth.js";const Header={render:async()=>{var a=
                 <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                   <div class="image image-icon bg-gray-800 text-gray-600">
                     <!---img src="${a.avatar}"/--->
-                    <img src="https://i.pravatar.cc/150?img=56"/>
+
+                    <!-- <img src="https://i.pravatar.cc/150?img=56"/> -->
+                    <img src="${e}" style="margin: 0% !important;width: 100% !important;height: 100% !important;"/>
+
                   </div>
                   <span class="d-none d-md-inline">${a.name}</span> <b class="caret ms-lg-2"></b>
                 </a>

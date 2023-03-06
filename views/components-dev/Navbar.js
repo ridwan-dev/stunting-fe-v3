@@ -3,23 +3,56 @@ const Navbar = {
    * Render the component content.
    */
   render: async () => {
+    console.log('user', user.role_permissions);
     // Define a list of navbar links. Next step get link's menu from database.
-    const links_global = [
-      { name: 'Home', slug: '', icon: 'home' },
-      { name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' },
-      { name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' },
-      { name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' },
-      /* {
+    /* {
         name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran', icon: 'balance', child: [
           { name: 'Belanja K/L', slug: 'belanja-kl', icon: 'real_estate_agent' },
           { name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' }
         ]
-      }, */ {
-        name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance'
-      },
-      // { name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' },
+      }, */
+
+    let links_global = [
+      { name: 'Home', slug: '', icon: 'home' }
+    ];
+
+    let authority_access = [
+      { name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' },
+      { name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' },
+      { name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' },
+      { name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' },
       { name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' }
     ];
+    let routesPage = [];
+    user.role_permissions.forEach((row, i) => {
+      if (row.name == "administrator") {
+        routesPage = authority_access;
+      }
+      if (row.name == "admin_ro") {
+        routesPage = authority_access;
+      }
+      if (row.name == "dashboard") {
+        routesPage = authority_access;
+      }
+      if (row.name == "dak") {
+        routesPage[i] = { sort: 3, name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' };
+      }
+      if (row.name == "penandaan_pagu") {
+        routesPage[i] = { sort: 1, name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' };
+      }
+      if (row.name == "kinerja_anggaran") {
+        routesPage[i] = { sort: 2, name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' };
+      }
+      if (row.name == "kineja_pembangunan") {
+        routesPage[i] = { sort: 4, name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' };
+      }
+      if (row.name == "capaian_indikator") {
+        routesPage[i] = { sort: 5, name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' };
+      }
+    });
+
+    links_global = links_global.concat(routesPage);
+    links_global.sort((a, b) => a.sort - b.sort);
 
     let links_admin = "";
     if (typeof user != 'undefined') {
