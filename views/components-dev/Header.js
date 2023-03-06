@@ -8,7 +8,7 @@ const Header = {
     const userProfile = (JSON.parse(localStorage.getItem("userProfile")) == null) ? "" : JSON.parse(localStorage.getItem("userProfile")).value;
     console.log("userProfile", userProfile);
     let name_user = userProfile.email.split("@"),
-      name_img = "/img/user/" + name_user[0] + ".jpg";
+      name_img = "./img/user/" + name_user[0] + ".jpg";
     /*   var fileExt = imagesExtension.indexOf(name_img);
       console.log("fileExt", fileExt); */
     return /*html*/ `
