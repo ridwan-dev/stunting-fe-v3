@@ -73,7 +73,7 @@ const Home = {
           <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li class="dropdown-item">Setting</li>
+          <!-- <li class="dropdown-item">Setting</li> -->
           <li class="dropdown-item logout-button">Log Out</li>
         </ul>
       </div>
