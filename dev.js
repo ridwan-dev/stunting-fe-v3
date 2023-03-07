@@ -26,11 +26,8 @@ import Navbar from './views/components-dev/Navbar.js';
 import Footer from './views/components-dev/Footer.js';
 
 window.config = {
-  //api_url: 'https://api-uat.stunting.id/api/v1',
-  //api_url: 'https://monev-stunting.bappenas.go.id/api-dev/api/v1',
   api_url: api_url(),
   api_url_v3: api_url_v3(),
-  //api_url: 'https://monev-stunting.bappenas.go.id/api-uat/api/v1',
   fetchHeaders: {
     "Accept": "application/json",
     "X-Requested-With": "XMLHttpRequest",
@@ -62,6 +59,7 @@ if (getWithExpiry("userProfile") != null) {
     '/capaian-indikator'
   ];
 
+  user.export = false;
   user.role_permissions.forEach((row, i) => {
     if (row.name == "administrator") {
       routesAdmin = [
@@ -97,8 +95,12 @@ if (getWithExpiry("userProfile") != null) {
       routesAdmin[i] = '/capaian-indikator';
     }
 
-  });
+    if (row.name == "export_enabled") {
+      user.export = true;
+    }
 
+  });
+  console.log('user.export', user.export);
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {

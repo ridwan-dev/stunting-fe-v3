@@ -128,14 +128,16 @@ const KinerjaAnggaran = {
                           <span class="position-absolute top-50 start-5 translate-middle-y ps-1 material-text">Open All</span>
                         </div>
                       </div>
-                      <div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700 my-2 mt-n1 fs-11px" >
+
+                      ${user.export ? /*html*/`<div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700 my-2 mt-n1 fs-11px" >
                         <div class="bd-highlight">
                           <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-15px text-green-400"  title="export xls" id="download-xlsx-kp1"></i>
                         </div> 
                         <div class="bd-highlight">
                           <div class="fs-12px fw-700">Download : </div>
                         </div>            
-                      </div>
+                      </div>` : ""}
+
                     </div>
 
                     <div id="kinerja-table" class="is-bordered is-narrow rounded-bottom"></div>
@@ -149,14 +151,16 @@ const KinerjaAnggaran = {
                           <span class="position-absolute top-50 start-5 translate-middle-y ps-1 material-text">Open All</span>
                         </div>
                       </div>
-                      <div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700 my-2 mt-n1 fs-11px" >
+
+                      ${user.export ? /*html*/`<div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700 my-2 mt-n1 fs-11px" >
                         <div class="bd-highlight">
                           <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer fs-15px text-green-400"  title="export xls" id="download-xlsx-kp2"></i>
                         </div> 
                         <div class="bd-highlight">
                           <div class="fs-12px fw-700">Download : </div>
                         </div>            
-                      </div>
+                      </div>` : " "}
+
                     </div>
 
                     <div id="kinerja-table2" class="is-bordered is-narrow rounded-bottom"></div>
@@ -783,10 +787,11 @@ const KinerjaAnggaran = {
           { column: "id", dir: "asc" }
         ]
       });
-
-      document.getElementById("download-xlsx-kp1").addEventListener("click", function () {
-        table.download("xlsx", "kinerja_pembangunan_1.xlsx", { sheetName: "data" });
-      });
+      if (user.export) {
+        document.getElementById("download-xlsx-kp1").addEventListener("click", function () {
+          table.download("xlsx", "kinerja_pembangunan_1.xlsx", { sheetName: "data" });
+        });
+      }
 
       var mmm = () => {
         table.recalc();
@@ -1009,9 +1014,11 @@ const KinerjaAnggaran = {
         ]
       });
 
-      document.getElementById("download-xlsx-kp2").addEventListener("click", function () {
-        table.download("xlsx", "kinerja_pembangunan_2.xlsx", { sheetName: "data" });
-      });
+      if (user.export) {
+        document.getElementById("download-xlsx-kp2").addEventListener("click", function () {
+          table.download("xlsx", "kinerja_pembangunan_2.xlsx", { sheetName: "data" });
+        });
+      }
       /* document.getElementById("download-pdf-kp2").addEventListener("click", function () {
         table.download("pdf", "Analisis Kinerja.pdf", {
           orientation: "landscape", //set page orientation to portrait

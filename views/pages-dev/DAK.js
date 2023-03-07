@@ -147,12 +147,8 @@ const DAK = {
                   </div>
                 </div>
                 <div class="d-flex justify-content-between bd-highlight">
-
-                  
-
-                  <div class="bd-highlight">
+                  ${user.export ? /*html*/`<div class="bd-highlight">
                     <div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700 my-2 mt-n1 fs-11px">
-                      
                       <div class="bd-highlight">
                         <i class="fas fa-lg fa-fw fa-file-pdf p-0 m-0 cursor-pointer fs-15px text-red-400" title="export pdf" id="download-pdf-dak"></i>
                       </div>  
@@ -163,7 +159,7 @@ const DAK = {
                         <div class="fs-12px fw-700">Download : </div>
                       </div>        
                     </div>
-                  </div>
+                  </div>`: ''}
                 </div>
               </div>
               <div id="dak-table" class="rounded-bottom"></div>  
@@ -992,10 +988,11 @@ const DAK = {
           { column: "name", dir: "asc" }
         ]
       });
-      document.getElementById("download-xlsx-dak").addEventListener("click", function () {
-        table.download("xlsx", "Dana_Alokasi_Khusus.xlsx", { sheetName: "data" });
-      });
-
+      if (user.export) {
+        document.getElementById("download-xlsx-dak").addEventListener("click", function () {
+          table.download("xlsx", "Dana_Alokasi_Khusus.xlsx", { sheetName: "data" });
+        });
+      }
       document.getElementById("download-pdf-dak").addEventListener("click", function () {
         table.download("pdf", "Dana Alokasi Khusus.pdf", {
           orientation: "landscape", //set page orientation to portrait
