@@ -1247,10 +1247,11 @@ const KinerjaAnggaran = {
           { column: "id", dir: "asc" }
         ],
       });
-
-      document.getElementById(xlss_id).addEventListener("click", function () {
-        table.download("xlsx", "kinerja_anggaran.xlsx", { sheetName: "data" });
-      });
+      if (user.export) {
+        document.getElementById(xlss_id).addEventListener("click", function () {
+          table.download("xlsx", "kinerja_anggaran.xlsx", { sheetName: "data" });
+        });
+      }
 
       function chart_bar(titleChart, titleY, catX, seriesData, heightC = 370) {
         let options = {

@@ -562,7 +562,7 @@ function treeOpenCloseHtml(class_id, downld = {}, intervensi = false) {
          </div>
          <div class="d-flex flex-row bd-highlight">
             <div class="mt-n2  bd-highlight">
-            ${((typeof downld.xls_id == "undefined") && (typeof downld.pdf_id == "undefined") && (typeof downld.xls_html == "undefined")) ?
+            ${(((typeof downld.xls_id == "undefined") && (typeof downld.pdf_id == "undefined") && (typeof downld.xls_html == "undefined")) || (!user.export)) ?
             "" :/*html*/`
                <div class="btn-group" id="groupExp">
                   <button class="btn btn-white active" >Export</button>
