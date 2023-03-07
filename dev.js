@@ -162,9 +162,12 @@ const router = async () => {
   // Destructure the parsed URl from the addressbar.
   const { resource, id, verb } = parseRequestUrl();
   let urlAllow = routesAuth.includes('/' + resource);
+  console.log('resource', resource);
+  console.log('urlAllow', urlAllow);
   // Do Auth
   const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" : (resource === 'login') ? window.location.href = "./#/login" : null;
-  !routesAuth.includes('/' + resource) && (validateAuth(resource)) ? window.location.replace("#/") : null;
+  //!routesAuth.includes('/' + resource) && (validateAuth(resource)) ? window.location.replace("#/") : null;
+  !routesAuth.includes('/' + resource) && (validateAuth(resource)) ? window.location.href = "#/" : null;
 
   // Parse the URL and if it has an id part, change it with the string ":id".
   const parsedUrl =
@@ -180,7 +183,9 @@ const router = async () => {
   const sidebarBg = D.querySelector('.app-sidebar-bg');
 
   // Render the page from map of supported routes or render 404 page.
-  const page = routes[parsedUrl] || Error404;
+  const page_load = routes[parsedUrl] || Error404;
+  const page = !urlAllow ? routes["/"] : page_load;
+
   main.classList.add("loading");
   content.innerHTML = await page.render();
 
