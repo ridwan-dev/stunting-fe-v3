@@ -1129,16 +1129,18 @@ const PenandaanPagu = {
 
       tile1.innerHTML = /*html*/ `
         <div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700  mb-1 fs-11px" style="position: absolute;top: 1.1em;right: 1.5em;">
-          <div class="mt-n1  bd-highlight">            
-            <div class="btn-group" id="groupExp">
-              <button class="btn btn-white fs-11px px-2 py-1 active">Export</button>                  
-              <button class="btn btn-white fs-11px px-2 py-1">
-                  <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer  text-green-400" title="export xls" id="exp_xls" onclick="toXls('#tableSum1All','xls','Penandaan.xls');"></i>
-              </button>                  
-              <button class="btn btn-white fs-11px px-2 py-1">
-                  <i class="fas fa-lg fa-fw fa-file-pdf p-0 m-0 cursor-pointer  text-red-400" title="export pdf" onclick="toPdf('#tableSum1All','pdf','Penandaan.pdf');"></i>
-              </button>                  
-            </div>
+          <div class="mt-n1  bd-highlight">     
+            ${user.export ? /*html*/`
+              <div class="btn-group" id="groupExp">
+                <button class="btn btn-white fs-11px px-2 py-1 active">Export</button>                  
+                <button class="btn btn-white fs-11px px-2 py-1">
+                    <i class="fas fa-lg fa-fw fa-file-excel p-0 m-0 cursor-pointer  text-green-400" title="export xls" id="exp_xls" onclick="toXls('#tableSum1All','xls','Penandaan.xls');"></i>
+                </button>                  
+                <button class="btn btn-white fs-11px px-2 py-1">
+                    <i class="fas fa-lg fa-fw fa-file-pdf p-0 m-0 cursor-pointer  text-red-400" title="export pdf" onclick="toPdf('#tableSum1All','pdf','Penandaan.pdf');"></i>
+                </button>                  
+              </div>
+            ` : /*html*/``}
           </div>
         </div>
 
@@ -1248,7 +1250,8 @@ const PenandaanPagu = {
 
       tile2.innerHTML = /*html*/ `
         <div class="d-flex flex-row bd-highlight flex-row-reverse fw-600 text-gray-700  mb-1 fs-11px" style="position: absolute;top: 1.1em;right: 1.5em;">
-          <div class="mt-n1  bd-highlight">            
+          <div class="mt-n1  bd-highlight">
+          ${user.export ? /*html*/`            
             <div class="btn-group" id="groupExp">
               <button class="btn btn-white fs-11px px-2 py-1 active">Export</button>                  
               <button class="btn btn-white fs-11px px-2 py-1">
@@ -1258,6 +1261,7 @@ const PenandaanPagu = {
                   <i class="fas fa-lg fa-fw fa-file-pdf p-0 m-0 cursor-pointer  text-red-400" title="export pdf" onclick="toPdf('#table2All','pdf','Pagu.pdf');"></i>
               </button>                  
             </div>
+            ` : /*html*/` `}
           </div>
         </div>
         <div class="col-md-6 border-start hide" id="table2All">            
@@ -1642,12 +1646,12 @@ const PenandaanPagu = {
       });
       //console.log("xlss_id", xlss_id);
 
-      if (typeof xlss_id != "undefined") {
+      if (typeof xlss_id != "undefined" && user.export) {
         document.getElementById(xlss_id).addEventListener("click", function () {
           table.download("xlsx", "data.xlsx", { sheetName: "data" });
         });
       }
-      if (typeof pdff_id != "undefined") {
+      if (typeof pdff_id != "undefined" && user.export) {
         document.getElementById(pdff_id).addEventListener("click", function () {
           table.download("pdf", "data.pdf", {
             orientation: "landscape", //set page orientation to portrait
