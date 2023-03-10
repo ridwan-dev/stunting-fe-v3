@@ -239,7 +239,8 @@ const KinerjaAnggaran = {
 
     let dTahunSemester = [
       `<option value="2021-1" selected="selected">2021 - Semester 1</option>`,
-      `<option value="2022-1" >2022 - Semester 1</option>`
+      `<option value="2022-1" >2022 - Semester 1</option>`,
+      `<option value="2022-2" >2022 - Semester 2</option>`
     ];
     thID.innerHTML = dTahunSemester.join(" ");
     mData.dataKementerian.forEach((item) => {
@@ -2064,14 +2065,19 @@ const KinerjaAnggaran = {
       $("#peta-ro-lokus").addClass("loading");
       let
         periode_data = $("#sel_ta").val(),
+        per_data = periode_data.split("-"),
+        per_tahun = per_data[0],
         ro_select = $("#sel_ro").val();
 
-      if (periode_data === "2022-1") {
+      if (per_tahun > "2021") {
         $("#ro-lokus-detail").removeClass("hide");
         $(".sel_kl").parent().addClass("hide");
         $(".sel_ig").parent().addClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().addClass("hide");
+        console.log("periode", periode_data);
+        console.log("ro select", ro_select);
         await getLokusRo(periode_data, ro_select).then(function (data) {
+          console.log("data", data);
           $("#peta-ro-lokus").removeClass("loading");
           viewMapKinerjaPembangunan(data);
         });
@@ -2131,15 +2137,21 @@ const KinerjaAnggaran = {
 
       mData.dataRoLokus.forEach((row) => {
         option_ro.push(
-          `<option value="${row.ro_field}" >${row.ro_name}</option>`
+          `<option value="${row.ro_field}" class="text-warp">
+              ${row.ro_code + "-"}
+              ${row.ro_name}
+          </option>`
         );
       });
       $("#sel_ro").html(option_ro);
       $('#sel_ro').selectpicker('destroy');
       $('#sel_ro').selectpicker();
-
+      $('.sel_ro .dropdown-menu').addClass('w-100');
     }
 
+    $(".dropdown-toggle").on("click", function () {
+      $('.sel_ro .dropdown-menu .inner ul li a span.text').addClass("text-wrap");
+    });
 
     /*----------END Versi 3---------*/
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))

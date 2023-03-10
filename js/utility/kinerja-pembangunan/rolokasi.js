@@ -27,7 +27,7 @@ function viewMapKinerjaPembangunan(datax) {
          gestureHandling: true
       });
    geoData.map = map;
-   //console.log("xxx", dataMap);
+   console.log("xxx", datax);
    var gmap_data = L.geoJSON(datax.detail, {
       className: 'shadow',
       onEachFeature: function (feature, layer) {
