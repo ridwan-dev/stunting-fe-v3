@@ -2074,10 +2074,23 @@ const KinerjaAnggaran = {
         $(".sel_kl").parent().addClass("hide");
         $(".sel_ig").parent().addClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().addClass("hide");
-        console.log("periode", periode_data);
-        console.log("ro select", ro_select);
+
         await getLokusRo(periode_data, ro_select).then(function (data) {
-          console.log("data", data);
+          let option_ro = [];
+          data.field.forEach((row) => {
+            let selected = ro_select.includes(row.ro_field) ? "selected" : "";
+            option_ro.push(
+              `<option value="${row.ro_field}" class="text-warp" ${selected}>
+                ${row.ro_code + "-"}
+                ${row.ro_name}
+              </option>`
+            );
+          });
+          $("#sel_ro").html(option_ro);
+          $('#sel_ro').selectpicker('destroy');
+          $('#sel_ro').selectpicker();
+          $('.sel_ro .dropdown-menu').addClass('w-100');
+
           $("#peta-ro-lokus").removeClass("loading");
           viewMapKinerjaPembangunan(data);
         });
@@ -2127,27 +2140,6 @@ const KinerjaAnggaran = {
         return false;
       }
     };
-
-    await getLokusRo('2022-1', []).then(function (data) {
-      mData.dataRoLokus = data.field;
-    });
-
-    if (typeof mData.dataRoLokus != "undefined") {
-      let option_ro = [];
-
-      mData.dataRoLokus.forEach((row) => {
-        option_ro.push(
-          `<option value="${row.ro_field}" class="text-warp">
-              ${row.ro_code + "-"}
-              ${row.ro_name}
-          </option>`
-        );
-      });
-      $("#sel_ro").html(option_ro);
-      $('#sel_ro').selectpicker('destroy');
-      $('#sel_ro').selectpicker();
-      $('.sel_ro .dropdown-menu').addClass('w-100');
-    }
 
     $(".dropdown-toggle").on("click", function () {
       $('.sel_ro .dropdown-menu .inner ul li a span.text').addClass("text-wrap");
