@@ -79,7 +79,7 @@ const KinerjaAnggaran = {
               <li class="nav-item"><a class="nav-link nav-tableX p-0 px-3 py-2 active" onclick="tabElemn(this);" data-active="true" data-tab="1a" data-table="true" >Konvergensi Lokasi </a></li>
               <li class="nav-item"><a class="nav-link nav-tableX p-0 px-3 py-2" onclick="tabElemn(this);" data-active="false" data-tab="2a" data-table="true" >Lokasi Khusus Intervensi</a></li>
             </ul>
-            <div class="tab-content rounded-bottom">
+            <div class="tab-content rounded-bottom" style="height: 36em;">
             <!--- Tab 1 -->
               <div class="tab-pane fade active show" id="default-tab-1a">
                 <div class="col-lg-12">
@@ -1067,15 +1067,15 @@ const KinerjaAnggaran = {
             </div> 
             <span class="h6">Detail</span>
             <div id="my_treex" class="my-3 mx-auto" style="width:50em">
-              <div id="wrapper" class="fs-9px">
-                <span class="labelx" style="background: #68b7dc;height: 4em;margin-left: 6em;"> 
+              <div id="wrapper" class="fs-12px">
+                <span class="labelx" style="background: #68b7dc;height: 4em;margin-left: 1em;margin-top: -2em;padding-top: 12px;"> 
                   &Sigma;  RO : <span id="tTreeRo1" class="badge bg-yellow text-black f-s-12">0</span>
                 </span>
                 <div class="branch lv1">
                   <div class="entry">
                     <span class="labelx  f-s-10 wdTree" style="background: green;top: 38%;"><span class="noLeft">1.</span> Dilaksanakan <br>di Kab/Kota Lokus <br>   &Sigma;  RO : <span id="tTreeRo2a" class="badge bg-yellow text-black f-s-10">0</span></span>
                     <div class="branch lv2">
-                      <div class="entry">
+                      <div class="entry" style="left: 2.3em;">
                         <span class="labelx f-s-9  wdTree " style="background: green;top:16%">
                           <span class="noLeft">a.</span>Menyasar pada <br> >360 Kab/Kota Lokus <br>  &Sigma;  RO : <span id="tTreeRo3a" class="badge bg-yellow text-black f-s-10">0</span>
                         </span>
@@ -1083,17 +1083,17 @@ const KinerjaAnggaran = {
                           <div class="entry sole"><span class="labelx  f-s-9  wdTree level4" style="background: green;top: 16%;">Memiliki <br>  Kab/Kota Non-Lokus <br>  &Sigma;  RO : <span id="tTreeRo4a" class="badge bg-yellow text-black f-s-10">0</span></span></div>
                         </div>
                       </div>
-                      <div class="entry lv3">
+                      <div class="entry lv3" style="left: 2.3em;top: 5em;">
                         <span class="labelx f-s-9 wdTree" style="background: #6894dc;top: 16em;">
                           <span class="noLeft">b.</span> Menyasar pada <br> <=360 Kab/Kota Lokus <br>  &Sigma;  RO : <span id="tTreeRo3b" class="badge bg-yellow text-black f-s-10">0</span>
                         </span>
-                        <div class="branch lv3" style="top: 12.17em;">
+                        <div class="branch lv3 lastChild" style="top: 8.5em;">
                           <div class="entry">
-                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;margin-top: -4em;">Tidak ada <br>  Kab/Kota Non-Lokus <br> &Sigma;  RO : <span id="tTreeRo4b" class="badge bg-yellow text-black f-s-10">0</span>
+                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;margin-top: -3em;">Tidak ada <br>  Kab/Kota Non-Lokus <br> &Sigma;  RO : <span id="tTreeRo4b" class="badge bg-yellow text-black f-s-10">0</span>
                             </span>
                           </div>										
                           <div class="entry last-tree">
-                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;top: 11.3em;">Memiliki<br>   Kab/Kota Non-lokus <br> &Sigma; RO : <span id="tTreeRo4c" class="badge bg-yellow text-black f-s-10">0</span>
+                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;top: 8.5em;">Memiliki<br>   Kab/Kota Non-lokus <br> &Sigma; RO : <span id="tTreeRo4c" class="badge bg-yellow text-black f-s-10">0</span>
                             </span>
                           </div>
                         </div>
