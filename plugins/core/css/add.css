@@ -17,8 +17,8 @@
 }
 
 .sel_ro .dropdown-menu .inner {
-   max-height: 30em !important;
-   min-height: 28em !important;
+   max-height: 25em !important;
+   min-height: 25em !important;
 }
 
 .sel_ro .dropdown-menu {
