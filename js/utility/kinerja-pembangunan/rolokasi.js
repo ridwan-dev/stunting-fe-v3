@@ -25,9 +25,9 @@ function viewMapKinerjaPembangunan(datax) {
          gestureHandling: true
       });
    geoData.map = map;
-   console.log("xxx", datax);
+   //console.log("xxx", datax);
    if (datax.detail.features === null) {
-      $("#ro-lokus-detail").append("<div class='h6' id='info_map' style='position: relative;top:-37em;z-index:9999;margin-left:2em;'>Data tidak ditemukan</div>");
+      $("#ro-lokus-detail").append("<div class='h6' id='info_map' style='position: relative;top:-37em;z-index:999;margin-left:2em;'>Data tidak ditemukan</div>");
       return false;
    } else {
       if (typeof $("#info_map") != 'undefined') {

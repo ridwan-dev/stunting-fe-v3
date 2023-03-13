@@ -11,6 +11,11 @@
    overflow-y: scroll !important;
 }
 
+/* boostrap select */
+.dropdown-menu a span.text {
+   white-space: normal !important;
+}
+
 .bhomeleaftlet {
    background-image: url('../../css/map/home.png') !important;
 }
