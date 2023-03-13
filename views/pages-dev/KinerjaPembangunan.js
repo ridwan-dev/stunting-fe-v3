@@ -1045,7 +1045,7 @@ const KinerjaAnggaran = {
     }
 
     async function tile_kinerja_pembangunan(result, tahun, kl, int, search) {
-      console.log("result", result);
+      //console.log("result", result);
       var
         rData,
         periode = tahun,
@@ -2107,7 +2107,7 @@ const KinerjaAnggaran = {
     });
 
     async function getLokusRo(periode_data, ro) {
-      console.log(ro);
+      //console.log(ro);
       let
         perData = periode_data.split("-"),
         paramData;
@@ -2124,7 +2124,7 @@ const KinerjaAnggaran = {
         }
 
       }
-      console.log(paramData);
+      //console.log(paramData);
       try {
         let res = await fetch(config.api_url_v3 + '/ka/lokus-ro', {
           method: 'POST',
@@ -2133,8 +2133,8 @@ const KinerjaAnggaran = {
         });
         let _res = await res.json();
 
-        console.log(mData.dataRoLokus);
-        console.log(_res.data);
+        //console.log(mData.dataRoLokus);
+        //console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;

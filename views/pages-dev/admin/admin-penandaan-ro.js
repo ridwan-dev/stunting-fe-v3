@@ -104,7 +104,7 @@ const AdminPenandaanRo = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-        console.log(_res.data);
+        //console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;
@@ -297,7 +297,7 @@ const AdminPenandaanRo = {
           let
             groupBykl_tag = arr_groupBy(['kementerian_kode']),
             kl_all = groupBykl_tag(data);
-          console.log(kl_all);
+          //console.log(kl_all);
           $("#ro_all").html(data.length);
           $("#kl_tag").html([...new Set(kl_tag)].length);
           $("#kl_all").html(Object.keys(kl_all).length);
