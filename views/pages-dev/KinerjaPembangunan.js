@@ -2068,6 +2068,15 @@ const KinerjaAnggaran = {
         per_data = periode_data.split("-"),
         per_tahun = per_data[0],
         ro_select = $("#sel_ro").val();
+      if (typeof mData.tahunSemester == "undefined") {
+        mData.tahunSemester = periode_data;
+      } else {
+        ro_select = (mData.tahunSemester == periode_data) ? ro_select : [];
+        console.log("ro_select", ro_select);
+        $('#sel_ro').selectpicker('destroy');
+        $('#sel_ro').selectpicker();
+        mData.tahunSemester = periode_data;
+      }
 
       if (per_tahun > "2021") {
         $("#ro-lokus-detail").removeClass("hide");
@@ -2090,11 +2099,9 @@ const KinerjaAnggaran = {
           $('#sel_ro').selectpicker('destroy');
           $('#sel_ro').selectpicker();
           $('.sel_ro .dropdown-menu').addClass('w-100');
-
           $("#peta-ro-lokus").removeClass("loading");
           viewMapKinerjaPembangunan(data);
         });
-
         $(".sel_ro").parent().removeClass("hide");
       } else {
         $("#ro-lokus-detail").addClass("hide");
@@ -2103,7 +2110,13 @@ const KinerjaAnggaran = {
         $(".sel_ig").parent().removeClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().removeClass("hide");
       }
+    });
 
+    $("#sel_ro").parent().find("button").on("click", function () {
+      alert("me");
+      //$('.sel_ro .dropdown-menu .inner ul li a span.text').addClass("text-wrap");
+      $('li a.dropdown-item span.text').addClass("text-wrap");
+      //$(this).parent().find('.dropdown-menu').find('.inner').find('ul').find('li').find('a').find('span.text').addClass("text-wrap");
     });
 
     async function getLokusRo(periode_data, ro) {
@@ -2122,7 +2135,6 @@ const KinerjaAnggaran = {
           "semester": perData[1],
           "ro": ro
         }
-
       }
       //console.log(paramData);
       try {
@@ -2132,18 +2144,13 @@ const KinerjaAnggaran = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-
-        //console.log(mData.dataRoLokus);
-        //console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;
       }
     };
 
-    $(".dropdown-toggle").on("click", function () {
-      $('.sel_ro .dropdown-menu .inner ul li a span.text').addClass("text-wrap");
-    });
+
 
     /*----------END Versi 3---------*/
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
