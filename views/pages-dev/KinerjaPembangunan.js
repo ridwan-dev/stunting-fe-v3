@@ -2072,7 +2072,7 @@ const KinerjaAnggaran = {
         mData.tahunSemester = periode_data;
       } else {
         ro_select = (mData.tahunSemester == periode_data) ? ro_select : [];
-        console.log("ro_select", ro_select);
+        //console.log("ro_select", ro_select);
         $('#sel_ro').selectpicker('destroy');
         $('#sel_ro').selectpicker();
         mData.tahunSemester = periode_data;
