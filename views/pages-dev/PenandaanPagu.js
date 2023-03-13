@@ -362,7 +362,7 @@ const PenandaanPagu = {
 
     $(".groupItem button").on("click", function () {
       let periode = document.getElementById("sel_ta").value;
-      console.log(this);
+      //console.log(this);
       if (['2022', '2023'].includes(periode)) {
         let data = treeBtnGroup(this, mData.datahasil);
         dataTabelNew(data.adjust, data.opsiTabel, data.item);

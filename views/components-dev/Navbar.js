@@ -3,7 +3,7 @@ const Navbar = {
    * Render the component content.
    */
   render: async () => {
-    console.log('user', user.role_permissions);
+    //console.log('user', user.role_permissions);
     // Define a list of navbar links. Next step get link's menu from database.
     /* {
         name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran', icon: 'balance', child: [

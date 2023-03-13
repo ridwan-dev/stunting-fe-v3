@@ -100,7 +100,7 @@ if (getWithExpiry("userProfile") != null) {
     }
 
   });
-  console.log('user.export', user.export);
+  //console.log('user.export', user.export);
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {
@@ -164,8 +164,8 @@ const router = async () => {
   // Destructure the parsed URl from the addressbar.
   const { resource, id, verb } = parseRequestUrl();
   let urlAllow = routesAuth.includes('/' + resource);
-  console.log('resource', resource);
-  console.log('urlAllow', urlAllow);
+  //console.log('resource', resource);
+  //console.log('urlAllow', urlAllow);
   // Do Auth
   const oauth = !(validateAuth(resource)) ? window.location.href = "./#/login" : (resource === 'login') ? window.location.href = "./#/login" : null;
   //!routesAuth.includes('/' + resource) && (validateAuth(resource)) ? window.location.replace("#/") : null;

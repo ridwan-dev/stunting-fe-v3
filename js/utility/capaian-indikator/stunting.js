@@ -691,7 +691,7 @@ function viewMap(statusGizi, datax, dAreaX, dAge, dTahun, dSurvey) {
             survComp = [],
             div = L.DomUtil.create('div');
          div.setAttribute("id", "surveyParam_" + statusGizi);
-         console.log(dSurvey.data);
+         //console.log(dSurvey.data);
          dSurvey.data.forEach((row, index) => {
             surv.push(`
             <div class="form-check mb-n1">
@@ -3771,7 +3771,7 @@ function label_map(properties, color) {
       }
    }
    if (properties.data == "underweight") {
-      console.log(properties);
+      //console.log(properties);
       let labelcomp = label_mapComp(properties.code, geoData.dataUnderweightComp);
       if (properties.state == "provinsi") {
          name_properti = `<div class="text-gray-700 my-0 fs-15px"> Provinsi ${properties.name} </div>`;
