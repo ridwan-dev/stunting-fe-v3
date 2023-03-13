@@ -259,6 +259,7 @@ function viewMapKinerjaPembangunan(datax) {
       Object.keys(dataX).forEach((ro) => {
          if (dataX[ro] === "Y") {
             let row_ro = datax.field.find(item => item.ro_field === ro);
+            console.log("row_ro", row_ro);
             ro_name.push("<tr><td class='text-wrap fs-12px p-1 m-0'>" + $i++ + ".</td><td class='text-wrap fs-12px p-1 m-0'>" + row_ro.ro_code + " " + row_ro.ro_name + "</td></tr>");
          }
 
