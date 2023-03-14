@@ -65,7 +65,6 @@ const Home = {
           widgetCard[i] = { sort: 1, data: widgetExcSumary };
         }
       });
-
     }
     widgetCard.sort((a, b) => a.sort - b.sort);
 
