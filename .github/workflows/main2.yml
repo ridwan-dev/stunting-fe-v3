@@ -23,13 +23,5 @@ jobs:
             connect_timeout: 10s
             script: |      
                 cd /var/www/html/testing-v3
-                git pull
-                
-                rm -rf services-dev/
-                rm -rf views/components-dev/
-                rm -rf views/pages-dev/
-                rm dev.html
-                rm dev.js
-                rm gulpfile.js
-                rm index-ori.html                                
+                git pull                      
                 exit

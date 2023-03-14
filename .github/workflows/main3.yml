@@ -24,12 +24,4 @@ jobs:
             script: |      
                 cd /var/www/html/dashboard
                 git pull
-                rm -rf plugin/
-                rm -rf services-dev/
-                rm -rf views/components-dev/
-                rm -rf views/pages-dev/
-                rm dev.html
-                rm dev.js
-                rm gulpfile.js
-                rm index-ori.html                
                 exit
