@@ -1,4 +1,4 @@
-import{logOut}from"../../services/auth.js";const Header={render:async()=>{const a=null==JSON.parse(localStorage.getItem("userProfile"))?"":JSON.parse(localStorage.getItem("userProfile")).value;console.log("userProfile",a);var e="./img/user/"+a.email.split("@")[0]+".jpg";return`
+import{logOut}from"../../services/auth.js";const Header={render:async()=>{const a=null==JSON.parse(localStorage.getItem("userProfile"))?"":JSON.parse(localStorage.getItem("userProfile")).value;var e="./img/user/"+a.email.split("@")[0]+".jpg";return`
       		
             <!-- BEGIN navbar-header -->
             <div class="navbar-header">

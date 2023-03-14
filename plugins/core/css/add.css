@@ -11,6 +11,21 @@
    overflow-y: scroll !important;
 }
 
+/* boostrap select */
+.dropdown-menu a span.text {
+   white-space: normal !important;
+}
+
+.sel_ro .dropdown-menu .inner {
+   max-height: 25em !important;
+   min-height: 25em !important;
+}
+
+.sel_ro .dropdown-menu {
+   max-height: 32em !important;
+   min-height: 32em !important;
+}
+
 .bhomeleaftlet {
    background-image: url('../../css/map/home.png') !important;
 }

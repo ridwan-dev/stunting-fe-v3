@@ -229,7 +229,7 @@ input[type="radio"] {
    height: 100%;
    border-left: 2px solid #eee9dc;
    position: absolute;
-   left: -77px;
+   left: -106px;
 }
 
 .entry:after {
@@ -237,7 +237,7 @@ input[type="radio"] {
    width: 25px;
    border-top: 2px solid #eee9dc;
    position: absolute;
-   left: -77px;
+   left: -104px;
    top: 50%;
    margin-top: 1px;
 }
@@ -257,8 +257,13 @@ input[type="radio"] {
 
 .entry:last-child:before {
    width: 10px;
-   height: 140%;
+   height: 7.7em;
    border-radius: 0 0 0 10px;
+}
+
+.entry.lv3:last-child:before {
+   height: 22.9em !important;
+   top: -5em;
 }
 
 .entry:last-child:after {
@@ -274,14 +279,15 @@ input[type="radio"] {
 }
 
 .entry.sole:after {
-   /* width: 50px; */
+   width: 43px !important;
    height: 0;
    margin-top: 1px;
    border-radius: 0;
+   left: -10em;
 }
 
 .entry.lv3:after {
-   margin-top: 100px;
+   margin-top: 145px;
 }
 
 .entry.r1:after {
@@ -309,11 +315,20 @@ input[type="radio"] {
 }
 
 .branch.lv3 {
-   left: -3em;
+   left: 2.5em;
+}
+
+.branch.lv3::before {
+   left: -13.7em;
+}
+
+.branch.lv3.lastChild::before {
+   top: 9.3em;
+   width: 5em;
 }
 
 .branch.lv2 {
-   left: -3em;
+   left: -0.5em;
 }
 
 .wdTree.level4 {
@@ -329,7 +344,7 @@ input[type="radio"] {
    border: 2px solid #eee9dc;
    border-radius: 5px;
    position: absolute;
-   left: -6em;
+   left: -6.5em;
    top: 50%;
    margin-top: -15px;
    padding-left: 7px;
@@ -351,10 +366,10 @@ input[type="radio"] {
    top: 74%;
 }
 
-.noLeft {
+/* .noLeft {
    position: absolute;
    left: 9px;
-}
+} */
 
 .lv1 {
    left: -3.5em;

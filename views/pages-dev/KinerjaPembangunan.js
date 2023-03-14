@@ -79,7 +79,7 @@ const KinerjaAnggaran = {
               <li class="nav-item"><a class="nav-link nav-tableX p-0 px-3 py-2 active" onclick="tabElemn(this);" data-active="true" data-tab="1a" data-table="true" >Konvergensi Lokasi </a></li>
               <li class="nav-item"><a class="nav-link nav-tableX p-0 px-3 py-2" onclick="tabElemn(this);" data-active="false" data-tab="2a" data-table="true" >Lokasi Khusus Intervensi</a></li>
             </ul>
-            <div class="tab-content rounded-bottom">
+            <div class="tab-content rounded-bottom" style="height: 36em;">
             <!--- Tab 1 -->
               <div class="tab-pane fade active show" id="default-tab-1a">
                 <div class="col-lg-12">
@@ -239,7 +239,8 @@ const KinerjaAnggaran = {
 
     let dTahunSemester = [
       `<option value="2021-1" selected="selected">2021 - Semester 1</option>`,
-      `<option value="2022-1" >2022 - Semester 1</option>`
+      `<option value="2022-1" >2022 - Semester 1</option>`,
+      `<option value="2022-2" >2022 - Semester 2</option>`
     ];
     thID.innerHTML = dTahunSemester.join(" ");
     mData.dataKementerian.forEach((item) => {
@@ -1044,7 +1045,7 @@ const KinerjaAnggaran = {
     }
 
     async function tile_kinerja_pembangunan(result, tahun, kl, int, search) {
-      console.log("result", result);
+      //console.log("result", result);
       var
         rData,
         periode = tahun,
@@ -1066,15 +1067,15 @@ const KinerjaAnggaran = {
             </div> 
             <span class="h6">Detail</span>
             <div id="my_treex" class="my-3 mx-auto" style="width:50em">
-              <div id="wrapper" class="fs-9px">
-                <span class="labelx" style="background: #68b7dc;height: 4em;margin-left: 6em;"> 
+              <div id="wrapper" class="fs-12px">
+                <span class="labelx" style="background: #68b7dc;height: 4em;margin-left: 1em;margin-top: -2em;padding-top: 12px;"> 
                   &Sigma;  RO : <span id="tTreeRo1" class="badge bg-yellow text-black f-s-12">0</span>
                 </span>
                 <div class="branch lv1">
                   <div class="entry">
                     <span class="labelx  f-s-10 wdTree" style="background: green;top: 38%;"><span class="noLeft">1.</span> Dilaksanakan <br>di Kab/Kota Lokus <br>   &Sigma;  RO : <span id="tTreeRo2a" class="badge bg-yellow text-black f-s-10">0</span></span>
                     <div class="branch lv2">
-                      <div class="entry">
+                      <div class="entry" style="left: 2.3em;">
                         <span class="labelx f-s-9  wdTree " style="background: green;top:16%">
                           <span class="noLeft">a.</span>Menyasar pada <br> >360 Kab/Kota Lokus <br>  &Sigma;  RO : <span id="tTreeRo3a" class="badge bg-yellow text-black f-s-10">0</span>
                         </span>
@@ -1082,17 +1083,17 @@ const KinerjaAnggaran = {
                           <div class="entry sole"><span class="labelx  f-s-9  wdTree level4" style="background: green;top: 16%;">Memiliki <br>  Kab/Kota Non-Lokus <br>  &Sigma;  RO : <span id="tTreeRo4a" class="badge bg-yellow text-black f-s-10">0</span></span></div>
                         </div>
                       </div>
-                      <div class="entry lv3">
+                      <div class="entry lv3" style="left: 2.3em;top: 5em;">
                         <span class="labelx f-s-9 wdTree" style="background: #6894dc;top: 16em;">
                           <span class="noLeft">b.</span> Menyasar pada <br> <=360 Kab/Kota Lokus <br>  &Sigma;  RO : <span id="tTreeRo3b" class="badge bg-yellow text-black f-s-10">0</span>
                         </span>
-                        <div class="branch lv3" style="top: 12.17em;">
+                        <div class="branch lv3 lastChild" style="top: 8.5em;">
                           <div class="entry">
-                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;margin-top: -4em;">Tidak ada <br>  Kab/Kota Non-Lokus <br> &Sigma;  RO : <span id="tTreeRo4b" class="badge bg-yellow text-black f-s-10">0</span>
+                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;margin-top: -3em;">Tidak ada <br>  Kab/Kota Non-Lokus <br> &Sigma;  RO : <span id="tTreeRo4b" class="badge bg-yellow text-black f-s-10">0</span>
                             </span>
                           </div>										
                           <div class="entry last-tree">
-                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;top: 11.3em;">Memiliki<br>   Kab/Kota Non-lokus <br> &Sigma; RO : <span id="tTreeRo4c" class="badge bg-yellow text-black f-s-10">0</span>
+                            <span class="labelx  f-s-9  wdTree level4" style="background: #6894dc;top: 8.5em;">Memiliki<br>   Kab/Kota Non-lokus <br> &Sigma; RO : <span id="tTreeRo4c" class="badge bg-yellow text-black f-s-10">0</span>
                             </span>
                           </div>
                         </div>
@@ -2064,18 +2065,43 @@ const KinerjaAnggaran = {
       $("#peta-ro-lokus").addClass("loading");
       let
         periode_data = $("#sel_ta").val(),
+        per_data = periode_data.split("-"),
+        per_tahun = per_data[0],
         ro_select = $("#sel_ro").val();
+      if (typeof mData.tahunSemester == "undefined") {
+        mData.tahunSemester = periode_data;
+      } else {
+        ro_select = (mData.tahunSemester == periode_data) ? ro_select : [];
+        //guconsole.log("ro_select", ro_select);
+        $('#sel_ro').selectpicker('destroy');
+        $('#sel_ro').selectpicker();
+        mData.tahunSemester = periode_data;
+      }
 
-      if (periode_data === "2022-1") {
+      if (per_tahun > "2021") {
         $("#ro-lokus-detail").removeClass("hide");
         $(".sel_kl").parent().addClass("hide");
         $(".sel_ig").parent().addClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().addClass("hide");
+
         await getLokusRo(periode_data, ro_select).then(function (data) {
+          let option_ro = [];
+          data.field.forEach((row) => {
+            let selected = ro_select.includes(row.ro_field) ? "selected" : "";
+            option_ro.push(
+              `<option value="${row.ro_field}" class="text-warp" ${selected}>
+                ${row.ro_code + "-"}
+                ${row.ro_name}
+              </option>`
+            );
+          });
+          $("#sel_ro").html(option_ro);
+          $('#sel_ro').selectpicker('destroy');
+          $('#sel_ro').selectpicker();
+          $('.sel_ro .dropdown-menu').addClass('w-100');
           $("#peta-ro-lokus").removeClass("loading");
           viewMapKinerjaPembangunan(data);
         });
-
         $(".sel_ro").parent().removeClass("hide");
       } else {
         $("#ro-lokus-detail").addClass("hide");
@@ -2084,11 +2110,17 @@ const KinerjaAnggaran = {
         $(".sel_ig").parent().removeClass("hide");
         $("#kinerjaAnggaranSrc").parent().parent().removeClass("hide");
       }
+    });
 
+    $("#sel_ro").parent().find("button").on("click", function () {
+      alert("me");
+      //$('.sel_ro .dropdown-menu .inner ul li a span.text').addClass("text-wrap");
+      $('li a.dropdown-item span.text').addClass("text-wrap");
+      //$(this).parent().find('.dropdown-menu').find('.inner').find('ul').find('li').find('a').find('span.text').addClass("text-wrap");
     });
 
     async function getLokusRo(periode_data, ro) {
-      console.log(ro);
+      //console.log(ro);
       let
         perData = periode_data.split("-"),
         paramData;
@@ -2103,9 +2135,8 @@ const KinerjaAnggaran = {
           "semester": perData[1],
           "ro": ro
         }
-
       }
-      console.log(paramData);
+      //console.log(paramData);
       try {
         let res = await fetch(config.api_url_v3 + '/ka/lokus-ro', {
           method: 'POST',
@@ -2113,32 +2144,12 @@ const KinerjaAnggaran = {
           headers: config.fetchHeaders
         });
         let _res = await res.json();
-
-        console.log(mData.dataRoLokus);
-        console.log(_res.data);
         return _res.data;
       } catch (e) {
         return false;
       }
     };
 
-    await getLokusRo('2022-1', []).then(function (data) {
-      mData.dataRoLokus = data.field;
-    });
-
-    if (typeof mData.dataRoLokus != "undefined") {
-      let option_ro = [];
-
-      mData.dataRoLokus.forEach((row) => {
-        option_ro.push(
-          `<option value="${row.ro_field}" >${row.ro_name}</option>`
-        );
-      });
-      $("#sel_ro").html(option_ro);
-      $('#sel_ro').selectpicker('destroy');
-      $('#sel_ro').selectpicker();
-
-    }
 
 
     /*----------END Versi 3---------*/

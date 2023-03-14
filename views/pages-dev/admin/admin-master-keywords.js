@@ -200,7 +200,7 @@ const AdminKeywords = {
     }
 
     async function tableDataRo(tableData) {
-      console.log(tableData);
+      //console.log(tableData);
       const data = tableData.data[0],
         dataInt = () => {
           let datax = Object.values(data);

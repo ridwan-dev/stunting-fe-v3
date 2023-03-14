@@ -3,7 +3,7 @@ const Navbar = {
    * Render the component content.
    */
   render: async () => {
-    console.log('user', user.role_permissions);
+    //console.log('user', user.role_permissions);
     // Define a list of navbar links. Next step get link's menu from database.
     /* {
         name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran', icon: 'balance', child: [
@@ -13,46 +13,61 @@ const Navbar = {
       }, */
 
     let links_global = [
-      { name: 'Home', slug: '', icon: 'home' }
+      { urut: 1, name: 'Home', slug: '', icon: 'home' }
     ];
 
-    let authority_access = [
-      { name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' },
-      { name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' },
-      { name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' },
-      { name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' },
-      { name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' }
-    ];
-    let routesPage = [];
+    let
+      authority_access = [
+        { urut: 2, name: 'Executive Summary', slug: 'executive-summary', icon: 'widgets' },
+        { urut: 3, name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' },
+        { urut: 4, name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' },
+        { urut: 6, name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' },
+        { urut: 5, name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' },
+        { urut: 7, name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' }
+      ],
+      public_access = [
+        { urut: 3, name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' },
+        { urut: 4, name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' },
+        { urut: 6, name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' },
+        { urut: 5, name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' },
+        { urut: 7, name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' }
+      ],
+      routesPage = [];
+
     user.role_permissions.forEach((row, i) => {
       if (row.name == "administrator") {
         routesPage = authority_access;
       }
       if (row.name == "admin_ro") {
-        routesPage = authority_access;
+        routesPage = public_access;
       }
       if (row.name == "dashboard") {
-        routesPage = authority_access;
+        routesPage = public_access;
       }
-      if (row.name == "dak") {
-        routesPage[i] = { sort: 3, name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' };
+      if (row.name == "executive_summary") {
+        routesPage[i] = { urut: 2, name: 'Executive Summary', slug: 'executive-summary', icon: 'widgets' };
       }
       if (row.name == "penandaan_pagu") {
-        routesPage[i] = { sort: 1, name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' };
+        routesPage[i] = { urut: 3, name: 'Penandaan dan Pagu', slug: 'penandaan-dan-pagu', icon: 'verified' };
       }
       if (row.name == "kinerja_anggaran") {
-        routesPage[i] = { sort: 2, name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' };
+        routesPage[i] = { urut: 4, name: 'Kinerja Anggaran  Belanja K/L', slug: 'kinerja-anggaran-belanja-kl', icon: 'balance' };
+      }
+      if (row.name == "dak") {
+        routesPage[i] = { urut: 5, name: 'Dana Alokasi Khusus', slug: 'dak', icon: 'real_estate_agent' };
       }
       if (row.name == "kineja_pembangunan") {
-        routesPage[i] = { sort: 4, name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' };
+        routesPage[i] = { urut: 6, name: 'Kinerja Pembangunan', slug: 'kinerja-pembangunan', icon: 'account_balance' };
       }
       if (row.name == "capaian_indikator") {
-        routesPage[i] = { sort: 5, name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' };
+        routesPage[i] = { urut: 7, name: 'Capaian Indikator', slug: 'capaian-indikator', icon: 'stacked_bar_chart' };
       }
     });
-
+    //console.log('links_global1', links_global);
+    //console.log('routesPage', routesPage);
     links_global = links_global.concat(routesPage);
-    links_global.sort((a, b) => a.sort - b.sort);
+    links_global.sort((a, b) => a.urut - b.urut);
+    //console.log('links_global2', links_global);
 
     let links_admin = "";
     if (typeof user != 'undefined') {

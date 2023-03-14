@@ -2017,7 +2017,7 @@ const KinerjaAnggaran = {
         $("#mapload,#tableload").addClass("loading");
         await getBelanjaKL(periode, sel_kl, sel_int, search).then(function (data) {
           mData.belanjaKL = data;
-          console.log("mData.belanjaKL", mData.belanjaKL);
+          //console.log("mData.belanjaKL", mData.belanjaKL);
           viewMapBelanjaKL(mData.belanjaKL);
         });
         /*tabel dibawah*/
@@ -2095,7 +2095,7 @@ const KinerjaAnggaran = {
 
     $(".groupItem button").on("click", function () {
       let periode = document.getElementById("sel_ta").value;
-      console.log(this);
+      //console.log(this);
       if (['2022', '2023'].includes(periode)) {
         let data = treeBtnGroup(this, mData.dataDetailBKL.detail);
         tableDataKrisna(data.adjust, data.opsiTabel, data.item);
@@ -2860,7 +2860,7 @@ const KinerjaAnggaran = {
               map.closePopup();
               layer.openPopup();
               sidebar.isVisible() ? sidebar.hide() : null;
-              console.log("dataProperties x", dataProperties);
+              //console.log("dataProperties x", dataProperties);
               getDetail(e, dataProperties);
             },
           });
@@ -2986,7 +2986,7 @@ const KinerjaAnggaran = {
           thn = $("#sel_ta").val(),
           kl = $("#sel_kl").val()
           ;
-        console.log("kab_kode x", kab_kode);
+        //console.log("kab_kode x", kab_kode);
         /*  var mmn = async () => { */
         $(".leaflet-popup-content-wrapper").addClass(['bg-black-transparent-8', 'rounded']);
 
@@ -3005,7 +3005,7 @@ const KinerjaAnggaran = {
               headers: config.fetchHeaders
             });
             let _res = await res.json();
-            console.log("_res x", _res);
+            //console.log("_res x", _res);
             detailBL = _res.data;
           } catch (e) {
             return false;
@@ -3016,7 +3016,7 @@ const KinerjaAnggaran = {
           <p class="h3 p-0 m-0 mx-4 text-black">${kab_nama}</p>
           <p class="h5 py-1 m-0 mx-4 mb-3 text-black">Provinsi ${prov_nama}</p>
         `);
-          console.log("detailBL x", detailBL);
+          //console.log("detailBL x", detailBL);
           tableDataSide(detailBL);
           $(".open_table").on("click", async function () {
             var opsiTabelx;
@@ -3035,7 +3035,7 @@ const KinerjaAnggaran = {
           async function tableDataSide(result, opsiTabel = { expand: false }) {
             const tData = () => {
               let data = Object.values(result.detail);
-              console.log("result x", result);
+              //console.log("result x", result);
               //let data = Object.values(result);
               data.sort((a, b) => a.kl_id > b.kl_id && 1 || -1)
               data.forEach((item, i) => {
@@ -3061,7 +3061,7 @@ const KinerjaAnggaran = {
               });
               return data;
             }
-            console.log(tData());
+            //console.log(tData());
             const table = new Tabulator("#default-pop-1", {
               height: "515px",
               data: tData(),
@@ -3560,7 +3560,7 @@ const KinerjaAnggaran = {
                   v_realisasi_ro = sumObject(Object.values(dataE1), "realisasi_ro"),
                   v_alokasi_0 = sumObject(Object.values(dataE1), "alokasi_0"),
                   jml_komp = 0;
-                console.log("dataE1", dataE1);
+                //console.log("dataE1", dataE1);
                 let
                   groupByKomp = arr_groupBy(['komponen_kode']),
                   data_perKomp = groupByKomp(Object.values(dataE1)),
