@@ -89,6 +89,7 @@ if (getWithExpiry("userProfile") != null) {
     if (row.name == "penandaan_pagu") {
       routesAdmin[i] = '/penandaan-dan-pagu';
     }
+
     if (row.name == "kinerja_anggaran") {
       routesAdmin[i] = '/kinerja-anggaran-belanja-kl';
     }
