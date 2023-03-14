@@ -24,7 +24,7 @@ jobs:
             script: |      
                 cd /var/www/html/testing-v3
                 git pull
-                rm -rf plugin/
+                
                 rm -rf services-dev/
                 rm -rf views/components-dev/
                 rm -rf views/pages-dev/
