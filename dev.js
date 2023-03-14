@@ -63,6 +63,7 @@ if (getWithExpiry("userProfile") != null) {
   user.role_permissions.forEach((row, i) => {
     if (row.name == "administrator") {
       routesAdmin = [
+        '/executive-summary',
         '/admin-penandaan-dan-pagu',
         '/admin-penandaan-ro',
         '/admin-penandaan-intervensi',
@@ -82,6 +83,9 @@ if (getWithExpiry("userProfile") != null) {
     if (row.name == "dak") {
       routesAdmin[i] = '/dak';
     }
+    if (row.name == "executive_summary") {
+      routesAdmin[i] = '/executive-summary';
+    }
     if (row.name == "penandaan_pagu") {
       routesAdmin[i] = '/penandaan-dan-pagu';
     }
@@ -100,7 +104,7 @@ if (getWithExpiry("userProfile") != null) {
     }
 
   });
-  //console.log('user.export', user.export);
+  //console.log('routesAdmin', routesAdmin);
 }
 
 Number.prototype.format_uang = function (n, x, s, c) {
@@ -155,6 +159,7 @@ var routesAuth = [
 if (typeof user != 'undefined') {
   routesAuth = routesAuth.concat(routesAdmin);
 }
+//console.log('routesAuth', routesAuth);
 /**
  * The router code. Takes a URL, checks against the list of
  * supported routes and then renders the corresponding content page.

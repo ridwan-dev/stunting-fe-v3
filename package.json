@@ -18,6 +18,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
+    "gulp-strip-debug": "^5.0.0",
     "gulp-uglify": "^3.0.2",
     "uglify-js": "^3.15.1",
     "vinyl-source-stream": "^2.0.0",
@@ -31,6 +32,7 @@
     "javascript"
   ],
   "dependencies": {
-    "gulp-htmlmin": "^5.0.1"
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-remove-logging": "^1.2.0"
   }
 }

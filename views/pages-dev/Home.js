@@ -16,6 +16,8 @@ const Home = {
       des3 = "<div style=''>Pemantauan dana yang bersumber dari pendapatan APBN yang dialokasikan kepada daerah tertentu dengan tujuan untuk membantu mendanai kegiatan khusus yang merupakan urusan daerah dan sesuai dengan Prioritas Nasional  berupa DAK Fisik maupun Non Fisik, ke pemerintah daerah.</div>",
       des4 = "<div style=''>Pemantau dan evaluasi kinerja kementerian/lembaga (K/L) serta mengidentifikasi keberhasilan dan hambatan pelaksanaan kegiatan.</div>",
       des5 = "<div style=''>Capaian Indikator meliputi cakupan gizi buruk <i>stunting, underweight, wasting</i> berdasarkan basis data survei terkait pada anak balita dan baduta.</div>",
+      desExc = "<div style=''>Executive Summary</div>",
+      widgetExcSumary = await WidgetCardLink.render('tile-exc', 'Executive Summary', 'widgets', 'white-100', '', 'white-100', '#/executive-summary', desExc),
       widgetCardLink1 = await WidgetCardLink.render('tile-1', 'Penandaan dan Pagu', 'verified', 'white-100', 'lg-2', 'white-100', '#/penandaan-dan-pagu', des1),
       widgetCardLink2 = await WidgetCardLink.render('tile-2', 'Kinerja Anggaran', 'balance', 'white-100', 'lg-3', 'white-100', '#/kinerja-anggaran-belanja-kl', des2),
       widgetCardLink3 = await WidgetCardLink.render('tile-3', 'Dana Alokasi Khusus', 'real_estate_agent', 'white-100', 'lg-3', 'white-100', '#/dak', des3),
@@ -23,7 +25,9 @@ const Home = {
       widgetCardLink5 = await WidgetCardLink.render('tile-5', 'Capaian Indikator', 'insights', 'white-100', 'lg-2', 'white-100', '#/capaian-indikator', des5)
       ;
     let widgetCard = [];
-    let authority_access = [{ sort: 1, data: widgetCardLink1 }].concat(
+    let authority_access = [
+      { sort: 1, data: widgetCardLink1 }
+    ].concat(
       { sort: 2, data: widgetCardLink2 },
       { sort: 3, data: widgetCardLink3 },
       { sort: 4, data: widgetCardLink4 },
@@ -43,19 +47,22 @@ const Home = {
           widgetCard = authority_access;
         }
         if (row.name == "kinerja_anggaran") {
-          widgetCard[i] = { sort: 2, data: widgetCardLink2 };
+          widgetCard[i] = { sort: 3, data: widgetCardLink2 };
         }
         if (row.name == "kineja_pembangunan") {
-          widgetCard[i] = { sort: 4, data: widgetCardLink4 };
+          widgetCard[i] = { sort: 5, data: widgetCardLink4 };
         }
         if (row.name == "capaian_indikator") {
-          widgetCard[i] = { sort: 5, data: widgetCardLink5 };
+          widgetCard[i] = { sort: 6, data: widgetCardLink5 };
         }
         if (row.name == "dak") {
-          widgetCard[i] = { sort: 3, data: widgetCardLink3 };
+          widgetCard[i] = { sort: 4, data: widgetCardLink3 };
         }
         if (row.name == "penandaan_pagu") {
-          widgetCard[i] = { sort: 1, data: widgetCardLink1 };
+          widgetCard[i] = { sort: 2, data: widgetCardLink1 };
+        }
+        if (row.name == "executive_summary") {
+          widgetCard[i] = { sort: 1, data: widgetExcSumary };
         }
       });
 
